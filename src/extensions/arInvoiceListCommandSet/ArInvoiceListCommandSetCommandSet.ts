@@ -1,3 +1,7 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+
 import { override } from '@microsoft/decorators';
 import { Log } from '@microsoft/sp-core-library';
 import {
@@ -7,6 +11,9 @@ import {
   IListViewCommandSetExecuteEventParameters
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
+import { Panel } from 'office-ui-fabric-react/lib/Panel';
+
+import NewInvoiceSidePanel from './components/NewInvoiceSidePanel';
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
 
@@ -47,7 +54,7 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         Dialog.alert(`${this.properties.sampleTextOne}`);
         break;
       case 'COMMAND_2':
-        Dialog.alert(`${this.properties.sampleTextTwo}`);
+        new NewInvoiceSidePanel().show();
         break;
       default:
         throw new Error('Unknown command');
