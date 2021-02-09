@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/submitNewArInvoiceForm/SubmitNewArInvoiceFormWebPart.manifest.json"
         }
       ]
+    },
+    "ar-invoice-list-command-set-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/arInvoiceListCommandSet/ArInvoiceListCommandSetCommandSet.js",
+          "manifest": "./src/extensions/arInvoiceListCommandSet/ArInvoiceListCommandSetCommandSet.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "SubmitNewArInvoiceFormWebPartStrings": "lib/webparts/submitNewArInvoiceForm/loc/{locale}.js"
+    "SubmitNewArInvoiceFormWebPartStrings": "lib/webparts/submitNewArInvoiceForm/loc/{locale}.js",
+    "ArInvoiceListCommandSetCommandSetStrings": "lib/extensions/arInvoiceListCommandSet/loc/{locale}.js"
   }
 }

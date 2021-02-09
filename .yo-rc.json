@@ -1,12 +1,13 @@
 {
   "@microsoft/generator-sharepoint": {
-    "isCreatingSolution": true,
+    "isCreatingSolution": false,
     "environment": "spo",
     "version": "1.10.0",
     "libraryName": "ar-invoices",
     "libraryId": "bcbe9a49-f3a5-40af-bf04-cf0c1c92b5ef",
     "packageManager": "npm",
     "isDomainIsolated": false,
-    "componentType": "webpart"
+    "componentType": "extension",
+    "extensionType": "ListViewCommandSet"
   }
 }
