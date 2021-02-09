@@ -1,4 +1,4 @@
 export interface ISubmitNewArInvoiceFormProps {
-  description: string;
-  context: any;
+  description?: string;
+  context?: any;
 }
