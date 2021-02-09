@@ -7,11 +7,23 @@ import { Form, Field, FormElement } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
 import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 
+import { MyLists } from '../../../enums/MyLists';
+
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewArInvoiceFormProps, {}> {
   public render(): React.ReactElement<ISubmitNewArInvoiceFormProps> {
 
-    const handleSubmit = (dataItem) => alert(JSON.stringify(dataItem, null, 2));
+    const handleSubmit = (dataItem) => {
+      alert(JSON.stringify(dataItem, null, 2));
+      sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(dataItem).then(value => {
+        alert('It worked!');
+        this.props.submitCallback && this.props.submitCallback();
+      });
+    };
 
     return (
       <Form

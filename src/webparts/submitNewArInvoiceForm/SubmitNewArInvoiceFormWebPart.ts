@@ -39,7 +39,7 @@ export default class SubmitNewArInvoiceFormWebPart extends BaseClientSideWebPart
       SubmitNewArInvoiceForm,
       {
         description: this.properties.description,
-        context: this.context
+        context: this.context,
       }
     );
 
