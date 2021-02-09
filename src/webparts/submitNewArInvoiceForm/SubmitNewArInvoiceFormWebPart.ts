@@ -11,17 +11,35 @@ import * as strings from 'SubmitNewArInvoiceFormWebPartStrings';
 import SubmitNewArInvoiceForm from './components/SubmitNewArInvoiceForm';
 import { ISubmitNewArInvoiceFormProps } from './components/ISubmitNewArInvoiceFormProps';
 
+import { sp } from "@pnp/sp";
+
+
 export interface ISubmitNewArInvoiceFormWebPartProps {
   description: string;
 }
 
 export default class SubmitNewArInvoiceFormWebPart extends BaseClientSideWebPart <ISubmitNewArInvoiceFormWebPartProps> {
 
+  protected async onInit(): Promise<void> {
+    await super.onInit().then(() => {
+        sp.setup({
+          spfxContext: this.context,
+          sp: {
+            headers: {
+              "Accept": "application/json; odata=nometadata"
+            },
+            baseUrl: this.context.pageContext.web.absoluteUrl
+          }
+        });
+      });
+  }
+
   public render(): void {
     const element: React.ReactElement<ISubmitNewArInvoiceFormProps> = React.createElement(
       SubmitNewArInvoiceForm,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context: this.context
       }
     );
 
