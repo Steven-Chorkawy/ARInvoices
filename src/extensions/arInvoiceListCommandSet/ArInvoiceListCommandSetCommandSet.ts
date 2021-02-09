@@ -54,7 +54,14 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         Dialog.alert(`${this.properties.sampleTextOne}`);
         break;
       case 'COMMAND_2':
-        new NewInvoiceSidePanel().show();
+        const div = document.createElement('div');
+        const element: React.ReactElement<{}> = React.createElement(
+          NewInvoiceSidePanel,
+          {
+            isOpen: true
+          }
+        );
+        ReactDOM.render(element, div);
         break;
       default:
         throw new Error('Unknown command');

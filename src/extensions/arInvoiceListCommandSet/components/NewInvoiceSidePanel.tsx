@@ -10,18 +10,16 @@ import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import SubmitNewArInvoiceForm from '../../../webparts/submitNewArInvoiceForm/components/SubmitNewArInvoiceForm';
 import { BaseDialog } from '@microsoft/sp-dialog';
 
-export default class NewInvoiceSidePanel extends BaseDialog {
-    public render(): void {
-        ReactDOM.render(
+export default class NewInvoiceSidePanel extends React.Component<any, any> {
+    public render(): React.ReactElement<any> {
+        return (
             <Panel
                 isLightDismiss={false}
-                isOpen={true}
+                isOpen={this.props.isOpen}
                 type={PanelType.medium}
-                onDismissed={() => this.close()}
             >
                 <SubmitNewArInvoiceForm />
-            </Panel>,
-            this.domElement
+            </Panel>
         );
     }
 }
