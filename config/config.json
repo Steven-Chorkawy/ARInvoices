@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "submit-new-ar-invoice-form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/submitNewArInvoiceForm/SubmitNewArInvoiceFormWebPart.js",
+          "manifest": "./src/webparts/submitNewArInvoiceForm/SubmitNewArInvoiceFormWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SubmitNewArInvoiceFormWebPartStrings": "lib/webparts/submitNewArInvoiceForm/loc/{locale}.js"
+  }
+}

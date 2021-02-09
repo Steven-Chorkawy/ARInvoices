@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "ar-invoices-client-side-solution",
+    "id": "bcbe9a49-f3a5-40af-bf04-cf0c1c92b5ef",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/ar-invoices.sppkg"
+  }
+}
