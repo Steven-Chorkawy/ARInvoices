@@ -9,7 +9,7 @@
   },
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
       "customActions": {
         "cc3ef562-ab12-45b7-a8bb-617cd3f1ca7f": {
           "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
