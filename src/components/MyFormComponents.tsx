@@ -25,9 +25,6 @@ import { DropDownList, AutoComplete, MultiSelect, ComboBox } from '@progress/ken
 import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import { Shimmer, ShimmerElementsGroup, ShimmerElementType } from 'office-ui-fabric-react/lib/Shimmer';
 
-// My Imports
-import { MyCustomerCardComponent } from './MyCustomerCardComponent';
-import { PersonaComponent } from './PersonaComponent';
 
 export const FormInput = (fieldRenderProps) => {
   const { validationMessage, touched, label, id, valid, disabled, hint, type, optional, ...others } = fieldRenderProps;
