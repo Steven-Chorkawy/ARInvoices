@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { ISubmitNewArInvoiceFormProps } from './ISubmitNewArInvoiceFormProps';
-import { Form, Field, FormElement } from '@progress/kendo-react-form';
+import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 
 import { MyLists } from '../../../enums/MyLists';
+import * as MyFormComponents from '../../../components/MyFormComponents';
+
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -29,7 +31,29 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
           <FormElement style={{ maxWidth: 1200 }}>
             <fieldset className={'k-form-fieldset'}>
               <legend className={'k-form-legend'}>Create New AR Invoice</legend>
-              <Field
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <FieldWrapper>
+                  {/* <Field
+                    id="Requested_x0020_By"
+                    name="Requested_x0020_By"
+                    label="Requested By"
+                    wrapperStyle={{ width: '100%' }}
+                    context={this.props.context}
+                    userEmail={this.props.context.pageContext.user.email}
+                    component={MyFormComponents.FormPersonaDisplay}
+                  /> */}
+                </FieldWrapper>
+                {/* <Field
+                  id={'Date'}
+                  name={'Date'}
+                  label={'* Date'}
+                  component={MyFormComponents.FormDatePicker}
+                  //validator={MyValidators.dateValidator}
+                  wrapperStyle={{ width: '50%' }}
+                /> */}
+              </div>
+
+              {/* <Field
                 id={'Title'}
                 name={'Title'}
                 label={'Title'}
@@ -44,7 +68,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                 // hint={'Hint: Your active phone number.'}
                 component={TextField}
               // validator={phoneValidator}
-              />
+              /> */}
 
               <div className="k-form-buttons">
                 <Button
