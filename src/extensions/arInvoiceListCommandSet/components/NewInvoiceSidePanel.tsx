@@ -10,10 +10,13 @@ import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import SubmitNewArInvoiceForm from '../../../webparts/submitNewArInvoiceForm/components/SubmitNewArInvoiceForm';
 import { BaseDialog } from '@microsoft/sp-dialog';
 
-export default class NewInvoiceSidePanel extends React.Component<any, any> {
-    /**
-     *
-     */
+
+interface INewInvoiceSidePanelProps {
+    isOpen?: boolean;
+    panelType?: PanelType;
+}
+
+export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSidePanelProps, any> {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +29,7 @@ export default class NewInvoiceSidePanel extends React.Component<any, any> {
             <Panel
                 isLightDismiss={false}
                 isOpen={this.state.isOpen}
-                type={PanelType.medium}
+                type={this.props.panelType ? this.props.panelType : PanelType.large}
             >
                 <SubmitNewArInvoiceForm submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }} />
             </Panel>
