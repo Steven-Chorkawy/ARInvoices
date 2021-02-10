@@ -1,11 +1,8 @@
 import * as React from 'react';
-import styles from './SubmitNewArInvoiceForm.module.scss';
 import { ISubmitNewArInvoiceFormProps } from './ISubmitNewArInvoiceFormProps';
-import { escape } from '@microsoft/sp-lodash-subset';
-
 import { Form, Field, FormElement } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
-import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
 
 import { MyLists } from '../../../enums/MyLists';
 
