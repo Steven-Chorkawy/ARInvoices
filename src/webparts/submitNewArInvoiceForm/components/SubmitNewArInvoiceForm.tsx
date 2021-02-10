@@ -43,14 +43,14 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     component={MyFormComponents.FormPersonaDisplay}
                   />
                 </FieldWrapper>
-                {/* <Field
+                <Field
                   id={'Date'}
                   name={'Date'}
                   label={'* Date'}
                   component={MyFormComponents.FormDatePicker}
                   //validator={MyValidators.dateValidator}
                   wrapperStyle={{ width: '50%' }}
-                /> */}
+                />
               </div>
 
               {/* <Field
