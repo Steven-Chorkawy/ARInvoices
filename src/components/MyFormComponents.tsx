@@ -839,4 +839,40 @@ export const FormPersonaDisplay = (fieldRenderProps) => {
     </FieldWrapper>
   );
 };
+
+export const FormPeoplePicker = (fieldRenderProps) => {
+  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, ...others } = fieldRenderProps;
+  const editorRef = React.useRef(null);
+
+  const hindId = `${id}_hint`;
+  const showValidationMessage = touched && validationMessage;
+  const errorId = showValidationMessage ? `${id}_error` : '';
+  const labelId = label ? `${id}_label` : '';
+
+  return (
+    <FieldWrapper style={wrapperStyle}>
+      <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>
+        {label}
+      </Label>
+      <PeoplePicker
+        context={fieldRenderProps.context}
+        showtooltip={false}
+        required={true}
+        personSelectionLimit={fieldRenderProps.personSelectionLimit}
+        onChange={fieldRenderProps.selectedItems}
+        showHiddenInUI={false}
+        principalTypes={[PrincipalType.User]}
+        defaultSelectedUsers={fieldRenderProps.defaultSelectedUsers}
+      />
+      {
+        hint && !showValidationMessage && 
+        <Hint id={hindId}>{hint}</Hint>
+      }
+      {
+        showValidationMessage &&
+        <Error id={errorId}>{validationMessage}</Error>
+      }
+    </FieldWrapper>
+  );
+};
 //#endregion
