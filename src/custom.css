@@ -1,4 +1,9 @@
+/*This fixes the kendo bug that causes dropdown lists to appear behind dialogs and windows*/
+.k-animation-container {
+  z-index: 10003;
+}
+
 /*Makes labels stand out more as per Brajesh. */
 .k-form .k-label {
-    font-weight: bolder;
-  }
+  font-weight: bolder;
+}

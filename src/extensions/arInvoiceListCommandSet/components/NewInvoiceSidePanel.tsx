@@ -11,9 +11,10 @@ import SubmitNewArInvoiceForm from '../../../webparts/submitNewArInvoiceForm/com
 import { BaseDialog } from '@microsoft/sp-dialog';
 
 
-interface INewInvoiceSidePanelProps {
+export interface INewInvoiceSidePanelProps {
     isOpen?: boolean;
     panelType?: PanelType;
+    context: any;
 }
 
 export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSidePanelProps, any> {
@@ -31,7 +32,7 @@ export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSide
                 isOpen={this.state.isOpen}
                 type={this.props.panelType ? this.props.panelType : PanelType.medium}
             >
-                <SubmitNewArInvoiceForm submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }} />
+                <SubmitNewArInvoiceForm context={this.props.context} submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }} />
             </Panel>
         );
     }

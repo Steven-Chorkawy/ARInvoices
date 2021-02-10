@@ -13,9 +13,14 @@ import {
 import { Dialog } from '@microsoft/sp-dialog';
 import { Panel } from 'office-ui-fabric-react/lib/Panel';
 
-import NewInvoiceSidePanel from './components/NewInvoiceSidePanel';
+import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/NewInvoiceSidePanel';
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
+
+import '../../MyO365.scss';
+// import '../../bootstrap.min.css';
+import '../../custom.css';
+
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -55,10 +60,11 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         break;
       case 'COMMAND_2':
         const div = document.createElement('div');
-        const element: React.ReactElement<{}> = React.createElement(
+        const element: React.ReactElement<INewInvoiceSidePanelProps> = React.createElement(
           NewInvoiceSidePanel,
           {
-            isOpen: true
+            isOpen: true,
+            context: this.context
           }
         );
         ReactDOM.render(element, div);
