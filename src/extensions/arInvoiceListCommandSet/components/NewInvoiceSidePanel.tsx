@@ -29,7 +29,7 @@ export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSide
             <Panel
                 isLightDismiss={false}
                 isOpen={this.state.isOpen}
-                type={this.props.panelType ? this.props.panelType : PanelType.large}
+                type={this.props.panelType ? this.props.panelType : PanelType.medium}
             >
                 <SubmitNewArInvoiceForm submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }} />
             </Panel>

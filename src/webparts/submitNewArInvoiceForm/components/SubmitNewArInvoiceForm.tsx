@@ -29,7 +29,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
       <Form
         onSubmit={handleSubmit}
         render={(formRenderProps) => (
-          <FormElement style={{ width: 400 }}>
+          <FormElement style={{ maxWidth: 1200 }}>
             <fieldset className={'k-form-fieldset'}>
               <legend className={'k-form-legend'}>Create New AR Invoice</legend>
               <Field
