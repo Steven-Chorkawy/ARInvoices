@@ -1,0 +1,4 @@
+/*Makes labels stand out more as per Brajesh. */
+.k-form .k-label {
+    font-weight: bolder;
+  }
