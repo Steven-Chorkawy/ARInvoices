@@ -33,7 +33,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
               <legend className={'k-form-legend'}>Create New AR Invoice</legend>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <FieldWrapper>
-                  {/* <Field
+                  <Field
                     id="Requested_x0020_By"
                     name="Requested_x0020_By"
                     label="Requested By"
@@ -41,7 +41,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     context={this.props.context}
                     userEmail={this.props.context.pageContext.user.email}
                     component={MyFormComponents.FormPersonaDisplay}
-                  /> */}
+                  />
                 </FieldWrapper>
                 {/* <Field
                   id={'Date'}
