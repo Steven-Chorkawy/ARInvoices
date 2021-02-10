@@ -13,7 +13,7 @@ import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import { Shimmer, ShimmerElementsGroup, ShimmerElementType } from 'office-ui-fabric-react/lib/Shimmer';
 
 // My Imports 
-import { GetUserProfile } from '../MyHelperMethods/UserProfileMethods';
+import { GetUserProfileProperties } from '../MyHelperMethods/UserProfileMethods';
 
 
 interface IPersonaComponentProps {
@@ -39,7 +39,7 @@ export class PersonaComponent extends React.Component<IPersonaComponentProps, IP
 
     private setUserProfileFromEmail = (email: string) => {
         sp.web.siteUsers.getByEmail(email).get().then(value => {
-            GetUserProfile(value.LoginName, e => {
+            GetUserProfileProperties(value.LoginName, e => {
                 this.setState({
                     userProfile: e
                 });
