@@ -13,6 +13,9 @@ import { ISubmitNewArInvoiceFormProps } from './components/ISubmitNewArInvoiceFo
 
 import { sp } from "@pnp/sp";
 
+import '../../MyO365.scss';
+import '../../bootstrap.min.css';
+
 
 export interface ISubmitNewArInvoiceFormWebPartProps {
   description: string;
