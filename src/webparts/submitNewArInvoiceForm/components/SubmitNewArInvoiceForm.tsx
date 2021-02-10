@@ -1,19 +1,47 @@
 import * as React from 'react';
-import { ISubmitNewArInvoiceFormProps } from './ISubmitNewArInvoiceFormProps';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-
+import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewArInvoiceFormProps, {}> {
+export interface ISubmitNewArInvoiceFormProps {
+  description?: string;
+  context: any;
+  submitCallback?: any;
+}
+
+export interface ISubmitNewArInvoiceFormState {
+  departments?: any[];
+  standardTerms?: any[];
+}
+
+export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewArInvoiceFormProps, ISubmitNewArInvoiceFormState> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      departments: undefined,
+      standardTerms: undefined
+    };
+
+    GetChoiceFieldValues(MyLists["AR Invoice Requests"], 'Department').then(values => {
+      this.setState({ departments: values });
+    });
+
+    GetChoiceFieldValues(MyLists['AR Invoice Requests'], 'Standard_x0020_Terms').then(values => {
+      this.setState({ standardTerms: values });
+    });
+  }
+
   public render(): React.ReactElement<ISubmitNewArInvoiceFormProps> {
 
     const handleSubmit = (dataItem) => {
@@ -60,22 +88,29 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                 />
               </div>
 
-              {/* <Field
-                id={'Title'}
-                name={'Title'}
-                label={'Title'}
-                component={TextField}
-              // validator={nameValidator}
-              />
-              <Field
-                id={'Invoice_x0020_Number'}
-                name={'Invoice_x0020_Number'}
-                label={'Invoice Number'}
-                // mask={'(999) 000-00-00-00'}
-                // hint={'Hint: Your active phone number.'}
-                component={TextField}
-              // validator={phoneValidator}
-              /> */}
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Field
+                  id="Department"
+                  name="Department"
+                  label="* Department"
+                  wrapperStyle={{ width: '45%' }}
+                  data={this.state.departments ? this.state.departments : []}
+                  //validator={MyValidators.departmentValidator}
+                  component={MyFormComponents.FormDropDownList}
+                />
+                <Field
+                  id="Urgent"
+                  name="Urgent"
+                  label="Urgent"
+                  onLabel="Yes"
+                  offLabel="No"
+                  wrapperStyle={{ width: '50%' }}
+                  labelPlacement={'before'}
+                  component={MyFormComponents.FormCheckbox}
+                  hint={'Flag emails as high priority.'}
+                />
+              </div>
+
 
               <div className="k-form-buttons">
                 <Button

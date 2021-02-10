@@ -12,4 +12,4 @@ import { MyLists } from '../enums/MyLists';
 export const GetChoiceFieldValues = async (listName: MyLists, internalNameOrTitle: string): Promise<any[]> => {
     let field: any = await sp.web.lists.getByTitle(listName).fields.getByTitle(internalNameOrTitle).select('Choices').get();
     return field.Choices;
-}
+};

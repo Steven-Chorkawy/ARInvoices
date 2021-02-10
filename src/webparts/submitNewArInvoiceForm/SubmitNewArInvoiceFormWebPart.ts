@@ -9,7 +9,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'SubmitNewArInvoiceFormWebPartStrings';
 import SubmitNewArInvoiceForm from './components/SubmitNewArInvoiceForm';
-import { ISubmitNewArInvoiceFormProps } from './components/ISubmitNewArInvoiceFormProps';
+import { ISubmitNewArInvoiceFormProps } from './components/SubmitNewArInvoiceForm';
 
 import { sp } from "@pnp/sp";
 
@@ -22,20 +22,20 @@ export interface ISubmitNewArInvoiceFormWebPartProps {
   description: string;
 }
 
-export default class SubmitNewArInvoiceFormWebPart extends BaseClientSideWebPart <ISubmitNewArInvoiceFormWebPartProps> {
+export default class SubmitNewArInvoiceFormWebPart extends BaseClientSideWebPart<ISubmitNewArInvoiceFormWebPartProps> {
 
   protected async onInit(): Promise<void> {
     await super.onInit().then(() => {
-        sp.setup({
-          spfxContext: this.context,
-          sp: {
-            headers: {
-              "Accept": "application/json; odata=nometadata"
-            },
-            baseUrl: this.context.pageContext.web.absoluteUrl
-          }
-        });
+      sp.setup({
+        spfxContext: this.context,
+        sp: {
+          headers: {
+            "Accept": "application/json; odata=nometadata"
+          },
+          baseUrl: this.context.pageContext.web.absoluteUrl
+        }
       });
+    });
   }
 
   public render(): void {
