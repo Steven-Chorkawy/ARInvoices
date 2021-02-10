@@ -25,6 +25,8 @@ import { DropDownList, AutoComplete, MultiSelect, ComboBox } from '@progress/ken
 import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import { Shimmer, ShimmerElementsGroup, ShimmerElementType } from 'office-ui-fabric-react/lib/Shimmer';
 
+import { PersonaComponent } from './PersonaComponent';
+
 
 export const FormInput = (fieldRenderProps) => {
   const { validationMessage, touched, label, id, valid, disabled, hint, type, optional, ...others } = fieldRenderProps;
@@ -822,3 +824,19 @@ export const FormFloatingNumericTextBox = (fieldRenderProps) => {
     </FieldWrapper>
   );
 };
+
+//#region My Custom Components. 
+export const FormPersonaDisplay = (fieldRenderProps) => {
+  const { label, value, id, hint, wrapperStyle, context, ...others } = fieldRenderProps;
+  const hindId = `${id}_hint`;
+
+  return (
+    <FieldWrapper style={wrapperStyle}>
+      <Label>
+        {label}
+      </Label>
+      <PersonaComponent {...fieldRenderProps} />
+    </FieldWrapper>
+  );
+};
+//#endregion
