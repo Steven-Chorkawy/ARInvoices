@@ -119,7 +119,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
               Urgent: false,
               Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
               // GLAccounts: [],
-              // Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],     
+              Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
             }}
             onSubmit={handleSubmit}
             render={(formRenderProps) => (
