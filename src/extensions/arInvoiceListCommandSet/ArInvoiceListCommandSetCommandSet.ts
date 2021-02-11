@@ -65,7 +65,7 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
           {
             isOpen: true,
             context: this.context,
-            panelType: PanelType.large
+            panelType: PanelType.medium
           }
         );
         ReactDOM.render(element, div);
