@@ -10,7 +10,6 @@ export interface IARInvoice {
     Standard_x0020_Terms: string;   // Choice Field in SharePoint
     Department: string;             // Choice Field in SharePoint
     Requested_x0020_ById: number;
-    Related_x0020_AttachmentsId: number[];
     AccountsId: number[];
     Invoice_x0020_Number: string;
     Details: string;
