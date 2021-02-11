@@ -151,26 +151,30 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Field
-                      id="Department"
-                      name="Department"
-                      label="* Department"
-                      wrapperStyle={{ width: '45%' }}
-                      data={this.state.departments ? this.state.departments : []}
-                      //validator={MyValidators.departmentValidator}
-                      component={MyFormComponents.FormDropDownList}
-                    />
-                    <Field
-                      id="Urgent"
-                      name="Urgent"
-                      label="Urgent"
-                      onLabel="Yes"
-                      offLabel="No"
-                      wrapperStyle={{ width: '50%' }}
-                      labelPlacement={'before'}
-                      component={MyFormComponents.FormCheckbox}
-                      hint={'Flag emails as high priority.'}
-                    />
+                    <div style={{ width: '50%' }}>
+                      <Field
+                        id="Department"
+                        name="Department"
+                        label="* Department"
+                        wrapperStyle={{ width: '45%' }}
+                        data={this.state.departments ? this.state.departments : []}
+                        //validator={MyValidators.departmentValidator}
+                        component={MyFormComponents.FormDropDownList}
+                      />
+                    </div>
+                    <div style={{ width: '50%' }}>
+                      <Field
+                        id="Urgent"
+                        name="Urgent"
+                        label="Urgent"
+                        onLabel="Yes"
+                        offLabel="No"
+                        wrapperStyle={{ width: '50%' }}
+                        labelPlacement={'before'}
+                        component={MyFormComponents.FormCheckbox}
+                        hint={'Flag emails as high priority.'}
+                      />
+                    </div>
                   </div>
 
                   <FieldWrapper>
@@ -290,7 +294,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       icon={'save'}
                       disabled={!formRenderProps.allowSubmit}
                     >Submit AR Invoice</Button>
-                    <Button icon={'clear'} onClick={formRenderProps.onFormReset}>Clear</Button>
+                    <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
                   </div>
                 </fieldset>
               </FormElement>
