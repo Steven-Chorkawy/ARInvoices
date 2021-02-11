@@ -59,7 +59,6 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
     });
 
     sp.web.lists.getByTitle(MyLists.Customers).items.getAll().then(values => {
-      debugger;
       this.setState({
         allCustomerList: values,
         displayCustomerList: values
@@ -216,6 +215,30 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                   />
                 } */}
               </FieldWrapper>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Field
+                  id="Customer_x0020_PO_x0020_Number"
+                  name="Customer_x0020_PO_x0020_Number"
+                  label="Customer PO Number"
+                  //validator={MyValidators.requiresCustomerPONUmber}
+                  component={MyFormComponents.FormInput}
+                />
+
+                <Field
+                  id="Standard_x0020_Terms"
+                  name="Standard_x0020_Terms"
+                  label="Standard Terms"
+                  wrapperStyle={{ width: '50%' }}
+                  //defaultValue='NET 30, 1% INTEREST CHARGED'
+                  data={
+                    this.state.standardTerms
+                      ? this.state.standardTerms
+                      : []
+                  }
+                  component={MyFormComponents.FormDropDownList}
+                />
+              </div>
 
               <div className="k-form-buttons">
                 <Button
