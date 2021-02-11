@@ -20,6 +20,7 @@ import { GetUserProfileProperties, GetUsersByLoginName } from '../../../MyHelper
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
+import * as MyValidator from '../../../MyHelperMethods/Validators';
 //#endregion
 
 //#region Interface
@@ -144,7 +145,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       name={'Date'}
                       label={'* Date'}
                       component={MyFormComponents.FormDatePicker}
-                      //validator={MyValidators.dateValidator}
+                      validator={MyValidator.dateFieldValidator}
                       wrapperStyle={{ width: '50%' }}
                     />
                   </div>
