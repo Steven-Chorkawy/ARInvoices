@@ -9,6 +9,7 @@ import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import SubmitNewArInvoiceForm from '../../../webparts/submitNewArInvoiceForm/components/SubmitNewArInvoiceForm';
 import { BaseDialog } from '@microsoft/sp-dialog';
+import { IFocusTrapZoneProps } from '@fluentui/react';
 
 
 export interface INewInvoiceSidePanelProps {
@@ -26,14 +27,16 @@ export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSide
     }
 
     public render(): React.ReactElement<any> {
+        const fucusTrapZoneProps: IFocusTrapZoneProps = { disabled: true };
         return (
             <Panel
                 isLightDismiss={false}
                 isOpen={this.state.isOpen}
                 type={this.props.panelType ? this.props.panelType : PanelType.medium}
+                focusTrapZoneProps={fucusTrapZoneProps}
             >
                 <SubmitNewArInvoiceForm context={this.props.context} submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }} />
-            </Panel>
+            </Panel >
         );
     }
 }
