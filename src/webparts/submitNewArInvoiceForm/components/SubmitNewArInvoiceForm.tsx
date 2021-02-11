@@ -240,6 +240,18 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                 />
               </div>
 
+              <FieldWrapper>
+                <Field
+                  id="Details"
+                  name="Details"
+                  label="Invoice Details"
+                  component={MyFormComponents.FormTextArea}
+                />
+              </FieldWrapper>
+
+              <p>TODO: Add Account Codes....</p>
+              <p>TODO: Add Attachment Upload....</p>
+
               <div className="k-form-buttons">
                 <Button
                   primary={true}
