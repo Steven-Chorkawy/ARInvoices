@@ -16,6 +16,7 @@ export interface IARInvoice {
     Details: string;
     Date: string;
     CustomerId: number;
+    Customer_x0020_PO_x0020_Number: string;
     Batch_x0020_Number: string;
 
     AuthorId: number;
@@ -29,7 +30,7 @@ export interface IARInvoice {
  * 
  * TODO: Test this interface to make sure it works.
  */
-export interface ISaveARInvoice {   
+export interface ISaveARInvoice {
     Title: string;
     Urgent: boolean;
     Status: string;                 // Choice Field in SharePoint
