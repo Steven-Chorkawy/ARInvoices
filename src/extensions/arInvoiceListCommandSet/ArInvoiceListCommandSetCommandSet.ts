@@ -11,7 +11,7 @@ import {
   IListViewCommandSetExecuteEventParameters
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
-import { Panel } from 'office-ui-fabric-react/lib/Panel';
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 
 import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/NewInvoiceSidePanel';
 
@@ -64,7 +64,8 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
           NewInvoiceSidePanel,
           {
             isOpen: true,
-            context: this.context
+            context: this.context,
+            panelType: PanelType.large
           }
         );
         ReactDOM.render(element, div);
