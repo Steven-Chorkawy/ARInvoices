@@ -156,7 +156,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         id="Department"
                         name="Department"
                         label="* Department"
-                        wrapperStyle={{ width: '45%' }}
+                        wrapperStyle={{ width: '90%' }}
                         data={this.state.departments ? this.state.departments : []}
                         //validator={MyValidators.departmentValidator}
                         component={MyFormComponents.FormDropDownList}
