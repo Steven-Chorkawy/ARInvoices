@@ -249,7 +249,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           <Field
                             id="Customer_x0020_Details"
                             name="Customer_x0020_Details"
-                            label="* Customer Name"
+                            label="* Customer Details"
                             //validator={MyValidators.requiresCustomerPONUmber}
                             component={MyFormComponents.FormTextArea}
                           />
@@ -298,9 +298,10 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <Button
                       primary={true}
                       type={'submit'}
+                      icon={'save'}
                       disabled={!formRenderProps.allowSubmit}
                     >Submit AR Invoice</Button>
-                    <Button onClick={formRenderProps.onFormReset}>Clear</Button>
+                    <Button icon={'clear'} onClick={formRenderProps.onFormReset}>Clear</Button>
                   </div>
                 </fieldset>
               </FormElement>
