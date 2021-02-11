@@ -6,4 +6,6 @@ const phoneRegex = new RegExp(/^[0-9 ()+-]+$/);
 const ccardRegex = new RegExp(/^[0-9-]+$/);
 const cvcRegex = new RegExp(/^[0-9]+$/);
 
-export const dateFieldValidator = value => value ? "" : "Date is Required.";
+export const dateValidator = value => value ? "" : "Date is Required.";
+
+export const peoplePickerValidator = value => value ? "" : "Select one or more users.";

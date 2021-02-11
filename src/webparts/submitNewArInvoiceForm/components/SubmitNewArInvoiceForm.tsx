@@ -145,7 +145,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       name={'Date'}
                       label={'* Date'}
                       component={MyFormComponents.FormDatePicker}
-                      validator={MyValidator.dateFieldValidator}
+                      validator={MyValidator.dateValidator}
                       wrapperStyle={{ width: '50%' }}
                     />
                   </div>
@@ -182,7 +182,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       dataItemKey="Email"
                       textField="Title"
                       hint={'Send an approval request to one or more users.'}
-                      //validator={MyValidators.requireOneOrMorePeople}
+                      validator={MyValidator.peoplePickerValidator}
                       personSelectionLimit={10}
                       context={this.props.context}
                       selectedItems={e => {
