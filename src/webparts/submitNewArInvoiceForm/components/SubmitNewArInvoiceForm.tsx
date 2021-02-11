@@ -179,8 +179,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
 
                   <FieldWrapper>
                     <Field
-                      id="Requires_x0020_Department_x0020_Id"
-                      name="Requires_x0020_Department_x0020_Id"
+                      id="ApproverEmails"
+                      name="ApproverEmails"
                       label="* Requires Authorization By"
                       wrapperStyle={{ width: '100%' }}
                       dataItemKey="Email"
@@ -199,7 +199,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
 
                             // Setting this email here so it can be passed to a workflow when the form is submitted.
                             // * By setting the users email here it saves us from querying this information during the forms submit event.  
-                            formRenderProps.onChange('Requires_x0020_Authorization_x0020_ByEmail', {
+                            formRenderProps.onChange('ApproverEmails', {
                               value: { 'results': res.map(user => { return user.Email; }) }
                             });
                           });
