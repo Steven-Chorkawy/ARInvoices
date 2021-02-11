@@ -216,7 +216,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           data={this.state.displayCustomerList}
                           dataItemKey="Id"
                           textField="Title"
-                          //validator={MyValidators.requiresCustomer}
+                          validator={MyValidator.requiresCustomer}
                           allowCustom={false}
                           itemRender={this.customerItemRender}
                           component={MyFormComponents.FormComboBox}
@@ -224,16 +224,6 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           suggest={true}
                           onFilterChange={this.customerFilterChange}
                         />
-                        {/* {
-                    this._ShowCustomerDetails(formRenderProps.valueGetter('Customer')) &&
-                    <Field
-                      id={'MiscCustomerDetails'}
-                      name={'MiscCustomerDetails'}
-                      label={'Enter Additional Customer Details'}
-                      placeholder={'Address, Postal Code, Contact, etc....'}
-                      component={MyFormComponents.FormTextArea}
-                    />
-                  } */}
                       </FieldWrapper> :
                       <div>
                         <FieldWrapper>
@@ -241,7 +231,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                             id="Customer_x0020_Name"
                             name="Customer_x0020_Name"
                             label="* Customer Name"
-                            //validator={MyValidators.requiresCustomerPONUmber}
+                            validator={MyValidator.requireCustomerName}
                             component={MyFormComponents.FormInput}
                           />
                         </FieldWrapper>
@@ -249,8 +239,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           <Field
                             id="Customer_x0020_Details"
                             name="Customer_x0020_Details"
-                            label="* Customer Details"
-                            //validator={MyValidators.requiresCustomerPONUmber}
+                            label="Customer Details"
                             component={MyFormComponents.FormTextArea}
                           />
                         </FieldWrapper>
