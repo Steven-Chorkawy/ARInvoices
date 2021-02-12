@@ -189,7 +189,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       validator={MyValidator.peoplePickerValidator}
                       personSelectionLimit={10}
                       context={this.props.context}
-                      selectedItems={e => {
+                      onChange={e => {
                         if (e && e.length > 0) {
                           GetUsersByLoginName(e).then(res => {
                             /// Settings the user IDs here so that we can save them in the List item during the form submit event. 

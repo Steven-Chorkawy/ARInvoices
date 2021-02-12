@@ -861,7 +861,7 @@ export const FormPeoplePicker = (fieldRenderProps) => {
         showtooltip={false}
         required={true}
         personSelectionLimit={fieldRenderProps.personSelectionLimit}
-        onChange={fieldRenderProps.selectedItems}
+        onChange={fieldRenderProps.onChange}
         showHiddenInUI={false}
         principalTypes={[PrincipalType.User]}
         defaultSelectedUsers={fieldRenderProps.defaultSelectedUsers}
