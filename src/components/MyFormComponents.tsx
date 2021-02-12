@@ -886,8 +886,8 @@ export const FormAccountListView = (fieldRenderProps) => {
   return (
     <FieldWrapper style={wrapperStyle}>
       <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
-      <AccountCodeListComponent />
+      <AccountCodeListComponent {...fieldRenderProps} />
     </FieldWrapper>
   );
-}
+};
 //#endregion
