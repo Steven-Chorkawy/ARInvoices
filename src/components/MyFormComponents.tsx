@@ -883,18 +883,19 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
   const labelId = label ? `${id}_label` : '';
   const editorRef = React.useRef(null);
 
-  const onAdd = React.useCallback(e => {
-    debugger;
-    // e.preventDefault();
-    fieldArrayRenderProps.onUnshift({
-      // TODO: Update the properties so they're real fields from SharePoint.
-      value: {
-        GLCode: '',
-        Amount: '',
-        HSTTaxable: false
-      }
-    });
-  }, [fieldArrayRenderProps.onUnshift]);
+  const onAdd = React.useCallback(
+    e => {
+      //e.preventDefault();
+      fieldArrayRenderProps.onUnshift({
+        value: {
+          Account_x0020_Code: '',
+          Amount: '',
+          HST_x0020_Taxable: false
+        }
+      });
+    },
+    [fieldArrayRenderProps.onUnshift]
+  );
 
   return (
     <div key={fieldArrayRenderProps.value}>
