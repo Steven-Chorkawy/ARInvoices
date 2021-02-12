@@ -300,8 +300,9 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       component={MyFormComponents.FormTextArea}
                     />
                   </FieldWrapper>
-
-                  <p>TODO: Add Account Codes....</p>
+                  <FieldWrapper>
+                    <Field id='AccountCodes' name='AccountCodes' label='Account Codes' component={MyFormComponents.FormAccountListView} />
+                  </FieldWrapper>
                   <FieldWrapper>
                     <Field id='Attachments' name='Attachments' label='Attachments' component={MyFormComponents.FormUpload} />
                   </FieldWrapper>
