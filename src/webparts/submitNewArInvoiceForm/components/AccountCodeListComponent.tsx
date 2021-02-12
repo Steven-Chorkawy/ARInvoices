@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 
 import { ListView, ListViewHeader } from '@progress/kendo-react-listview';
 import { Card, CardTitle, CardSubtitle, CardBody } from '@progress/kendo-react-layout';
 
-class AccountCodeListComponent extends Component {
+export class AccountCodeListComponent extends React.Component {
     render() {
         return (
             <div>
@@ -12,5 +12,3 @@ class AccountCodeListComponent extends Component {
         );
     }
 }
-
-export default AccountCodeListComponent;
