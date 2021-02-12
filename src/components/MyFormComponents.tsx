@@ -26,8 +26,9 @@ import { Persona, PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import { Shimmer, ShimmerElementsGroup, ShimmerElementType } from 'office-ui-fabric-react/lib/Shimmer';
 
 import { PersonaComponent } from './PersonaComponent';
+import { AccountCodeListComponent } from '../webparts/submitNewArInvoiceForm/components/AccountCodeListComponent';
 
-
+//#region Standard Components. 
 export const FormInput = (fieldRenderProps) => {
   const { validationMessage, touched, label, id, valid, disabled, hint, type, optional, ...others } = fieldRenderProps;
 
@@ -824,6 +825,7 @@ export const FormFloatingNumericTextBox = (fieldRenderProps) => {
     </FieldWrapper>
   );
 };
+//#endregion
 
 //#region My Custom Components. 
 export const FormPersonaDisplay = (fieldRenderProps) => {
@@ -865,7 +867,7 @@ export const FormPeoplePicker = (fieldRenderProps) => {
         defaultSelectedUsers={fieldRenderProps.defaultSelectedUsers}
       />
       {
-        hint && !showValidationMessage && 
+        hint && !showValidationMessage &&
         <Hint id={hindId}>{hint}</Hint>
       }
       {
@@ -875,4 +877,17 @@ export const FormPeoplePicker = (fieldRenderProps) => {
     </FieldWrapper>
   );
 };
+
+export const FormAccountListView = (fieldRenderProps) => {
+  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, ...others } = fieldRenderProps;
+  const labelId = label ? `${id}_label` : '';
+  const editorRef = React.useRef(null);
+
+  return (
+    <FieldWrapper style={wrapperStyle}>
+      <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
+      <AccountCodeListComponent />
+    </FieldWrapper>
+  );
+}
 //#endregion
