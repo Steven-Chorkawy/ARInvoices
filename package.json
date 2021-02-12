@@ -34,6 +34,8 @@
     "@progress/kendo-react-form": "^4.3.0",
     "@progress/kendo-react-inputs": "^4.3.0",
     "@progress/kendo-react-intl": "^4.3.0",
+    "@progress/kendo-react-layout": "^4.3.0",
+    "@progress/kendo-react-listview": "^4.3.0",
     "@progress/kendo-react-popup": "^4.3.0",
     "@progress/kendo-react-treeview": "^4.3.0",
     "@progress/kendo-react-upload": "^4.3.0",
