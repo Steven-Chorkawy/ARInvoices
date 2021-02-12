@@ -10,25 +10,25 @@ const MyHeader = () => {
         <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
             <Button look='flat' icon='plus' primary={true} onClick={e => { e.preventDefault(); }}>Add New Account</Button>
         </ListViewHeader>
-    )
-}
+    );
+};
 //#endregion
 
 class AccountCodeItem extends React.Component {
-    render() {
+    public render() {
         return (<div>hello world</div>);
     }
 }
 
-export class AccountCodeListComponent extends React.Component {
+export class AccountCodeListComponent extends React.Component<any, any> {
 
     //AccountCodeItem = props => <AccountCodeItem {...props} saveItem={this.saveData} deleteItem={this.deleteItem} />
-    AccountCodeItem = props => <AccountCodeItem {...props} />
+    public AccountCodeItem = props => <AccountCodeItem {...props} />;
 
-    render() {
+    public render() {
         return (
             <ListView
-                // data={this.state.data}
+                data={this.props.data}
                 item={this.AccountCodeItem}
                 // style={{ width: "100%", height: 500 }}
                 header={MyHeader}
