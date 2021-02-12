@@ -11,7 +11,7 @@ import "@pnp/sp/items";
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 
 // Kendo UI
-import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
+import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
 import { filterBy } from '@progress/kendo-data-query';
 
@@ -301,7 +301,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     />
                   </FieldWrapper>
                   <FieldWrapper>
-                    <Field id='AccountCodes' name='AccountCodes' label='Account Codes' component={MyFormComponents.FormAccountListView} />
+                    <FieldArray name='AccountCodes' label='Account Codes' component={MyFormComponents.FormAccountListView} />
                   </FieldWrapper>
                   <FieldWrapper>
                     <Field id='Attachments' name='Attachments' label='Attachments' component={MyFormComponents.FormUpload} />

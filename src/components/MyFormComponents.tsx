@@ -878,16 +878,29 @@ export const FormPeoplePicker = (fieldRenderProps) => {
   );
 };
 
-export const FormAccountListView = (fieldRenderProps) => {
-  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, ...others } = fieldRenderProps;
+export const FormAccountListView = (fieldArrayRenderProps) => {
+  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, ...others } = fieldArrayRenderProps;
   const labelId = label ? `${id}_label` : '';
   const editorRef = React.useRef(null);
 
+  const onAdd = React.useCallback(e => {
+    debugger;
+    // e.preventDefault();
+    fieldArrayRenderProps.onUnshift({
+      // TODO: Update the properties so they're real fields from SharePoint.
+      value: {
+        GLCode: '',
+        Amount: '',
+        HSTTaxable: false
+      }
+    });
+  }, [fieldArrayRenderProps.onUnshift]);
+
   return (
-    <FieldWrapper style={wrapperStyle}>
+    <div key={fieldArrayRenderProps.value}>
       <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
-      <AccountCodeListComponent {...fieldRenderProps} />
-    </FieldWrapper>
+      <AccountCodeListComponent data={fieldArrayRenderProps.value} onAdd={onAdd} />
+    </div>
   );
 };
 //#endregion
