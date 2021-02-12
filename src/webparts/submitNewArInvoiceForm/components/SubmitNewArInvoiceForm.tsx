@@ -189,7 +189,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       validator={MyValidator.peoplePickerValidator}
                       personSelectionLimit={10}
                       context={this.props.context}
-                      onChange={e => {
+                      selectedItems={e => {
                         if (e && e.length > 0) {
                           GetUsersByLoginName(e).then(res => {
                             /// Settings the user IDs here so that we can save them in the List item during the form submit event. 
@@ -201,6 +201,9 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                             // * By setting the users email here it saves us from querying this information during the forms submit event.  
                             formRenderProps.onChange('ApproverEmails', { value: { 'results': res.map(user => { return user.Email; }) } });
                           });
+                        }
+                        else {
+                          formRenderProps.onChange('ApproverEmails', { value: undefined });
                         }
                       }}
                       component={MyFormComponents.FormPeoplePicker}
