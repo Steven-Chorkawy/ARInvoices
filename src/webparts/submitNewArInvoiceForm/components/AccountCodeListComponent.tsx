@@ -4,6 +4,7 @@ import { ListView, ListViewHeader } from '@progress/kendo-react-listview';
 import { Card, CardTitle, CardSubtitle, CardBody } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
 import { Checkbox, MaskedTextBox, NumericTextBox } from '@progress/kendo-react-inputs';
+import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
 import { IAccount } from '../../../interfaces/IAccount';
 import { Field } from '@progress/kendo-react-form';
@@ -62,15 +63,16 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
         return (e.item.HST_x0020_Taxable === true) ? e.item.Amount * 0.13 : 0;
     }
 
+    
     public render() {
         return (
             <Card>
                 <CardBody>
                     <div className={'row'}>
-                        <div className={'col-md-10'}>
+                        <div className={'col-md-10'} style={{ paddingRight: '0px' }}>
                             <div className={'row'}>
-                                <div className={'col-md-6'}>
-                                    <label style={{ display: 'block' }}>Account Code:</label>
+                                <div className={'col-md-5'}>
+                                    <Label style={{ display: 'block' }}>Account Code:  </Label>
                                     <Field
                                         name={`AccountCodes[${this.props.index}].Account_x0020_Code`}
                                         component={MaskedTextBox}
@@ -78,8 +80,18 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                         required={true}
                                     />
                                 </div>
-                                <div className={'col-md-6'}>
-                                    <label style={{ display: 'block' }}>Amount:</label>
+                                <div className={'col-md-5'}>
+                                    <Label style={{ display: 'block' }}>Apply HST:  </Label>
+                                    <Field
+                                        name={`AccountCodes[${this.props.index}].HST_x0020_Taxable`}
+                                        component={Checkbox}
+                                    />
+                                </div>
+
+                            </div>
+                            <div className={'row'}>
+                                <div className={'col-md-5'}>
+                                    <Label style={{ display: 'block' }}>Amount:  </Label>
                                     <Field
                                         name={`AccountCodes[${this.props.index}].Amount`}
                                         component={NumericTextBox}
@@ -87,37 +99,19 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                         format="c2"
                                         min={0}
                                     />
+                                    <Hint>HST Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</Hint>
                                 </div>
-                            </div>
-                            <div className={'row'} style={{ paddingTop: '5px' }}>
-                                <div className={'col-md-6 col-sm-6'}>
-                                    <div className={'col-md-4 col-sm-3'}>
-                                        <label style={{ display: 'block' }}>HST:</label>
-                                        <Field
-                                            name={`AccountCodes[${this.props.index}].HST_x0020_Taxable`}
-                                            component={Checkbox}
-                                        />
-                                    </div>
-                                    <div className={'col-md-8 col-sm-3'}>
-                                        <label style={{ display: 'block' }}>HST Amount:</label>
-                                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}
-                                    </div>
-                                </div>
-                                <div className={'col-md-6 col-sm-6'}>
-                                    <label style={{ display: 'block' }}>Total:</label>
-                                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}
+                                <div className={'col-md-5'}>
+                                    <Label style={{ display: 'block' }}>Total:  </Label>
+                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
                                 </div>
                             </div>
                         </div>
-                        <div className={'col-md-2'}>
-                            {/* <Button primary={true} look={'flat'} disabled={this._disableSaveButton()} title={'Save'} icon={'save'} style={{ marginRight: 5 }} onClick={this.handleSave}></Button>
-                            {
-                                this.state.item.ID
-                                    ?
-                                    <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={this.cancelEdit}></Button>
-                                    :
-                                    <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={this.handleDelete}></Button>
-                            } */}
+                        <div className={'col-md-1'} style={{ paddingRight: '0px' }}>
+                            <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />
+                            <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />
+                            <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />
+                            <Button icon={'close'} look={'flat'} title={'remove'} onClick={e => {e.preventDefault(); }} />
                         </div>
                     </div>
                 </CardBody>
