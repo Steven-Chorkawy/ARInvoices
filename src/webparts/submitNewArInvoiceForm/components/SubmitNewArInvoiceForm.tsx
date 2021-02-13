@@ -263,15 +263,13 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           formRenderProps.onChange('Customer', { value: undefined });
                         }
                       });
-                  }}
-                  >Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
+                  }}>Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Field
                       id="Customer_x0020_PO_x0020_Number"
                       name="Customer_x0020_PO_x0020_Number"
                       label="Customer PO Number"
-                      //validator={MyValidators.requiresCustomerPONUmber}
                       component={MyFormComponents.FormInput}
                     />
 
@@ -280,7 +278,6 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       name="Standard_x0020_Terms"
                       label="Standard Terms"
                       wrapperStyle={{ width: '50%' }}
-                      //defaultValue='NET 30, 1% INTEREST CHARGED'
                       data={
                         this.state.standardTerms
                           ? this.state.standardTerms
