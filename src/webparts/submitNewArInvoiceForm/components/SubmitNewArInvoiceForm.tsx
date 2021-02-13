@@ -20,6 +20,7 @@ import { GetUserProfileProperties, GetUsersByLoginName } from '../../../MyHelper
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
+import { CreateARInvoice } from '../../../MyHelperMethods/ARInvoiceCRUD';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 //#endregion
 
@@ -104,10 +105,10 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
     const handleSubmit = (dataItem) => {
       console.log(dataItem);
       alert(JSON.stringify(dataItem, null, 2));
-      // sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(dataItem).then(value => {
-      //   alert('It worked!');
-      //   this.props.submitCallback && this.props.submitCallback();
-      // });
+
+      CreateARInvoice(dataItem).then(value => {
+        this.props.submitCallback && this.props.submitCallback();
+      });
     };
 
     return (
