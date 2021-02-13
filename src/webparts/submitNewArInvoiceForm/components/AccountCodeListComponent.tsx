@@ -7,6 +7,10 @@ import { Checkbox, MaskedTextBox, NumericTextBox } from '@progress/kendo-react-i
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
 import { IAccount } from '../../../interfaces/IAccount';
+import * as MyValidator from '../../../MyHelperMethods/Validators';
+import * as MyFormComponents from '../../../components/MyFormComponents';
+
+
 import { Field } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
@@ -85,8 +89,9 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                     <Label style={{ display: 'block' }}>Account Code:  </Label>
                                     <Field
                                         name={`AccountCodes[${this.props.index}].Account_x0020_Code`}
-                                        component={MaskedTextBox}
+                                        component={MyFormComponents.FormMaskedTextBox}
                                         mask="000-00-000-00000-0000"
+                                        validator={MyValidator.required}
                                         required={true}
                                     />
                                 </div>
@@ -104,10 +109,11 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                     <Label style={{ display: 'block' }}>Amount:  </Label>
                                     <Field
                                         name={`AccountCodes[${this.props.index}].Amount`}
-                                        component={NumericTextBox}
+                                        component={MyFormComponents.FormNumericTextBox}
                                         required={true}
                                         format="c2"
                                         min={0}
+                                        validator={MyValidator.required}
                                     />
                                     <Hint>HST Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</Hint>
                                 </div>

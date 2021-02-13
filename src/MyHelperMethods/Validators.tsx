@@ -9,6 +9,8 @@ const cvcRegex = new RegExp(/^[0-9]+$/);
 // These validator methods are to be used for generic fields and are to have generic error messages. 
 // ex: Date fields, Text fields, People Picker fields. 
 //#region Generic Field Validators. 
+export const required = value => value ? "" : "A value is required.";
+
 export const dateValidator = value => value ? "" : "Date is Required.";
 
 export const peoplePickerValidator = value => value ? "" : "Select one or more users.";
