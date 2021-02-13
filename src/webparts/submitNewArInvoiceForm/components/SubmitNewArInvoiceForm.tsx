@@ -20,7 +20,7 @@ import { GetUserProfileProperties, GetUsersByLoginName } from '../../../MyHelper
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
-import { CreateARInvoice } from '../../../MyHelperMethods/ARInvoiceCRUD';
+import { CreateARInvoice } from '../../../MyHelperMethods/DataLayerMethods';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 //#endregion
 
