@@ -51,17 +51,10 @@ const MyHeader = (props) => {
 class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCodeItemState> {
     constructor(props) {
         super(props);
-        debugger;
 
         this.state = {
             item: this.props.dataItem
         };
-    }
-
-    public handleChange = (e, field) => {
-        let updatedItem = { ...this.state.item };
-        updatedItem[field] = e.value;
-        this.setState({ item: updatedItem });
     }
 
     /**
@@ -120,7 +113,8 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                             <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />
                             <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />
                             <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />
-                            <Button icon={'close'} look={'flat'} title={'remove'} onClick={e => { e.preventDefault(); }} />
+                            <Button icon={'close'} look={'flat'} title={'remove'}
+                                onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />
                         </div>
                     </div>
                 </CardBody>
@@ -132,7 +126,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
 
 export class AccountCodeListComponent extends React.Component<IAccountCodeListComponent, any> {
     //AccountCodeItem = props => <AccountCodeItem {...props} saveItem={this.saveData} deleteItem={this.deleteItem} />
-    public AccountCodeItem = props => <AccountCodeItem {...props} />;
+    public AccountCodeItem = e => <AccountCodeItem {...e} {...this.props} />;
 
     public render() {
         return (

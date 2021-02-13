@@ -898,14 +898,9 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
   );
 
   const onRemove = React.useCallback(
-    (e) => {
-      debugger;
-      //fieldArrayRenderProps.onRemove({ index: cellProps.dataIndex })
-    },
+    e => fieldArrayRenderProps.onRemove({ index: e.dataIndex }),
     [fieldArrayRenderProps.onRemove]
   );
-
-
 
   return (
     <div key={fieldArrayRenderProps.value}>
