@@ -39,15 +39,18 @@ interface IAccountCodeItemState {
 const MyHeader = (props) => {
     return (
         <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
-            <Button
-                look='flat'
-                icon='plus'
-                primary={true}
-                onClick={e => {
-                    e.preventDefault();
-                    props.onAdd();
-                }}
-            >Add New Account</Button>
+            {
+                props.onAdd &&
+                <Button
+                    look='flat'
+                    icon='plus'
+                    primary={true}
+                    onClick={e => {
+                        e.preventDefault();
+                        props.onAdd();
+                    }}
+                >Add New Account</Button>
+            }
         </ListViewHeader>
     );
 };
@@ -119,8 +122,11 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                             {this.props.onEdit && <Button icon={'edit'} look={'flat'} title={'Edit'} onClick={e => { e.preventDefault(); }} />}
                             {this.props.onCancel && <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />}
                             {this.props.onDelete && <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onCancel && <Button icon={'close'} look={'flat'} title={'remove'}
-                                onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />}
+                            {
+                                this.props.onRemove &&
+                                <Button icon={'close'} look={'flat'} title={'remove'}
+                                    onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />
+                            }
                         </div>
                     </div>
                 </CardBody>
