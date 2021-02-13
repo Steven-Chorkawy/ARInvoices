@@ -833,12 +833,12 @@ export const FormPersonaDisplay = (fieldRenderProps) => {
   const hindId = `${id}_hint`;
 
   return (
-    <FieldWrapper style={wrapperStyle}>
+    <div>
       <Label>
         {label}
       </Label>
       <PersonaComponent {...fieldRenderProps} />
-    </FieldWrapper>
+    </div>
   );
 };
 
