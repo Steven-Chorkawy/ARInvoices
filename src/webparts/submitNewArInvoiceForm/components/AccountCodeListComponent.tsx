@@ -13,8 +13,13 @@ import { Fields } from '@pnp/sp/fields';
 //#region Interfaces
 interface IAccountCodeListComponent {
     data: any;
+
     onAdd?: Function;
     onRemove?: Function;
+    onSave?: Function;
+    onCancel?: Function;
+    onEdit?: Function;
+    onDelete?: Function;
 }
 
 interface IAccountCodeItemProps extends IAccountCodeListComponent {
@@ -110,11 +115,12 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                             </div>
                         </div>
                         <div className={'col-md-1'} style={{ paddingRight: '0px' }}>
-                            <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />
-                            <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />
-                            <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />
-                            <Button icon={'close'} look={'flat'} title={'remove'}
-                                onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />
+                            {this.props.onSave && <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />}
+                            {this.props.onEdit && <Button icon={'edit'} look={'flat'} title={'Edit'} onClick={e => { e.preventDefault(); }} />}
+                            {this.props.onCancel && <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />}
+                            {this.props.onDelete && <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />}
+                            {this.props.onCancel && <Button icon={'close'} look={'flat'} title={'remove'}
+                                onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />}
                         </div>
                     </div>
                 </CardBody>
