@@ -897,10 +897,20 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
     [fieldArrayRenderProps.onUnshift]
   );
 
+  const onRemove = React.useCallback(
+    (e) => {
+      debugger;
+      //fieldArrayRenderProps.onRemove({ index: cellProps.dataIndex })
+    },
+    [fieldArrayRenderProps.onRemove]
+  );
+
+
+
   return (
     <div key={fieldArrayRenderProps.value}>
       <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
-      <AccountCodeListComponent data={fieldArrayRenderProps.value} onAdd={onAdd} />
+      <AccountCodeListComponent data={fieldArrayRenderProps.value} onAdd={onAdd} onRemove={onRemove} />
     </div>
   );
 };
