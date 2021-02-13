@@ -1,3 +1,7 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+
 import { override } from '@microsoft/decorators';
 import { Log } from '@microsoft/sp-core-library';
 import {
@@ -7,8 +11,16 @@ import {
   IListViewCommandSetExecuteEventParameters
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+
+import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/NewInvoiceSidePanel';
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
+
+import '../../MyO365.scss';
+import '../../bootstrap.css';
+import '../../custom.css';
+
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -47,7 +59,16 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         Dialog.alert(`${this.properties.sampleTextOne}`);
         break;
       case 'COMMAND_2':
-        Dialog.alert(`${this.properties.sampleTextTwo}`);
+        const div = document.createElement('div');
+        const element: React.ReactElement<INewInvoiceSidePanelProps> = React.createElement(
+          NewInvoiceSidePanel,
+          {
+            isOpen: true,
+            context: this.context,
+            panelType: PanelType.medium
+          }
+        );
+        ReactDOM.render(element, div);
         break;
       default:
         throw new Error('Unknown command');
