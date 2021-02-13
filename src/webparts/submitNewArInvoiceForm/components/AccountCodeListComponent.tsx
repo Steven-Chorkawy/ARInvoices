@@ -11,7 +11,13 @@ import { Field } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
 //#region Interfaces
-interface IAccountCodeItemProps {
+interface IAccountCodeListComponent {
+    data: any;
+    onAdd?: Function;
+    onRemove?: Function;
+}
+
+interface IAccountCodeItemProps extends IAccountCodeListComponent {
     dataItem: IAccount;
     index: number;
     field: string;
@@ -20,6 +26,8 @@ interface IAccountCodeItemProps {
 interface IAccountCodeItemState {
     item: IAccount;
 }
+
+
 //#endregion
 
 //#region Component Methods
@@ -43,6 +51,7 @@ const MyHeader = (props) => {
 class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCodeItemState> {
     constructor(props) {
         super(props);
+        debugger;
 
         this.state = {
             item: this.props.dataItem
@@ -63,7 +72,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
         return (e.item.HST_x0020_Taxable === true) ? e.item.Amount * 0.13 : 0;
     }
 
-    
+
     public render() {
         return (
             <Card>
@@ -111,7 +120,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                             <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />
                             <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />
                             <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />
-                            <Button icon={'close'} look={'flat'} title={'remove'} onClick={e => {e.preventDefault(); }} />
+                            <Button icon={'close'} look={'flat'} title={'remove'} onClick={e => { e.preventDefault(); }} />
                         </div>
                     </div>
                 </CardBody>
@@ -120,8 +129,8 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
     }
 }
 
-export class AccountCodeListComponent extends React.Component<any, any> {
 
+export class AccountCodeListComponent extends React.Component<IAccountCodeListComponent, any> {
     //AccountCodeItem = props => <AccountCodeItem {...props} saveItem={this.saveData} deleteItem={this.deleteItem} />
     public AccountCodeItem = props => <AccountCodeItem {...props} />;
 
