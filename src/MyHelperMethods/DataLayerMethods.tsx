@@ -9,7 +9,6 @@ import "@pnp/sp/items";
 import { MyLists } from '../enums/MyLists';
 import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
-
 export const CreateARInvoice = async (data: any) => {
     const { AccountCodes, Attachments, Customer, ApproverEmails, Invoice } = data;
     debugger;
