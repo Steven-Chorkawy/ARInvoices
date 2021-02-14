@@ -11,7 +11,7 @@ import * as MyValidator from '../../../MyHelperMethods/Validators';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 
 
-import { Field } from '@progress/kendo-react-form';
+import { Field, FieldWrapper } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
 //#region Interfaces
@@ -99,7 +99,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                     <Label style={{ display: 'block' }}>Apply HST:  </Label>
                                     <Field
                                         name={`AccountCodes[${this.props.index}].HST_x0020_Taxable`}
-                                        component={Checkbox}
+                                        component={MyFormComponents.FormCheckbox}
                                     />
                                 </div>
 
@@ -119,7 +119,9 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                 </div>
                                 <div className={'col-md-5'}>
                                     <Label style={{ display: 'block' }}>Total:  </Label>
-                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
+                                    <FieldWrapper>
+                                        <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
+                                    </FieldWrapper>
                                 </div>
                             </div>
                         </div>
