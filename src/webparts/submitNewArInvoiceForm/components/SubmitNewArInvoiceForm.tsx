@@ -117,10 +117,12 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
           this.state.currentUser &&
           <Form
             initialValues={{
-              Date: new Date(),
-              Urgent: false,
-              Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
-              Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
+              Invoice: {
+                Date: new Date(),
+                Urgent: false,
+                Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
+                Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
+              }
             }}
             onSubmit={handleSubmit}
             render={(formRenderProps) => (
@@ -132,7 +134,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <FieldWrapper>
                       <Field
                         id="Requested_x0020_By"
-                        name="Requested_x0020_By"
+                        name="Invoice.Requested_x0020_By"
                         label="Requested By"
                         wrapperStyle={{ width: '100%' }}
                         context={this.props.context}
@@ -142,7 +144,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     </FieldWrapper>
                     <Field
                       id={'Date'}
-                      name={'Date'}
+                      name={'Invoice.Date'}
                       label={'* Date'}
                       component={MyFormComponents.FormDatePicker}
                       validator={MyValidator.dateValidator}
@@ -154,7 +156,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <div style={{ width: '50%' }}>
                       <Field
                         id="Department"
-                        name="Department"
+                        name="Invoice.Department"
                         label="* Department"
                         wrapperStyle={{ width: '90%' }}
                         data={this.state.departments ? this.state.departments : []}
@@ -165,7 +167,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <div style={{ width: '50%' }}>
                       <Field
                         id="Urgent"
-                        name="Urgent"
+                        name="Invoice.Urgent"
                         label="Urgent"
                         onLabel="Yes"
                         offLabel="No"
@@ -234,7 +236,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         <FieldWrapper>
                           <Field
                             id="Customer_x0020_Name"
-                            name="Customer_x0020_Name"
+                            name="Invoice.Customer_x0020_Name"
                             label="* Customer Name"
                             validator={MyValidator.requireCustomerName}
                             component={MyFormComponents.FormInput}
@@ -243,7 +245,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         <FieldWrapper>
                           <Field
                             id="Customer_x0020_Details"
-                            name="Customer_x0020_Details"
+                            name="Invoice.Customer_x0020_Details"
                             label="Customer Details"
                             component={MyFormComponents.FormTextArea}
                           />
@@ -256,8 +258,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       () => {
                         if (this.state.showCustomerDropDown) {
                           // Remove Customer Name and Details field. 
-                          formRenderProps.onChange('Customer_x0020_Name', { value: undefined });
-                          formRenderProps.onChange('Customer_x0020_Details', { value: undefined });
+                          formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: undefined });
+                          formRenderProps.onChange('Invoice.Customer_x0020_Details', { value: undefined });
                         }
                         else {
                           // Remove the Customer field. 
@@ -269,14 +271,14 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Field
                       id="Customer_x0020_PO_x0020_Number"
-                      name="Customer_x0020_PO_x0020_Number"
+                      name="Invoice.Customer_x0020_PO_x0020_Number"
                       label="Customer PO Number"
                       component={MyFormComponents.FormInput}
                     />
 
                     <Field
                       id="Standard_x0020_Terms"
-                      name="Standard_x0020_Terms"
+                      name="Invoice.Standard_x0020_Terms"
                       label="Standard Terms"
                       wrapperStyle={{ width: '50%' }}
                       data={
@@ -291,7 +293,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                   <FieldWrapper>
                     <Field
                       id="Details"
-                      name="Details"
+                      name="Invoice.Details"
                       label="Invoice Details"
                       component={MyFormComponents.FormTextArea}
                     />

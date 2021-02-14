@@ -9,12 +9,12 @@ import "@pnp/sp/items";
 import { MyLists } from '../enums/MyLists';
 import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
-// TODO: replace invoice: any with an invoice interface. 
-export const CreateARInvoice = async (invoice: any) => {
-    const { AccountCodes, Attachments, Customer, ApproverEmails } = invoice;
+
+export const CreateARInvoice = async (data: any) => {
+    const { AccountCodes, Attachments, Customer, ApproverEmails, Invoice } = data;
     debugger;
 
-    sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(invoice).then(value => {
+    sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice).then(value => {
         alert('It from CreateARInvoice!');
     }).catch(error => {
         console.log(error);
