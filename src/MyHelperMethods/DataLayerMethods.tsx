@@ -15,8 +15,10 @@ export const CreateARInvoice = async (data: any) => {
 
     sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice).then(value => {
         alert('It from CreateARInvoice!');
+        return 'it has been done!';
     }).catch(error => {
         console.log(error);
         alert('CreateARInvoice failed....');
+        return 'it has been done!';
     });
 };
