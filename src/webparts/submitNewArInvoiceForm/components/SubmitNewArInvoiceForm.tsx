@@ -288,11 +288,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                       name="Invoice.Standard_x0020_Terms"
                       label="Standard Terms"
                       wrapperStyle={{ width: '50%' }}
-                      data={
-                        this.state.standardTerms
-                          ? this.state.standardTerms
-                          : []
-                      }
+                      data={this.state.standardTerms ? this.state.standardTerms : []}
                       component={MyFormComponents.FormDropDownList}
                     />
                   </div>
