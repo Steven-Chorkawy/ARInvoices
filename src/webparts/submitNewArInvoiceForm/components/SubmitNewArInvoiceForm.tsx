@@ -256,21 +256,24 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         </FieldWrapper>
                       </div>
                   }
-                  <p onClick={e => {
-                    e.preventDefault();
-                    this.setState({ showCustomerDropDown: !this.state.showCustomerDropDown },
-                      () => {
-                        if (this.state.showCustomerDropDown) {
-                          // Remove Customer Name and Details field. 
-                          formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: undefined });
-                          formRenderProps.onChange('Invoice.Customer_x0020_Details', { value: undefined });
-                        }
-                        else {
-                          // Remove the Customer field. 
-                          formRenderProps.onChange('Customer', { value: undefined });
-                        }
-                      });
-                  }}>Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
+                  <p
+                    style={{ cursor: 'pointer' }}
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState({ showCustomerDropDown: !this.state.showCustomerDropDown },
+                        () => {
+                          if (this.state.showCustomerDropDown) {
+                            // Remove Customer Name and Details field. 
+                            formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: undefined });
+                            formRenderProps.onChange('Invoice.Customer_x0020_Details', { value: undefined });
+                          }
+                          else {
+                            // Remove the Customer field. 
+                            formRenderProps.onChange('Customer', { value: undefined });
+                          }
+                        });
+                    }}
+                  >Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Field
