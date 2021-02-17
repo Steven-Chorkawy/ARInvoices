@@ -13,6 +13,10 @@ import { MyLists } from '../enums/MyLists';
 import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
 export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number) => {
+    if (!attachments) {
+        return undefined;
+    }
+
     let item = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(arInvoiceId);
     let uploadResults = [];
     for (let attachmentIndex = 0; attachmentIndex < attachments.length; attachmentIndex++) {
@@ -23,6 +27,7 @@ export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId
 }
 
 export const CreateARInvoice = async (data: any) => {
+    console.log(data);
     const { AccountCodes, Attachments, Customer, ApproverEmails, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
