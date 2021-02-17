@@ -103,10 +103,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
   public render(): React.ReactElement<ISubmitNewArInvoiceFormProps> {
 
     const handleSubmit = (dataItem) => {
-      console.log(dataItem);
-      alert(JSON.stringify(dataItem, null, 2));
-
       CreateARInvoice(dataItem).then(value => {
+        alert('After CreateARInvoice method...');
         console.log('Before handleSubmit callback: ');
         console.log(value);
         

@@ -9,9 +9,20 @@ import "@pnp/sp/items";
 import { MyLists } from '../enums/MyLists';
 import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
+export const UploadARInvoiceAttachment = async (attachment: any, arInvoiceId: number) => {
+    debugger;
+    let item = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(arInvoiceId).get();
+    // TODO: What happens when this item is not found? 
+
+    item.attachmentFiles.add("file2.txt", "Here is my content").then(v => {
+        debugger;
+        console.log(v);
+    });
+}
+
+
 export const CreateARInvoice = async (data: any) => {
     const { AccountCodes, Attachments, Customer, ApproverEmails, Invoice } = data;
-    debugger;
 
     sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice).then(value => {
         alert('It from CreateARInvoice!');
@@ -22,3 +33,4 @@ export const CreateARInvoice = async (data: any) => {
         return 'it has been done!';
     });
 };
+
