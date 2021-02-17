@@ -1,6 +1,4 @@
 import { sp } from "@pnp/sp";
-import { IAttachmentInfo } from "@pnp/sp/attachments";
-import { IItem } from "@pnp/sp/items/types"
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/fields";
@@ -10,7 +8,6 @@ import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
 import { MyLists } from '../enums/MyLists';
-import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
 export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
     if (!attachments) {
@@ -23,7 +20,7 @@ export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId
         const attachment = attachments[attachmentIndex];
         await item.attachmentFiles.add(attachment.name, attachment.getRawFile());
     }
-}
+};
 
 export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: number): Promise<void> => {
     if (!accounts) {
@@ -47,7 +44,7 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
             AccountsId: { 'results': accountResults.map(a => { return a.Id; }) }
         });
     }
-}
+};
 
 export const CreateARInvoice = async (data: any) => {
     console.log(data);
