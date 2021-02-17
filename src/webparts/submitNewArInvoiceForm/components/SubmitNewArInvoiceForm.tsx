@@ -16,7 +16,7 @@ import { Button } from '@progress/kendo-react-buttons';
 import { filterBy } from '@progress/kendo-data-query';
 
 // My Custom Imports
-import { GetUserProfileProperties, GetUsersByLoginName } from '../../../MyHelperMethods/UserProfileMethods';
+import { GetUserProfileProperties, GetUsersByLoginName, GetUserByLoginName } from '../../../MyHelperMethods/UserProfileMethods';
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
@@ -62,7 +62,16 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
     };
 
     sp.web.currentUser.get().then(user => {
-      GetUserProfileProperties(user.LoginName, values => this.setState({ currentUser: values }));
+      GetUserProfileProperties(
+        user.LoginName,
+        values => this.setState({ currentUser: values },
+          () => {
+            // Making this second call just to get the users ID. 
+            GetUserByLoginName(user.LoginName).then(value => {
+              this.setState({ currentUser: { ...this.state.currentUser, Id: value.Id } });
+            });
+          })
+      );
     });
 
     GetChoiceFieldValues(MyLists["AR Invoice Requests"], 'Department').then(values => {
@@ -107,7 +116,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
         alert('After CreateARInvoice method...');
         console.log('Before handleSubmit callback: ');
         console.log(value);
-        
+
         this.props.submitCallback && this.props.submitCallback();
       });
     };
@@ -123,6 +132,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                 Urgent: false,
                 Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
                 Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
+                Requested_x0020_ById: this.state.currentUser && this.state.currentUser.Email
+
               }
             }}
             onSubmit={handleSubmit}
