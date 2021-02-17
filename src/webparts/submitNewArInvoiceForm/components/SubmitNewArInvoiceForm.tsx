@@ -62,16 +62,13 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
     };
 
     sp.web.currentUser.get().then(user => {
-      GetUserProfileProperties(
-        user.LoginName,
-        values => this.setState({ currentUser: values },
-          () => {
-            // Making this second call just to get the users ID. 
-            GetUserByLoginName(user.LoginName).then(value => {
-              this.setState({ currentUser: { ...this.state.currentUser, Id: value.Id } });
-            });
-          })
-      );
+      // Making this call just to get the users ID. 
+      GetUserByLoginName(user.LoginName).then(userByLoginName => {
+        GetUserProfileProperties(
+          user.LoginName,
+          values => { this.setState({ currentUser: { ...values, Id: userByLoginName.Id } }); }
+        );
+      });
     });
 
     GetChoiceFieldValues(MyLists["AR Invoice Requests"], 'Department').then(values => {
@@ -132,8 +129,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                 Urgent: false,
                 Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
                 Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
-                Requested_x0020_ById: this.state.currentUser && this.state.currentUser.Email
-
+                Requested_x0020_ById: this.state.currentUser && this.state.currentUser.Id
               }
             }}
             onSubmit={handleSubmit}
