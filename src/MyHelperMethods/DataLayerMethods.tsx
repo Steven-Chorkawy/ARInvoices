@@ -12,18 +12,41 @@ import "@pnp/sp/attachments";
 import { MyLists } from '../enums/MyLists';
 import { IARInvoice, ISaveARInvoice } from '../interfaces/IARInvoice';
 
-export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number) => {
+export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
     if (!attachments) {
-        return undefined;
+        return null;
     }
 
     let item = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(arInvoiceId);
-    let uploadResults = [];
+
     for (let attachmentIndex = 0; attachmentIndex < attachments.length; attachmentIndex++) {
         const attachment = attachments[attachmentIndex];
-        uploadResults.push(await item.attachmentFiles.add(attachment.name, attachment.getRawFile()));
+        await item.attachmentFiles.add(attachment.name, attachment.getRawFile());
     }
-    return uploadResults;
+}
+
+export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: number): Promise<void> => {
+    if (!accounts) {
+        return null;
+    }
+
+    let accountList = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
+    let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
+    let accountResults = [];  // This is what will be returned. 
+
+    for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
+        const account = { ...accounts[accountIndex], AR_x0020_InvoiceId: arInvoiceId };
+        // Create the AR Invoice Account. 
+        let itemAddResult = accountList.items.add(account);
+        accountResults.push((await itemAddResult).data);
+    }
+
+    // Add the accounts to the AR Invoice Request.
+    if (accountResults.length > 0) {
+        arInvoiceRequestList.items.getById(arInvoiceId).update({
+            AccountsId: { 'results': accountResults.map(a => { return a.Id; }) }
+        });
+    }
 }
 
 export const CreateARInvoice = async (data: any) => {
@@ -33,7 +56,8 @@ export const CreateARInvoice = async (data: any) => {
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
     let newARInvoice = (await itemAddResult).data;
 
-    let uploadResult = await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
+    await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
+    await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
 
     debugger;
 };
