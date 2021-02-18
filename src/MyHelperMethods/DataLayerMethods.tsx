@@ -53,6 +53,9 @@ export const CreateARInvoice = async (data: any) => {
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
     let newARInvoice = (await itemAddResult).data;
 
+    // Append the ID to the title so users can determine which invoice they're looking at in the approval center.
+    sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(newARInvoice.ID).update({ Title: `${newARInvoice.Title} - ${newARInvoice.ID}` });
+
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
     await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
 

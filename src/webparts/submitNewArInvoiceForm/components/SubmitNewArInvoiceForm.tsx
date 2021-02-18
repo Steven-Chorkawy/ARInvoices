@@ -236,7 +236,10 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           filterable={true}
                           suggest={true}
                           onFilterChange={this.customerFilterChange}
-                          onChange={e => formRenderProps.onChange('Invoice.CustomerId', { value: e.value ? e.value.Id : undefined })}
+                          onChange={e => {
+                            formRenderProps.onChange('Invoice.CustomerId', { value: e.value ? e.value.Id : undefined });
+                            formRenderProps.onChange('Invoice.Title', { value: e.value ? `AR Invoice: ${e.value.Title}` : undefined });
+                          }}
                         />
                       </FieldWrapper> :
                       <div>
@@ -247,6 +250,9 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                             label="* Customer Name"
                             validator={MyValidator.requireCustomerName}
                             component={MyFormComponents.FormInput}
+                            onChange={e => {
+                              formRenderProps.onChange('Invoice.Title', { value: e.value ? `AR Invoice: ${e.value}` : undefined });
+                            }}
                           />
                         </FieldWrapper>
                         <FieldWrapper>
@@ -263,8 +269,12 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     style={{ cursor: 'pointer' }}
                     onClick={e => {
                       e.preventDefault();
-                      this.setState({ showCustomerDropDown: !this.state.showCustomerDropDown },
+                      this.setState(
+                        {
+                          showCustomerDropDown: !this.state.showCustomerDropDown
+                        },
                         () => {
+                          formRenderProps.onChange('Invoice.Title', { value: undefined });
                           if (this.state.showCustomerDropDown) {
                             // Remove Customer Name and Details field. 
                             formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: undefined });
@@ -275,7 +285,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                             formRenderProps.onChange('Customer', { value: undefined });
                             formRenderProps.onChange('Invoice.CustomerId', { value: undefined });
                           }
-                        });
+                        }
+                      );
                     }}
                   >Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
 
