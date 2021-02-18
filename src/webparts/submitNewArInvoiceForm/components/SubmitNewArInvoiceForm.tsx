@@ -110,7 +110,9 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
 
     const handleSubmit = (dataItem) => {
       CreateARInvoice(dataItem).then(value => {
-        this.props.submitCallback && this.props.submitCallback();
+        if (this.props.submitCallback) {
+          this.props.submitCallback();
+        }
       });
     };
 
@@ -234,6 +236,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           filterable={true}
                           suggest={true}
                           onFilterChange={this.customerFilterChange}
+                          onChange={e => formRenderProps.onChange('Invoice.CustomerId', { value: e.value ? e.value.Id : undefined })}
                         />
                       </FieldWrapper> :
                       <div>
@@ -270,6 +273,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           else {
                             // Remove the Customer field. 
                             formRenderProps.onChange('Customer', { value: undefined });
+                            formRenderProps.onChange('Invoice.CustomerId', { value: undefined });
                           }
                         });
                     }}
