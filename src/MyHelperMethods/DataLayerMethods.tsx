@@ -88,4 +88,3 @@ export const CreateARInvoice = async (data: any) => {
     await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
     await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };
-
