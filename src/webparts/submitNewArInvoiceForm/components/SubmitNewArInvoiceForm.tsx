@@ -201,9 +201,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         if (e && e.length > 0) {
                           GetUsersByLoginName(e).then(res => {
                             /// Settings the user IDs here so that we can save them in the List item during the form submit event. 
-                            // formRenderProps.onChange('Requires_x0020_Department_x0020_Id', {
-                            //   value: { 'results': res.map(user => { return user.Id; }) }
-                            // });
+                            formRenderProps.onChange('Approvers', { value: { res } });
 
                             // Setting this email here so it can be passed to a workflow when the form is submitted.
                             // * By setting the users email here it saves us from querying this information during the forms submit event.  
@@ -211,6 +209,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           });
                         }
                         else {
+                          formRenderProps.onChange('Approvers', { value: undefined })
                           formRenderProps.onChange('ApproverEmails', { value: undefined });
                         }
                       }}
