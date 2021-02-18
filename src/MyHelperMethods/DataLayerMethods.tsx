@@ -46,9 +46,26 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     }
 };
 
+export const CreateApprovalRequest = async (approvers: string[], arInvoiceId: number, approvalType?: any): Promise<void> => {
+    if (!approvers) {
+        return null;
+    }
+    debugger;
+
+    let approvalsList = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
+    let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
+
+    // for (let approverIDIndex = 0; approverIDIndex < approverIDs.length; approverIDIndex++) {
+    //     const approver = approverIDs[approverIDIndex];
+    //     const approvalRequest = {
+    //         'Assigned_x0020_ToId': 
+    //     };
+    // }
+}
+
 export const CreateARInvoice = async (data: any) => {
     console.log(data);
-    const { AccountCodes, Attachments, Customer, ApproverEmails, Invoice } = data;
+    const { AccountCodes, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
     let newARInvoice = (await itemAddResult).data;
@@ -58,6 +75,8 @@ export const CreateARInvoice = async (data: any) => {
 
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
     await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
+    debugger;
+    await CreateApprovalRequest(Approvers, newARInvoice.ID);
 
     debugger;
 };
