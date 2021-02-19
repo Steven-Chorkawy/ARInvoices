@@ -41,7 +41,8 @@ export default class ArInvoiceDetailsWebPart extends BaseClientSideWebPart<IArIn
     const element: React.ReactElement<IArInvoiceDetailsProps> = React.createElement(
       ArInvoiceDetails,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context: this.context
       }
     );
 
