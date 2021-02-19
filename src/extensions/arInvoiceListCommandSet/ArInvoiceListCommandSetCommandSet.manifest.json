@@ -22,7 +22,7 @@
       "type": "command"
     },
     "COMMAND_2": {
-      "title": { "default": "Command Two" },
+      "title": { "default": "New AR Invoice" },
       "iconImageUrl": "icons/cancel.png",
       "type": "command"
     }

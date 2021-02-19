@@ -388,7 +388,6 @@ export const FormUpload = (fieldRenderProps) => {
         valid={valid}
         autoUpload={false}
         showActionButtons={false}
-        multiple={false}
         files={value}
         onAdd={onChangeHandler}
         onRemove={onRemoveHandler}

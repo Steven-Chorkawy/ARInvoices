@@ -16,10 +16,11 @@ import { Button } from '@progress/kendo-react-buttons';
 import { filterBy } from '@progress/kendo-data-query';
 
 // My Custom Imports
-import { GetUserProfileProperties, GetUsersByLoginName } from '../../../MyHelperMethods/UserProfileMethods';
+import { GetUserProfileProperties, GetUsersByLoginName, GetUserByLoginName } from '../../../MyHelperMethods/UserProfileMethods';
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
+import { CreateARInvoice } from '../../../MyHelperMethods/DataLayerMethods';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 //#endregion
 
@@ -61,7 +62,13 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
     };
 
     sp.web.currentUser.get().then(user => {
-      GetUserProfileProperties(user.LoginName, values => this.setState({ currentUser: values }));
+      // Making this call just to get the users ID. 
+      GetUserByLoginName(user.LoginName).then(userByLoginName => {
+        GetUserProfileProperties(
+          user.LoginName,
+          values => { this.setState({ currentUser: { ...values, Id: userByLoginName.Id } }); }
+        );
+      });
     });
 
     GetChoiceFieldValues(MyLists["AR Invoice Requests"], 'Department').then(values => {
@@ -102,12 +109,11 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
   public render(): React.ReactElement<ISubmitNewArInvoiceFormProps> {
 
     const handleSubmit = (dataItem) => {
-      console.log(dataItem);
-      alert(JSON.stringify(dataItem, null, 2));
-      // sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(dataItem).then(value => {
-      //   alert('It worked!');
-      //   this.props.submitCallback && this.props.submitCallback();
-      // });
+      CreateARInvoice(dataItem).then(value => {
+        if (this.props.submitCallback) {
+          this.props.submitCallback();
+        }
+      });
     };
 
     return (
@@ -116,10 +122,13 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
           this.state.currentUser &&
           <Form
             initialValues={{
-              Date: new Date(),
-              Urgent: false,
-              Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
-              Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
+              Invoice: {
+                Date: new Date(),
+                Urgent: false,
+                Standard_x0020_Terms: 'NET 30, 1% INTEREST CHARGED',
+                Department: this.state.currentUser && this.state.currentUser.Props['SPS-Department'],
+                Requested_x0020_ById: this.state.currentUser && this.state.currentUser.Id
+              }
             }}
             onSubmit={handleSubmit}
             render={(formRenderProps) => (
@@ -131,7 +140,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <FieldWrapper>
                       <Field
                         id="Requested_x0020_By"
-                        name="Requested_x0020_By"
+                        name="Invoice.Requested_x0020_By"
                         label="Requested By"
                         wrapperStyle={{ width: '100%' }}
                         context={this.props.context}
@@ -141,7 +150,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     </FieldWrapper>
                     <Field
                       id={'Date'}
-                      name={'Date'}
+                      name={'Invoice.Date'}
                       label={'* Date'}
                       component={MyFormComponents.FormDatePicker}
                       validator={MyValidator.dateValidator}
@@ -153,7 +162,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <div style={{ width: '50%' }}>
                       <Field
                         id="Department"
-                        name="Department"
+                        name="Invoice.Department"
                         label="* Department"
                         wrapperStyle={{ width: '90%' }}
                         data={this.state.departments ? this.state.departments : []}
@@ -164,7 +173,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     <div style={{ width: '50%' }}>
                       <Field
                         id="Urgent"
-                        name="Urgent"
+                        name="Invoice.Urgent"
                         label="Urgent"
                         onLabel="Yes"
                         offLabel="No"
@@ -192,16 +201,15 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                         if (e && e.length > 0) {
                           GetUsersByLoginName(e).then(res => {
                             /// Settings the user IDs here so that we can save them in the List item during the form submit event. 
-                            // formRenderProps.onChange('Requires_x0020_Department_x0020_Id', {
-                            //   value: { 'results': res.map(user => { return user.Id; }) }
-                            // });
+                            formRenderProps.onChange('Approvers', { value: [...res.map(user => { return user; })] });
 
                             // Setting this email here so it can be passed to a workflow when the form is submitted.
-                            // * By setting the users email here it saves us from querying this information during the forms submit event.  
+                            // * By setting the users email here it saves us from querying this information during the forms submit event.
                             formRenderProps.onChange('ApproverEmails', { value: { 'results': res.map(user => { return user.Email; }) } });
                           });
                         }
                         else {
+                          formRenderProps.onChange('Approvers', { value: undefined })
                           formRenderProps.onChange('ApproverEmails', { value: undefined });
                         }
                       }}
@@ -227,62 +235,74 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           filterable={true}
                           suggest={true}
                           onFilterChange={this.customerFilterChange}
+                          onChange={e => {
+                            formRenderProps.onChange('Invoice.CustomerId', { value: e.value ? e.value.Id : undefined });
+                            formRenderProps.onChange('Invoice.Title', { value: e.value ? `AR Invoice: ${e.value.Title}` : undefined });
+                          }}
                         />
                       </FieldWrapper> :
                       <div>
                         <FieldWrapper>
                           <Field
                             id="Customer_x0020_Name"
-                            name="Customer_x0020_Name"
+                            name="Invoice.Customer_x0020_Name"
                             label="* Customer Name"
                             validator={MyValidator.requireCustomerName}
                             component={MyFormComponents.FormInput}
+                            onChange={e => {
+                              formRenderProps.onChange('Invoice.Title', { value: e.value ? `AR Invoice: ${e.value}` : undefined });
+                            }}
                           />
                         </FieldWrapper>
                         <FieldWrapper>
                           <Field
                             id="Customer_x0020_Details"
-                            name="Customer_x0020_Details"
+                            name="Invoice.Customer_x0020_Details"
                             label="Customer Details"
                             component={MyFormComponents.FormTextArea}
                           />
                         </FieldWrapper>
                       </div>
                   }
-                  <p onClick={e => {
-                    e.preventDefault();
-                    this.setState({ showCustomerDropDown: !this.state.showCustomerDropDown },
-                      () => {
-                        if (this.state.showCustomerDropDown) {
-                          // Remove Customer Name and Details field. 
-                          formRenderProps.onChange('Customer_x0020_Name', { value: undefined });
-                          formRenderProps.onChange('Customer_x0020_Details', { value: undefined });
+                  <p
+                    style={{ cursor: 'pointer' }}
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState(
+                        {
+                          showCustomerDropDown: !this.state.showCustomerDropDown
+                        },
+                        () => {
+                          formRenderProps.onChange('Invoice.Title', { value: undefined });
+                          if (this.state.showCustomerDropDown) {
+                            // Remove Customer Name and Details field. 
+                            formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: undefined });
+                            formRenderProps.onChange('Invoice.Customer_x0020_Details', { value: undefined });
+                          }
+                          else {
+                            // Remove the Customer field. 
+                            formRenderProps.onChange('Customer', { value: undefined });
+                            formRenderProps.onChange('Invoice.CustomerId', { value: undefined });
+                          }
                         }
-                        else {
-                          // Remove the Customer field. 
-                          formRenderProps.onChange('Customer', { value: undefined });
-                        }
-                      });
-                  }}>Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
+                      );
+                    }}
+                  >Click to {this.state.showCustomerDropDown ? 'manually enter customer details.' : 'search for customers.'}</p>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Field
                       id="Customer_x0020_PO_x0020_Number"
-                      name="Customer_x0020_PO_x0020_Number"
+                      name="Invoice.Customer_x0020_PO_x0020_Number"
                       label="Customer PO Number"
                       component={MyFormComponents.FormInput}
                     />
 
                     <Field
                       id="Standard_x0020_Terms"
-                      name="Standard_x0020_Terms"
+                      name="Invoice.Standard_x0020_Terms"
                       label="Standard Terms"
                       wrapperStyle={{ width: '50%' }}
-                      data={
-                        this.state.standardTerms
-                          ? this.state.standardTerms
-                          : []
-                      }
+                      data={this.state.standardTerms ? this.state.standardTerms : []}
                       component={MyFormComponents.FormDropDownList}
                     />
                   </div>
@@ -290,7 +310,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                   <FieldWrapper>
                     <Field
                       id="Details"
-                      name="Details"
+                      name="Invoice.Details"
                       label="Invoice Details"
                       component={MyFormComponents.FormTextArea}
                     />
