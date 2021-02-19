@@ -13,6 +13,10 @@ import * as strings from 'ArInvoiceDetailsWebPartStrings';
 import ArInvoiceDetails from './components/ArInvoiceDetails';
 import { IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
 
+import '../../MyO365.scss';
+import '../../bootstrap.css';
+import '../../custom.css';
+
 export interface IArInvoiceDetailsWebPartProps {
   description: string;
 }
@@ -32,7 +36,7 @@ export default class ArInvoiceDetailsWebPart extends BaseClientSideWebPart<IArIn
       });
     });
   }
-  
+
   public render(): void {
     const element: React.ReactElement<IArInvoiceDetailsProps> = React.createElement(
       ArInvoiceDetails,
