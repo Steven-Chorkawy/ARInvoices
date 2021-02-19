@@ -7,6 +7,8 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
+import { sp } from "@pnp/sp";
+
 import * as strings from 'ArInvoiceDetailsWebPartStrings';
 import ArInvoiceDetails from './components/ArInvoiceDetails';
 import { IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
@@ -16,7 +18,21 @@ export interface IArInvoiceDetailsWebPartProps {
 }
 
 export default class ArInvoiceDetailsWebPart extends BaseClientSideWebPart<IArInvoiceDetailsWebPartProps> {
-
+  
+  protected async onInit(): Promise<void> {
+    await super.onInit().then(() => {
+      sp.setup({
+        spfxContext: this.context,
+        sp: {
+          headers: {
+            "Accept": "application/json; odata=nometadata"
+          },
+          baseUrl: this.context.pageContext.web.absoluteUrl
+        }
+      });
+    });
+  }
+  
   public render(): void {
     const element: React.ReactElement<IArInvoiceDetailsProps> = React.createElement(
       ArInvoiceDetails,
