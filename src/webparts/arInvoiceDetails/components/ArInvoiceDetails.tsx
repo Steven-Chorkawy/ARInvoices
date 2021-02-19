@@ -13,13 +13,16 @@ import { MyLists } from '../../../enums/MyLists';
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
+import { filterBy } from '@progress/kendo-data-query';
+
 
 export interface IArInvoiceDetailsProps {
   description: string;
 }
 
 export interface IArInvoiceDetailsState {
-  invoices?: any;
+  invoices?: any;       // The invoice that should be displayed in the combo box. 
+  allInvoices?: any;    // All of the invoices regardless of filter applied. 
   invoiceID?: number;
   currentInvoice?: any;
 }
@@ -37,11 +40,15 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
     this.state = {
       invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
       invoices: undefined,
+      allInvoices: undefined,
       currentInvoice: undefined
     };
 
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.select('ID, Title, Status').getAll().then(invoices => {
-      this.setState({ invoices: invoices });
+      this.setState({
+        invoices: invoices,
+        allInvoices: invoices
+      });
     });
 
     if (idFromQueryParam) {
@@ -59,6 +66,24 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
     return await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).get();
   }
 
+  //#region ComboBox Methods.
+  private filterComboBox = e => {
+    const data = this.state.allInvoices.slice();
+    this.setState({ invoices: filterBy(data, e.filter) });
+  }
+
+  private onChangeComboBox = e => {
+    if (e) {
+      this.getInvoiceById(e.value.ID).then(invoice => {
+        this.setState({
+          currentInvoice: invoice,
+          invoices: this.state.allInvoices
+        });
+      });
+    }
+  }
+  //#endregion
+
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
@@ -69,14 +94,9 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
           loading={this.state.invoices === undefined}
           style={{ width: '100%' }}
           value={this.state.currentInvoice}
-          clearButton={false}
-          onChange={e => {
-            if (e) {
-              this.getInvoiceById(e.value.ID).then(invoice => {
-                this.setState({ currentInvoice: invoice });
-              });
-            }
-          }}
+          filterable={true}
+          onFilterChange={this.filterComboBox}
+          onChange={this.onChangeComboBox}
         />
         {
           this.state.invoiceID &&
