@@ -58,8 +58,9 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     for (let approverIndex = 0; approverIndex < approvers.length; approverIndex++) {
         const approver = approvers[approverIndex];
         let itemAddResult = approvalsList.items.add({
-            Title: "Temp Title",
+            Title: `AR Invoice ${arInvoiceId} Approval Request`,
             AR_x0020_InvoiceId: arInvoiceId,
+            ARInvoiceID_Number: arInvoiceId, // Only using this field because PowerAutomate cannot get the value of AR_x0020_InvoiceId.
             Assigned_x0020_ToId: approver.Id,
             //Request_x0020_Type: 'add choice value here.'
             //Status: 'add choice value here.'
