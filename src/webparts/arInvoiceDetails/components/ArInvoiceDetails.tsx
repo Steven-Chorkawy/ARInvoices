@@ -10,14 +10,19 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
+import * as MyFormComponents from '../../../components/MyFormComponents';
+
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
+import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
+import { Button } from '@progress/kendo-react-buttons';
 
 
 export interface IArInvoiceDetailsProps {
   description: string;
+  context: any;
 }
 
 export interface IArInvoiceDetailsState {
@@ -82,6 +87,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
       });
     }
   }
+
   private comboBoxItemRender = (li, itemProps) => {
     const dataItem = itemProps.dataItem;
     const itemChildren =
@@ -109,20 +115,45 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
         />
         <hr />
         {
-          this.state.invoiceID &&
-          <div>
-            ID: {this.state.invoiceID}
-          </div>
-        }
-        {
-          this.state.invoices &&
-          <div>
-            Invoices Found: {this.state.invoices.length}
-          </div>
-        }
-        {
           this.state.currentInvoice &&
-          <div>Current Invoice: {this.state.currentInvoice.Title}</div>
+          <Form
+            initialValues={{ ...this.state.currentInvoice }}
+            onSubmit={e => console.log(e)}
+            render={formRenderProps => (
+              <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
+                <FieldWrapper>
+                  <Field
+                    id="Requested_x0020_By"
+                    name="Requested_x0020_By"
+                    label="Requested By"
+                    wrapperStyle={{ width: '100%' }}
+                    context={this.props.context}
+                    userEmail={this.props.context.pageContext.user.email}
+                    component={MyFormComponents.FormPersonaDisplay}
+                  />
+                </FieldWrapper>
+                <FieldWrapper>
+                  {/* <Field
+                    id={'Date'}
+                    name={'Date'}
+                    label={'* Date'}
+                    component={MyFormComponents.FormDatePicker}
+                    //validator={MyValidator.dateValidator}
+                    wrapperStyle={{ width: '50%' }}
+                  /> */}
+                </FieldWrapper>
+                <div className="k-form-buttons">
+                  <Button
+                    primary={true}
+                    type={'submit'}
+                    icon={'save'}
+                    disabled={!formRenderProps.allowSubmit}
+                  >Submit AR Invoice</Button>
+                  <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
+                </div>
+              </FormElement>
+            )}
+          />
         }
       </div>
     );
