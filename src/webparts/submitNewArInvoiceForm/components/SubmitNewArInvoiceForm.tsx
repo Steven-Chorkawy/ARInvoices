@@ -7,9 +7,6 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-// Office UI
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-
 // Kendo UI
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
