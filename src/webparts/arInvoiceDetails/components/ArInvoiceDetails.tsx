@@ -82,6 +82,14 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
       });
     }
   }
+  private comboBoxItemRender = (li, itemProps) => {
+    const dataItem = itemProps.dataItem;
+    const itemChildren =
+      <div>
+        <span title={'Status'}>{dataItem.Status}</span> | <span title={'Title'}>{dataItem.Title}</span>
+      </div>;
+    return React.cloneElement(li, li.props, itemChildren);
+  }
   //#endregion
 
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
@@ -97,7 +105,9 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
           filterable={true}
           onFilterChange={this.filterComboBox}
           onChange={this.onChangeComboBox}
+          itemRender={this.comboBoxItemRender}
         />
+        <hr />
         {
           this.state.invoiceID &&
           <div>
