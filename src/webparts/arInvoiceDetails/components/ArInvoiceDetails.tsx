@@ -11,6 +11,9 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 
+// Kendo Imports. 
+import { ComboBox } from '@progress/kendo-react-dropdowns';
+
 export interface IArInvoiceDetailsProps {
   description: string;
 }
@@ -42,7 +45,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
     });
 
     if (idFromQueryParam) {
-      sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(Number(idFromQueryParam)).get().then(invoice => {
+      this.getInvoiceById(Number(idFromQueryParam)).then(invoice => {
         this.setState({ currentInvoice: invoice });
       });
     }
@@ -52,10 +55,29 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
     return new UrlQueryParameterCollection(window.location.href).getValue(ARInvoiceQueryParams.ARInvoiceId);
   }
 
+  private getInvoiceById = async (id) => {
+    return await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).get();
+  }
+
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
-        <h1>hello world</h1>
+        <ComboBox
+          data={this.state.invoices}
+          textField={'Title'}
+          dataItemKey={'ID'}
+          loading={this.state.invoices === undefined}
+          style={{ width: '100%' }}
+          value={this.state.currentInvoice}
+          clearButton={false}
+          onChange={e => {
+            if (e) {
+              this.getInvoiceById(e.value.ID).then(invoice => {
+                this.setState({ currentInvoice: invoice });
+              });
+            }
+          }}
+        />
         {
           this.state.invoiceID &&
           <div>
