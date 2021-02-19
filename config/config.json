@@ -17,12 +17,21 @@
           "manifest": "./src/extensions/arInvoiceListCommandSet/ArInvoiceListCommandSetCommandSet.manifest.json"
         }
       ]
+    },
+    "ar-invoice-details-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/arInvoiceDetails/ArInvoiceDetailsWebPart.js",
+          "manifest": "./src/webparts/arInvoiceDetails/ArInvoiceDetailsWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "SubmitNewArInvoiceFormWebPartStrings": "lib/webparts/submitNewArInvoiceForm/loc/{locale}.js",
     "ArInvoiceListCommandSetCommandSetStrings": "lib/extensions/arInvoiceListCommandSet/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "ArInvoiceDetailsWebPartStrings": "lib/webparts/arInvoiceDetails/loc/{locale}.js"
   }
 }
