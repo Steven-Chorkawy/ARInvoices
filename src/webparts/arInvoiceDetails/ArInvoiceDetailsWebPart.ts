@@ -9,7 +9,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'ArInvoiceDetailsWebPartStrings';
 import ArInvoiceDetails from './components/ArInvoiceDetails';
-import { IArInvoiceDetailsProps } from './components/IArInvoiceDetailsProps';
+import { IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
 
 export interface IArInvoiceDetailsWebPartProps {
   description: string;
