@@ -9,6 +9,11 @@ import "@pnp/sp/attachments";
 
 import { MyLists } from '../enums/MyLists';
 
+// TODO: This should return Promise<[INVOICE INTERFACE HERE]>
+export const GetInvoiceByID = async (id: number): Promise<any> => {
+    return await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).get();
+}
+
 export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
     if (!attachments) {
         return null;
