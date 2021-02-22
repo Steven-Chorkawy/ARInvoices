@@ -29,6 +29,15 @@ export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentPr
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
+                    {
+                        this.props.invoice.Approvals.map(approval => {
+                            return (
+                                <div>
+                                    {approval.Assigned_x0020_To.Title} | {approval.Status}
+                                </div>
+                            );
+                        })
+                    }
                 </CardBody>
             </Card>
         );
