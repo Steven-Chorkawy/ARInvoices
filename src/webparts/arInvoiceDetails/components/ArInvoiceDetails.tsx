@@ -12,7 +12,8 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
-
+import { RequestComponent } from './RequestComponent';
+import { DetailsComponent } from './DetailsComponent';
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
@@ -126,27 +127,15 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
                 <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
-                  <FieldWrapper>
-                    <Field
-                      id="Requested_x0020_By"
-                      name="Requested_x0020_By"
-                      label="Requested By"
-                      wrapperStyle={{ width: '100%' }}
-                      context={this.props.context}
-                      userEmail={this.props.context.pageContext.user.email}
-                      component={MyFormComponents.FormPersonaDisplay}
-                    />
-                  </FieldWrapper>
-                  <FieldWrapper>
-                    {/* <Field
-                    id={'Date'}
-                    name={'Date'}
-                    label={'* Date'}
-                    component={MyFormComponents.FormDatePicker}
-                    //validator={MyValidator.dateValidator}
-                    wrapperStyle={{ width: '50%' }}
-                  /> */}
-                  </FieldWrapper>
+                  <div className='row'>
+                    <div className='col-lg-4 col-md-12'>
+                      <RequestComponent />
+                    </div>
+                    <div className='col-lg-8 col-md-12'>
+                      <DetailsComponent />
+                    </div>
+                  </div>
+
                   <div className="k-form-buttons">
                     <Button
                       primary={true}
