@@ -28,8 +28,8 @@ class CustomAttachmentItem extends React.Component<any, any> {
                         <span className='k-progress' style={{ width: `${file.progress ? file.progress : 0}%`, transition: 'opacity 0.5s ease-in-out 0s;' }}></span>
                         <span className='k-file-name-size-wrapper'>
                             {
-                                file.ServerRedirectedEmbedUrl ?
-                                    <a href={file.ServerRedirectedEmbedUrl} target='_blank' data-interception='off'>
+                                file.URL ?
+                                    <a href={file.URL} target='_blank' data-interception='off'>
                                         <span className='k-file-name' title={file.name}>{file.name}</span>
                                     </a> :
                                     <span className='k-file-name' title={file.name}>{file.name}</span>
@@ -68,7 +68,8 @@ export class AttachmentsComponent extends React.Component<IArInvoiceSubComponent
                                     name: attachment.FileName,
                                     progress: 100,
                                     status: UploadFileStatus.Uploaded,
-                                    uid: index.toString()
+                                    uid: index.toString(),
+                                    URL: attachment.URL
                                 });
                             }) :
                             undefined
