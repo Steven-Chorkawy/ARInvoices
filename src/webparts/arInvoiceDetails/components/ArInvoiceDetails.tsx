@@ -11,6 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
+import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
 
 
 // Kendo Imports. 
@@ -58,7 +59,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
     });
 
     if (idFromQueryParam) {
-      this.getInvoiceById(Number(idFromQueryParam)).then(invoice => {
+      GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
         this.setState({ currentInvoice: invoice });
       });
     }
@@ -66,10 +67,6 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
 
   private getInvoiceIDFromQueryParams = () => {
     return new UrlQueryParameterCollection(window.location.href).getValue(ARInvoiceQueryParams.ARInvoiceId);
-  }
-
-  private getInvoiceById = async (id) => {
-    return await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).get();
   }
 
   //#region ComboBox Methods.
@@ -80,7 +77,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
 
   private onChangeComboBox = e => {
     if (e && e.value) {
-      this.getInvoiceById(e.value.ID).then(invoice => {
+      GetInvoiceByID(e.value.ID).then(invoice => {
         this.setState({
           currentInvoice: invoice,
           invoices: this.state.allInvoices
@@ -108,19 +105,19 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
-            <Label>Search Invoices:</Label>
-            <ComboBox
-              data={this.state.invoices}
-              textField={'Title'}
-              dataItemKey={'ID'}
-              loading={this.state.invoices === undefined}
-              style={{ width: '100%' }}
-              value={this.state.currentInvoice}
-              filterable={true}
-              onFilterChange={this.filterComboBox}
-              onChange={this.onChangeComboBox}
-              itemRender={this.comboBoxItemRender}
-            />     
+        <Label>Search Invoices:</Label>
+        <ComboBox
+          data={this.state.invoices}
+          textField={'Title'}
+          dataItemKey={'ID'}
+          loading={this.state.invoices === undefined}
+          style={{ width: '100%' }}
+          value={this.state.currentInvoice}
+          filterable={true}
+          onFilterChange={this.filterComboBox}
+          onChange={this.onChangeComboBox}
+          itemRender={this.comboBoxItemRender}
+        />
         <hr />
         {
           this.state.currentInvoice ?
