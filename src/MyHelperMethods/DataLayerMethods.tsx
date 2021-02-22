@@ -10,6 +10,7 @@ import { IItem } from "@pnp/sp/items/types";
 
 import { MyLists } from '../enums/MyLists';
 import { IARInvoice, IApproval, IAccount } from '../interfaces/IARInvoice';
+import { BuildURLToDocument } from './HelperMethods';
 
 export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> => {
     let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
@@ -68,6 +69,10 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
     output.Accounts = await GetAccounts_Batch(output.AccountsId);
     if (output.Attachments) {
         output.AttachmentFiles = await item.attachmentFiles();
+        for (let attachmentIndex = 0; attachmentIndex < output.AttachmentFiles.length; attachmentIndex++) {
+            const attachment = output.AttachmentFiles[attachmentIndex];
+            output.AttachmentFiles[attachmentIndex].URL = await BuildURLToDocument(attachment.FileName, id);
+        }
     }
 
 
