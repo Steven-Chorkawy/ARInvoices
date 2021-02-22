@@ -11,7 +11,7 @@ import * as MyValidator from '../../../MyHelperMethods/Validators';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 
 
-import { Field, FieldWrapper } from '@progress/kendo-react-form';
+import { Field, FieldWrapper, FormElement } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
 //#region Interfaces
@@ -84,45 +84,39 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                 <CardBody>
                     <div className={'row'}>
                         <div className={'col-md-10'} style={{ paddingRight: '0px' }}>
-                            <div className={'row'}>
-                                <div className={'col-md-5'}>
-                                    <Label style={{ display: 'block' }}>Account Code:  </Label>
-                                    <Field
-                                        name={`Accounts[${this.props.index}].Account_x0020_Code`}
-                                        component={MyFormComponents.FormMaskedTextBox}
-                                        mask="000-00-000-00000-0000"
-                                        validator={MyValidator.required}
-                                        required={true}
-                                    />
-                                </div>
-                                <div className={'col-md-5'}>
-                                    <Label style={{ display: 'block' }}>Apply HST:  </Label>
+                            <Field
+                                name={`Accounts[${this.props.index}].Account_x0020_Code`}
+                                component={MyFormComponents.FormMaskedTextBox}
+                                mask="000-00-000-00000-0000"
+                                validator={MyValidator.required}
+                                required={true}
+                                label={'Account Code'}
+                            />
+                            <Field
+                                name={`Accounts[${this.props.index}].Amount`}
+                                component={MyFormComponents.FormNumericTextBox}
+                                required={true}
+                                format="c2"
+                                min={0}
+                                validator={MyValidator.required}
+                                label={'Amount'}
+                            />
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <FieldWrapper>
+                                    <Label>Apply HST</Label>
                                     <Field
                                         name={`Accounts[${this.props.index}].HST_x0020_Taxable`}
                                         component={MyFormComponents.FormCheckbox}
                                     />
-                                </div>
-
-                            </div>
-                            <div className={'row'}>
-                                <div className={'col-md-5'}>
-                                    <Label style={{ display: 'block' }}>Amount:  </Label>
-                                    <Field
-                                        name={`Accounts[${this.props.index}].Amount`}
-                                        component={MyFormComponents.FormNumericTextBox}
-                                        required={true}
-                                        format="c2"
-                                        min={0}
-                                        validator={MyValidator.required}
-                                    />
-                                    <Hint>HST Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</Hint>
-                                </div>
-                                <div className={'col-md-5'}>
-                                    <Label style={{ display: 'block' }}>Total:  </Label>
-                                    <FieldWrapper>
-                                        <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
-                                    </FieldWrapper>
-                                </div>
+                                </FieldWrapper>
+                                <FieldWrapper>
+                                    <Label style={{ alignItems: 'baseline' }}>HST</Label>
+                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</p>
+                                </FieldWrapper>
+                                <FieldWrapper>
+                                    <Label style={{ alignItems: 'baseline' }}>Total</Label>
+                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
+                                </FieldWrapper>
                             </div>
                         </div>
                         <div className={'col-md-1'} style={{ paddingRight: '0px' }}>

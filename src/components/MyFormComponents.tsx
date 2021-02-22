@@ -138,6 +138,7 @@ export const FormCheckbox = (fieldRenderProps) => {
       <Checkbox
         ariaDescribedBy={`${hindId} ${errorId}`}
         label={fullLabel}
+        labelPlacement={'before'}
         valid={valid}
         id={id}
         disabled={disabled}
