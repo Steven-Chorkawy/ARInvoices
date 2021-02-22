@@ -17,6 +17,7 @@ import * as MyFormComponents from '../../../components/MyFormComponents';
 import { ComboBox } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
+import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
 
 
@@ -78,12 +79,18 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
   }
 
   private onChangeComboBox = e => {
-    if (e) {
+    if (e && e.value) {
       this.getInvoiceById(e.value.ID).then(invoice => {
         this.setState({
           currentInvoice: invoice,
           invoices: this.state.allInvoices
         });
+      });
+    }
+    else {
+      this.setState({
+        currentInvoice: undefined,
+        invoices: this.state.allInvoices
       });
     }
   }
@@ -101,6 +108,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
+        <Label>Search Invoices:</Label>
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -115,25 +123,25 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
         />
         <hr />
         {
-          this.state.currentInvoice &&
-          <Form
-            initialValues={{ ...this.state.currentInvoice }}
-            onSubmit={e => console.log(e)}
-            render={formRenderProps => (
-              <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
-                <FieldWrapper>
-                  <Field
-                    id="Requested_x0020_By"
-                    name="Requested_x0020_By"
-                    label="Requested By"
-                    wrapperStyle={{ width: '100%' }}
-                    context={this.props.context}
-                    userEmail={this.props.context.pageContext.user.email}
-                    component={MyFormComponents.FormPersonaDisplay}
-                  />
-                </FieldWrapper>
-                <FieldWrapper>
-                  {/* <Field
+          this.state.currentInvoice ?
+            <Form
+              initialValues={{ ...this.state.currentInvoice }}
+              onSubmit={e => console.log(e)}
+              render={formRenderProps => (
+                <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
+                  <FieldWrapper>
+                    <Field
+                      id="Requested_x0020_By"
+                      name="Requested_x0020_By"
+                      label="Requested By"
+                      wrapperStyle={{ width: '100%' }}
+                      context={this.props.context}
+                      userEmail={this.props.context.pageContext.user.email}
+                      component={MyFormComponents.FormPersonaDisplay}
+                    />
+                  </FieldWrapper>
+                  <FieldWrapper>
+                    {/* <Field
                     id={'Date'}
                     name={'Date'}
                     label={'* Date'}
@@ -141,19 +149,22 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     //validator={MyValidator.dateValidator}
                     wrapperStyle={{ width: '50%' }}
                   /> */}
-                </FieldWrapper>
-                <div className="k-form-buttons">
-                  <Button
-                    primary={true}
-                    type={'submit'}
-                    icon={'save'}
-                    disabled={!formRenderProps.allowSubmit}
-                  >Submit AR Invoice</Button>
-                  <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
-                </div>
-              </FormElement>
-            )}
-          />
+                  </FieldWrapper>
+                  <div className="k-form-buttons">
+                    <Button
+                      primary={true}
+                      type={'submit'}
+                      icon={'save'}
+                      disabled={!formRenderProps.allowSubmit}
+                    >Submit AR Invoice</Button>
+                    <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
+                  </div>
+                </FormElement>
+              )}
+            /> :
+            <div>
+              <h3>No Invoice Selected.</h3>
+            </div>
         }
       </div>
     );
