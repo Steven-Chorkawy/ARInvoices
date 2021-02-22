@@ -6,9 +6,22 @@ export interface ISPUser {
     EMail: string;          // Email.
 }
 
-export interface IApproval {
+/**
+ * Common Fields that all SharePoint objects have. 
+ */
+interface ISPItem {
     ID: number;
     Id: number;
+    Title: string;
+    AuthorId: number;
+    Author?: ISPUser;
+    EditorId: number;
+    Editor?: ISPUser;
+    Created: string;
+    Modified: string;
+}
+
+export interface IApproval extends ISPItem {
     AR_x0020_InvoiceId: number;
     Assigned_x0020_To: ISPUser;
     Assigned_x0020_ToId: number;
@@ -17,31 +30,27 @@ export interface IApproval {
     Response_x0020_Message: string;
     Response_x0020_Summary: string;
     Status: string;
-    Title: string;
-    AuthorId: number;
-    EditorId: number;
-    Created: string;
-    Modified: string;
 }
 
-export interface IAccount {
-    Title: string;
+export interface IAccount extends ISPItem {
     Account_x0020_Code: string;
     Amount: number;
     HST_x0020_Taxable: boolean;
     AR_x0020_InvoiceId?: number;
-    AuthorId: number;
-    EditorId: number;
+}
+
+export interface ICustomer extends ISPItem {
+    GP_x0020_ID: number;
+    Contact_x0020_Name: string;
+    Mailing_x0020_Address: string;
+    Telephone_x0020_Number: string;
 }
 //#endregion
 
 /**
  * This is the object received from SharePoint when an AR Invoice is queried. 
  */
-export interface IARInvoice {
-    ID: number;
-    Id: number;
-    Title: string;
+export interface IARInvoice extends ISPItem {
     Urgent: boolean;
     Attachments: boolean;           // SharePoint uses this property to let us know if there are any attachments on a list item.
     AttachmentFiles?: any[];         // This is the property we will use to access attachments.
@@ -58,15 +67,11 @@ export interface IARInvoice {
     Details: string;
     Date: string;
     CustomerId: number;
+    Customer: any;
     Customer_x0020_PO_x0020_Number: string;
     Customer_x0020_Name: string;
     Customer_x0020_Details: string;
     Batch_x0020_Number: string;
-
-    AuthorId: number;
-    EditorId: number;
-    Created: string;
-    Modified: string;
 }
 
 /**
