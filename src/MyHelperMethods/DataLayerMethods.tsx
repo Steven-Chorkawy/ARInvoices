@@ -35,10 +35,10 @@ export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
     let accounts = [];
     for (let index = 0; index < ids.length; index++) {
         list.items.getById(ids[index])
-        .inBatch(batch).get()
-        .then(f => {
-            accounts.push(f);
-        });      
+            .inBatch(batch).get()
+            .then(f => {
+                accounts.push(f);
+            });
     }
 
     await batch.execute();
@@ -55,8 +55,14 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Requested_x0020_By/Title, 
             Requested_x0020_By/ID, 
             Requested_x0020_By/Name, 
-            Requested_x0020_By/EMail
-        `).expand("Requested_x0020_By").get();
+            Requested_x0020_By/EMail,
+            Customer/ID,
+            Customer/Title,
+            Customer/GP_x0020_ID,
+            Customer/Contact_x0020_Name,
+            Customer/Mailing_x0020_Address,
+            Customer/Telephone_x0020_Number
+        `).expand("Requested_x0020_By, Customer").get();
 
     output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
     output.Accounts = await GetAccounts_Batch(output.AccountsId);

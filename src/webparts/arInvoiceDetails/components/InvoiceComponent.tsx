@@ -18,7 +18,7 @@ import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 /**
  * This class displays the generic invoice metadata. 
  */
-export class CustomerComponent extends React.Component<IArInvoiceSubComponentProps> {
+export class InvoiceComponent extends React.Component<IArInvoiceSubComponentProps> {
     constructor(props) {
         super(props);
     }
@@ -29,7 +29,7 @@ export class CustomerComponent extends React.Component<IArInvoiceSubComponentPro
                 <CardBody>
                     <CardTitle><b>Customer Details</b></CardTitle>
                     <Label>Name:</Label>
-                    
+
                 </CardBody>
             </Card>
         );
