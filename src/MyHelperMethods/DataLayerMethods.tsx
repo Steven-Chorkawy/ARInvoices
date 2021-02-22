@@ -145,7 +145,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
 
 export const CreateARInvoice = async (data: any) => {
     console.log(data);
-    const { AccountCodes, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
+    const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
     let newARInvoice = (await itemAddResult).data;
@@ -154,6 +154,6 @@ export const CreateARInvoice = async (data: any) => {
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(newARInvoice.ID).update({ Title: `${newARInvoice.Title} - ${newARInvoice.ID}` });
 
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
-    await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
+    await CreateARInvoiceAccounts(Accounts, newARInvoice.ID);
     await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };

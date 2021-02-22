@@ -313,7 +313,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     />
                   </FieldWrapper>
                   <FieldWrapper>
-                    <FieldArray name='AccountCodes' label='Account Codes' component={MyFormComponents.FormAccountListView} />
+                    <FieldArray name='Accounts' label='Account Codes' component={MyFormComponents.FormAccountListView} />
                   </FieldWrapper>
                   <FieldWrapper>
                     <Field id='Attachments' name='Attachments' label='Attachments' component={MyFormComponents.FormUpload} />

@@ -88,7 +88,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                 <div className={'col-md-5'}>
                                     <Label style={{ display: 'block' }}>Account Code:  </Label>
                                     <Field
-                                        name={`AccountCodes[${this.props.index}].Account_x0020_Code`}
+                                        name={`Accounts[${this.props.index}].Account_x0020_Code`}
                                         component={MyFormComponents.FormMaskedTextBox}
                                         mask="000-00-000-00000-0000"
                                         validator={MyValidator.required}
@@ -98,7 +98,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                 <div className={'col-md-5'}>
                                     <Label style={{ display: 'block' }}>Apply HST:  </Label>
                                     <Field
-                                        name={`AccountCodes[${this.props.index}].HST_x0020_Taxable`}
+                                        name={`Accounts[${this.props.index}].HST_x0020_Taxable`}
                                         component={MyFormComponents.FormCheckbox}
                                     />
                                 </div>
@@ -108,7 +108,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                 <div className={'col-md-5'}>
                                     <Label style={{ display: 'block' }}>Amount:  </Label>
                                     <Field
-                                        name={`AccountCodes[${this.props.index}].Amount`}
+                                        name={`Accounts[${this.props.index}].Amount`}
                                         component={MyFormComponents.FormNumericTextBox}
                                         required={true}
                                         format="c2"
