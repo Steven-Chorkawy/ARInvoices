@@ -14,6 +14,8 @@ import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { InvoiceComponent } from './InvoiceComponent';
+import { ApprovalsComponent } from './ApprovalsComponent';
+import { IARInvoice } from '../../../interfaces/IARInvoice';
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
@@ -21,7 +23,6 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
-import { IARInvoice } from '../../../interfaces/IARInvoice';
 
 
 export interface IArInvoiceDetailsProps {
@@ -142,6 +143,15 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     </div>
                     <div className='col-lg-7 col-md-12' >
                       <InvoiceComponent invoice={this.state.currentInvoice} />
+                    </div>
+                  </div>
+
+                  <div className='row'>
+                    <div className='col-lg-4 col-md-12'>
+                      <ApprovalsComponent invoice={this.state.currentInvoice} />
+                    </div>
+                    <div className='col-lg-4 col-md-12'>
+
                     </div>
                   </div>
 
