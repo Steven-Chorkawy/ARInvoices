@@ -6,7 +6,7 @@ import { Button } from '@progress/kendo-react-buttons';
 import { Checkbox, MaskedTextBox, NumericTextBox } from '@progress/kendo-react-inputs';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
-import { IAccount } from '../../../interfaces/IAccount';
+import { IAccount } from '../../../interfaces/IARInvoice';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 

@@ -6,12 +6,69 @@ import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
+import { IItem } from "@pnp/sp/items/types";
 
 import { MyLists } from '../enums/MyLists';
+import { IARInvoice, IApproval, IAccount } from '../interfaces/IARInvoice';
 
-// TODO: This should return Promise<[INVOICE INTERFACE HERE]>
-export const GetInvoiceByID = async (id: number): Promise<any> => {
-    return await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).get();
+export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> => {
+    let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
+    let batch = sp.web.createBatch();
+    let approvals = [];
+
+    for (let index = 0; index < ids.length; index++) {
+        list.items.getById(ids[index])
+            .select('*, Assigned_x0020_To/EMail, Assigned_x0020_To/ID, Assigned_x0020_To/Name, Assigned_x0020_To/Title').expand('Assigned_x0020_To')
+            .inBatch(batch).get()
+            .then(f => {
+                approvals.push(f);
+            });
+    }
+
+    await batch.execute();
+    return approvals;
+};
+
+export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
+    let list = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
+    let batch = sp.web.createBatch();
+    let accounts = [];
+    for (let index = 0; index < ids.length; index++) {
+        list.items.getById(ids[index])
+        .inBatch(batch).get()
+        .then(f => {
+            accounts.push(f);
+        });      
+    }
+
+    await batch.execute();
+    return accounts;
+}
+
+export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
+    let item: IItem = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"])
+        .items.getById(id)
+
+    let output: IARInvoice = await item
+        .select(`
+            *,
+            Requested_x0020_By/Title, 
+            Requested_x0020_By/ID, 
+            Requested_x0020_By/Name, 
+            Requested_x0020_By/EMail
+        `).expand("Requested_x0020_By").get();
+
+    output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
+    output.Accounts = await GetAccounts_Batch(output.AccountsId);
+    if (output.Attachments) {
+        output.AttachmentFiles = await item.attachmentFiles();
+    }
+
+
+    console.log('GetInvoiceByID: ' + id);
+    console.log(output);
+
+    return output;
 };
 
 export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
