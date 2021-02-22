@@ -43,11 +43,11 @@ export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
 
     await batch.execute();
     return accounts;
-}
+};
 
 export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
     let item: IItem = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"])
-        .items.getById(id)
+        .items.getById(id);
 
     let output: IARInvoice = await item
         .select(`
