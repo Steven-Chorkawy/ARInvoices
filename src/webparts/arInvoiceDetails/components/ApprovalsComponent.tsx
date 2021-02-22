@@ -15,7 +15,7 @@ import { Button } from '@progress/kendo-react-buttons';
 /**
  * This class displays the approval requests and status
  */
-export default class ApprovalsComponent extends React.Component<any, any> {
+export class ApprovalsComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
 

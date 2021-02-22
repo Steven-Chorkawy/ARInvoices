@@ -15,7 +15,7 @@ import { Button } from '@progress/kendo-react-buttons';
 /**
  * This class displays the generic invoice metadata. 
  */
-export default class DetailsComponent extends React.Component<any, any> {
+export class DetailsComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
 

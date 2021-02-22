@@ -15,7 +15,7 @@ import { Button } from '@progress/kendo-react-buttons';
 /**
  * This class displays the account details of an invoice. 
  */
-export default class AccountsComponent extends React.Component<any, any> {
+export class AccountsComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
 

@@ -15,7 +15,7 @@ import { Button } from '@progress/kendo-react-buttons';
 /**
  * This class displays data about the request. 
  */
-export default class RequestComponent extends React.Component<any, any> {
+export class RequestComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
 

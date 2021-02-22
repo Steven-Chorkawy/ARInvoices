@@ -15,7 +15,7 @@ import { Button } from '@progress/kendo-react-buttons';
 /**
  * This class displays the generic invoice metadata. 
  */
-export default class AttachmentsComponent extends React.Component<any, any> {
+export class AttachmentsComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
 
