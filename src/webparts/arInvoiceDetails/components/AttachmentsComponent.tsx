@@ -11,21 +11,26 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
+import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
+
+import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
+
 
 /**
  * This class displays the generic invoice metadata. 
  */
-export class AttachmentsComponent extends React.Component<any, any> {
+export class AttachmentsComponent extends React.Component<IArInvoiceSubComponentProps> {
     constructor(props) {
         super(props);
-
     }
 
     public render() {
         return (
-            <div>
-
-            </div>
+            <Card style={{ width: '100%' }}>
+                <CardBody>
+                    <CardTitle><b>Attachments</b></CardTitle>
+                </CardBody>
+            </Card>
         );
     }
 }

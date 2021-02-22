@@ -16,6 +16,7 @@ import { RequestComponent } from './RequestComponent';
 import { InvoiceComponent } from './InvoiceComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
 import { AccountsComponent } from './AccountsComponent';
+import { AttachmentsComponent } from './AttachmentsComponent';
 
 import { IARInvoice } from '../../../interfaces/IARInvoice';
 
@@ -154,6 +155,11 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     </div>
                     <div className='col-lg-7 col-md-12'>
                       <AccountsComponent invoice={this.state.currentInvoice} />
+                    </div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-md-12'>
+                      <AttachmentsComponent invoice={this.state.currentInvoice} />
                     </div>
                   </div>
 
