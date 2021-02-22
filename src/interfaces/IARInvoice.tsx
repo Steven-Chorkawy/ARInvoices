@@ -67,7 +67,7 @@ export interface IARInvoice extends ISPItem {
     Details: string;
     Date: string;
     CustomerId: number;
-    Customer: any;
+    Customer: ICustomer;
     Customer_x0020_PO_x0020_Number: string;
     Customer_x0020_Name: string;
     Customer_x0020_Details: string;
