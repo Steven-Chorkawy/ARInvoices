@@ -17,6 +17,7 @@ import { InvoiceComponent } from './InvoiceComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
 import { AccountsComponent } from './AccountsComponent';
 import { AttachmentsComponent } from './AttachmentsComponent';
+import { AllComponents } from './AllComponents';
 
 import { IARInvoice } from '../../../interfaces/IARInvoice';
 
@@ -26,6 +27,8 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
+import { TabStrip, TabStripTab } from '@progress/kendo-react-layout';
+
 
 
 export interface IArInvoiceDetailsProps {
@@ -38,6 +41,7 @@ export interface IArInvoiceDetailsState {
   allInvoices?: any;    // All of the invoices regardless of filter applied. 
   invoiceID?: number;
   currentInvoice?: IARInvoice;
+  selectedTab: number;
 }
 
 /**
@@ -62,7 +66,8 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
       invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
       invoices: undefined,
       allInvoices: undefined,
-      currentInvoice: undefined
+      currentInvoice: undefined,
+      selectedTab: 0
     };
 
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.select('ID, Title, Status').getAll().then(invoices => {
@@ -119,7 +124,6 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
-        <Label>Search Invoices:</Label>
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -140,36 +144,42 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
                 <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
-                  <div className='row'>
-                    <div className='col-lg-4 col-md-12' >
-                      <RequestComponent invoice={this.state.currentInvoice} />
-                    </div>
-                    <div className='col-lg-7 col-md-12' >
-                      <InvoiceComponent invoice={this.state.currentInvoice} />
-                    </div>
-                  </div>
-
-                  <div className='row'>
-                    <div className='col-lg-4 col-md-12'>
-                      <ApprovalsComponent invoice={this.state.currentInvoice} />
-                    </div>
-                    <div className='col-lg-7 col-md-12'>
-                      <AccountsComponent invoice={this.state.currentInvoice} />
-                    </div>
-                  </div>
-                  <div className='row'>
-                    <div className='col-md-12'>
-                      <AttachmentsComponent invoice={this.state.currentInvoice} />
-                    </div>
-                  </div>
-
                   <div className="k-form-buttons">
                     <Button
                       primary={true}
                       type={'submit'}
                       icon={'save'}
                       disabled={!formRenderProps.allowSubmit}
-                    >Submit AR Invoice</Button>
+                    >Save AR Invoice</Button>
+                    <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
+                  </div>
+                  <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })}>
+                    <TabStripTab title={'All'}>
+                      <AllComponents invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                    <TabStripTab title={'Request Details'}>
+                      <RequestComponent invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                    <TabStripTab title={'Invoice Details'}>
+                      <InvoiceComponent invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                    <TabStripTab title={'Approvals'}>
+                      <ApprovalsComponent invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                    <TabStripTab title={'Accounts'}>
+                      <AccountsComponent invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                    <TabStripTab title={this.state.currentInvoice.AttachmentFiles ? `Attachments (${this.state.currentInvoice.AttachmentFiles.length})` : `Attachments (${0})`}>
+                      <AttachmentsComponent invoice={this.state.currentInvoice} />
+                    </TabStripTab>
+                  </TabStrip>
+                  <div className="k-form-buttons">
+                    <Button
+                      primary={true}
+                      type={'submit'}
+                      icon={'save'}
+                      disabled={!formRenderProps.allowSubmit}
+                    >Save AR Invoice</Button>
                     <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
                   </div>
                 </FormElement>
