@@ -206,7 +206,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           });
                         }
                         else {
-                          formRenderProps.onChange('Approvers', { value: undefined })
+                          formRenderProps.onChange('Approvers', { value: undefined });
                           formRenderProps.onChange('ApproverEmails', { value: undefined });
                         }
                       }}
