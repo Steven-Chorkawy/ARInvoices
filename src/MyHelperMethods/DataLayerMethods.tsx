@@ -69,9 +69,10 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
     output.Accounts = await GetAccounts_Batch(output.AccountsId);
     if (output.Attachments) {
         output.AttachmentFiles = await item.attachmentFiles();
+        let webInfoUrl = await (await sp.web.get()).Url;
         for (let attachmentIndex = 0; attachmentIndex < output.AttachmentFiles.length; attachmentIndex++) {
             const attachment = output.AttachmentFiles[attachmentIndex];
-            output.AttachmentFiles[attachmentIndex].URL = await BuildURLToDocument(attachment.FileName, id);
+            output.AttachmentFiles[attachmentIndex].URL = await BuildURLToDocument(attachment.FileName, id, webInfoUrl);
         }
     }
 
