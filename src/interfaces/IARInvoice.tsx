@@ -1,3 +1,5 @@
+import { IAttachmentInfo } from "@pnp/sp/attachments";
+
 //#region Related Properties.
 export interface ISPUser {
     Title: string;          // Last Name, First Name.
@@ -45,6 +47,10 @@ export interface ICustomer extends ISPItem {
     Mailing_x0020_Address: string;
     Telephone_x0020_Number: string;
 }
+
+export interface ISPListAttachment extends IAttachmentInfo {
+    URL: string;
+}
 //#endregion
 
 /**
@@ -53,7 +59,7 @@ export interface ICustomer extends ISPItem {
 export interface IARInvoice extends ISPItem {
     Urgent: boolean;
     Attachments: boolean;           // SharePoint uses this property to let us know if there are any attachments on a list item.
-    AttachmentFiles?: any[];         // This is the property we will use to access attachments.
+    AttachmentFiles?: ISPListAttachment[];         // This is the property we will use to access attachments.
     Status: string;                 // Choice Field in SharePoint
     Standard_x0020_Terms: string;   // Choice Field in SharePoint
     Department: string;             // Choice Field in SharePoint
