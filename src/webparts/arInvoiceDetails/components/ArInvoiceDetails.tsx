@@ -13,7 +13,7 @@ import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
-import { DetailsComponent } from './DetailsComponent';
+import { CustomerComponent } from './CustomerComponent';
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
@@ -135,13 +135,13 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
               initialValues={{ ...this.state.currentInvoice }}
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
-                <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
+                <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
                   <div className='row'>
-                    <div className='col-lg-4 col-md-12'>
+                    <div className='col-lg-4 col-md-12' >
                       <RequestComponent invoice={this.state.currentInvoice} />
                     </div>
-                    <div className='col-lg-8 col-md-12'>
-                      <DetailsComponent />
+                    <div className='col-lg-7 col-md-12' >
+                      <CustomerComponent invoice={this.state.currentInvoice} />
                     </div>
                   </div>
 

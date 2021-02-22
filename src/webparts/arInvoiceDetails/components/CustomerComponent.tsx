@@ -11,21 +11,27 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
+import { IARInvoice } from '../../../interfaces/IARInvoice';
+import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
+import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 
 /**
  * This class displays the generic invoice metadata. 
  */
-export class DetailsComponent extends React.Component<any, any> {
+export class CustomerComponent extends React.Component<IArInvoiceSubComponentProps> {
     constructor(props) {
         super(props);
-
     }
 
     public render() {
         return (
-            <div>
-
-            </div>
+            <Card style={{ width: '100%' }}>
+                <CardBody>
+                    <CardTitle><b>Customer Details</b></CardTitle>
+                    <Label>Name:</Label>
+                    
+                </CardBody>
+            </Card>
         );
     }
 }
