@@ -108,19 +108,19 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div>
-        <Label>Search Invoices:</Label>
-        <ComboBox
-          data={this.state.invoices}
-          textField={'Title'}
-          dataItemKey={'ID'}
-          loading={this.state.invoices === undefined}
-          style={{ width: '100%' }}
-          value={this.state.currentInvoice}
-          filterable={true}
-          onFilterChange={this.filterComboBox}
-          onChange={this.onChangeComboBox}
-          itemRender={this.comboBoxItemRender}
-        />
+            <Label>Search Invoices:</Label>
+            <ComboBox
+              data={this.state.invoices}
+              textField={'Title'}
+              dataItemKey={'ID'}
+              loading={this.state.invoices === undefined}
+              style={{ width: '100%' }}
+              value={this.state.currentInvoice}
+              filterable={true}
+              onFilterChange={this.filterComboBox}
+              onChange={this.onChangeComboBox}
+              itemRender={this.comboBoxItemRender}
+            />     
         <hr />
         {
           this.state.currentInvoice ?
