@@ -21,6 +21,7 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
+import { IARInvoice } from '../../../interfaces/IARInvoice';
 
 
 export interface IArInvoiceDetailsProps {
@@ -32,7 +33,15 @@ export interface IArInvoiceDetailsState {
   invoices?: any;       // The invoice that should be displayed in the combo box. 
   allInvoices?: any;    // All of the invoices regardless of filter applied. 
   invoiceID?: number;
-  currentInvoice?: any;
+  currentInvoice?: IARInvoice;
+}
+
+/**
+ * This invoice is to be used by this components children. 
+ */
+export interface IArInvoiceSubComponentProps {
+  invoice: IARInvoice;
+  context?: any;
 }
 
 enum ARInvoiceQueryParams {
@@ -129,7 +138,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                 <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto', padding: '15px' }}>
                   <div className='row'>
                     <div className='col-lg-4 col-md-12'>
-                      <RequestComponent />
+                      <RequestComponent invoice={this.state.currentInvoice} />
                     </div>
                     <div className='col-lg-8 col-md-12'>
                       <DetailsComponent />
