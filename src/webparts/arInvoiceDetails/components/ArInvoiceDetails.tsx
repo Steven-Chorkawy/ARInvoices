@@ -15,6 +15,8 @@ import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { InvoiceComponent } from './InvoiceComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
+import { AccountsComponent } from './AccountsComponent';
+
 import { IARInvoice } from '../../../interfaces/IARInvoice';
 
 // Kendo Imports. 
@@ -150,8 +152,8 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     <div className='col-lg-4 col-md-12'>
                       <ApprovalsComponent invoice={this.state.currentInvoice} />
                     </div>
-                    <div className='col-lg-4 col-md-12'>
-
+                    <div className='col-lg-7 col-md-12'>
+                      <AccountsComponent invoice={this.state.currentInvoice} />
                     </div>
                   </div>
 

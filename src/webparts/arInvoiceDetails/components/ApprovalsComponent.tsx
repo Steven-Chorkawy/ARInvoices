@@ -14,7 +14,6 @@ import { Button } from '@progress/kendo-react-buttons';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
-import { AccountCodeListComponent } from '../../submitNewArInvoiceForm/components/AccountCodeListComponent';
 
 
 /**
@@ -30,7 +29,6 @@ export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentPr
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
-                    <AccountCodeListComponent data={this.props.invoice.Accounts} />
                 </CardBody>
             </Card>
         );
