@@ -3,7 +3,7 @@
   "solution": {
     "name": "ar-invoices-client-side-solution",
     "id": "bcbe9a49-f3a5-40af-bf04-cf0c1c92b5ef",
-    "version": "1.0.0.3",
+    "version": "1.0.0.4",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "features": [
@@ -11,7 +11,7 @@
         "title": "Application Extension - Deployment of custom action.",
         "description": "Deploys a custom action with ClientSideComponentId association",
         "id": "152b8dd5-1ebe-4616-95d9-d3b70ab9ec9f",
-        "version": "1.0.0.2",
+        "version": "1.0.0.4",
         "assets": {
           "elementManifests": [
             "elements.xml",
@@ -19,7 +19,14 @@
           ]
         }
       }
-    ]
+    ],
+    "developer": {
+      "name": "Steven Chorkawy",
+      "websiteUrl": "https://claringtonnet.sharepoint.com/",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    },
   },
   "paths": {
     "zippedPackage": "solution/ar-invoices.sppkg"

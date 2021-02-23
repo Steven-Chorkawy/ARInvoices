@@ -10,7 +10,7 @@ import { Button } from '@progress/kendo-react-buttons';
 export interface IApprovalCardComponentProps {
     invoice: IARInvoice;
     approval: IApproval;
-};
+}
 
 export interface IApprovalCardComponentState {
     showMore: boolean;
