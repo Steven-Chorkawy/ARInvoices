@@ -55,7 +55,7 @@ const parseActionStatus = (action: IApproval) => {
             break;
     }
     return output;
-}
+};
 
 export class ApprovalCardComponent extends React.Component<IApprovalCardComponentProps, IApprovalCardComponentState> {
     constructor(props) {
