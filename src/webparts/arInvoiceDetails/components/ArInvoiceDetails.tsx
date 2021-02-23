@@ -169,7 +169,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     <TabStripTab title={'Accounts'}>
                       <AccountsComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
-                    <TabStripTab title={this.state.currentInvoice.AttachmentFiles ? `Attachments (${this.state.currentInvoice.AttachmentFiles.length})` : `Attachments (${0})`}>
+                    <TabStripTab title={'Attachments'}>
                       <AttachmentsComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                   </TabStrip>
