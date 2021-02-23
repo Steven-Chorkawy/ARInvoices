@@ -6,8 +6,95 @@ import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
+import { IItem } from "@pnp/sp/items/types";
 
 import { MyLists } from '../enums/MyLists';
+import * as ApprovalEnum from '../enums/Approvals';
+
+import { IARInvoice, IApproval, IAccount } from '../interfaces/IARInvoice';
+import { BuildURLToDocument } from './HelperMethods';
+
+export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> => {
+    let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
+    let batch = sp.web.createBatch();
+    let approvals = [];
+
+    for (let index = 0; index < ids.length; index++) {
+        list.items.getById(ids[index])
+            .select(`
+            *, 
+            Assigned_x0020_To/EMail, 
+            Assigned_x0020_To/ID, 
+            Assigned_x0020_To/Name, 
+            Assigned_x0020_To/Title,
+            Author/EMail,
+            Author/ID,
+            Author/Name, 
+            Author/Title
+            `)
+            .expand('Assigned_x0020_To, Author')
+            .inBatch(batch).get()
+            .then(f => {
+                approvals.push(f);
+            });
+    }
+
+    await batch.execute();
+    return approvals;
+};
+
+export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
+    let list = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
+    let batch = sp.web.createBatch();
+    let accounts = [];
+    for (let index = 0; index < ids.length; index++) {
+        list.items.getById(ids[index])
+            .inBatch(batch).get()
+            .then(f => {
+                accounts.push(f);
+            });
+    }
+
+    await batch.execute();
+    return accounts;
+};
+
+export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
+    let item: IItem = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"])
+        .items.getById(id);
+
+    let output: IARInvoice = await item
+        .select(`
+            *,
+            Requested_x0020_By/Title, 
+            Requested_x0020_By/ID, 
+            Requested_x0020_By/Name, 
+            Requested_x0020_By/EMail,
+            Customer/ID,
+            Customer/Title,
+            Customer/GP_x0020_ID,
+            Customer/Contact_x0020_Name,
+            Customer/Mailing_x0020_Address,
+            Customer/Telephone_x0020_Number
+        `).expand("Requested_x0020_By, Customer").get();
+
+    output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
+    output.Accounts = await GetAccounts_Batch(output.AccountsId);
+    if (output.Attachments) {
+        output.AttachmentFiles = await item.attachmentFiles();
+        let webInfoUrl = await (await sp.web.get()).Url;
+        for (let attachmentIndex = 0; attachmentIndex < output.AttachmentFiles.length; attachmentIndex++) {
+            const attachment = output.AttachmentFiles[attachmentIndex];
+            output.AttachmentFiles[attachmentIndex].URL = await BuildURLToDocument(attachment.FileName, id, webInfoUrl);
+        }
+    }
+
+
+    console.log('GetInvoiceByID: ' + id);
+    console.log(output);
+
+    return output;
+};
 
 export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
     if (!attachments) {
@@ -46,7 +133,7 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     }
 };
 
-export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, approvalType?: any): Promise<void> => {
+export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
     if (!approvers) {
         return null;
     }
@@ -62,8 +149,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
             AR_x0020_InvoiceId: arInvoiceId,
             ARInvoiceID_Number: arInvoiceId, // Only using this field because PowerAutomate cannot get the value of AR_x0020_InvoiceId.
             Assigned_x0020_ToId: approver.Id,
-            //Request_x0020_Type: 'add choice value here.'
-            //Status: 'add choice value here.'
+            Request_x0020_Type: requestType
         });
         approvalRequestResults.push((await itemAddResult).data);
     }
@@ -77,7 +163,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
 
 export const CreateARInvoice = async (data: any) => {
     console.log(data);
-    const { AccountCodes, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
+    const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
     let newARInvoice = (await itemAddResult).data;
@@ -86,6 +172,6 @@ export const CreateARInvoice = async (data: any) => {
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(newARInvoice.ID).update({ Title: `${newARInvoice.Title} - ${newARInvoice.ID}` });
 
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
-    await CreateARInvoiceAccounts(AccountCodes, newARInvoice.ID);
+    await CreateARInvoiceAccounts(Accounts, newARInvoice.ID);
     await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };

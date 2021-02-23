@@ -7,9 +7,6 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-// Office UI
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-
 // Kendo UI
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Button } from '@progress/kendo-react-buttons';
@@ -113,6 +110,10 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
         if (this.props.submitCallback) {
           this.props.submitCallback();
         }
+      }).catch(reason => {
+        console.log('Something went wrong!');
+        console.error(reason);
+        alert('Something went wrong!');
       });
     };
 
@@ -209,7 +210,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           });
                         }
                         else {
-                          formRenderProps.onChange('Approvers', { value: undefined })
+                          formRenderProps.onChange('Approvers', { value: undefined });
                           formRenderProps.onChange('ApproverEmails', { value: undefined });
                         }
                       }}
@@ -316,7 +317,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     />
                   </FieldWrapper>
                   <FieldWrapper>
-                    <FieldArray name='AccountCodes' label='Account Codes' component={MyFormComponents.FormAccountListView} />
+                    <FieldArray name='Accounts' label='Account Codes' component={MyFormComponents.FormAccountListView} />
                   </FieldWrapper>
                   <FieldWrapper>
                     <Field id='Attachments' name='Attachments' label='Attachments' component={MyFormComponents.FormUpload} />
