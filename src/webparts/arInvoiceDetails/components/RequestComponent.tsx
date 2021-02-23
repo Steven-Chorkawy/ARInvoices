@@ -19,6 +19,7 @@ import Moment from 'react-moment';
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 
 import { PersonaComponent } from '../../../components/PersonaComponent';
+import { Editor, EditorTools } from '@progress/kendo-react-editor';
 
 /**
  * This class displays data about the request. 
@@ -40,7 +41,16 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                     <Label>Date:</Label>
                     <p>{<Moment format="D MMM YYYY">{this.props.invoice.Date}</Moment>}</p>
                     <Label>Note:</Label>
-                    <p>{this.props.invoice.Details}</p>
+                    <Editor
+                        tools={[
+                            [EditorTools.Bold, EditorTools.Italic, EditorTools.Underline],
+                            [EditorTools.Link, EditorTools.Unlink],
+                            [EditorTools.AlignLeft, EditorTools.AlignCenter, EditorTools.AlignRight],
+                            [EditorTools.OrderedList, EditorTools.UnorderedList]
+                        ]}
+                        contentStyle={{ height: 320 }}
+                        defaultContent={this.props.invoice.Details}
+                    />
                 </CardBody>
             </Card>
         );
