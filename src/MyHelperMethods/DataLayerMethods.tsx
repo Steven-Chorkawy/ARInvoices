@@ -9,6 +9,8 @@ import "@pnp/sp/attachments";
 import { IItem } from "@pnp/sp/items/types";
 
 import { MyLists } from '../enums/MyLists';
+import * as ApprovalEnum from '../enums/Approvals';
+
 import { IARInvoice, IApproval, IAccount } from '../interfaces/IARInvoice';
 import { BuildURLToDocument } from './HelperMethods';
 
@@ -120,11 +122,11 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     }
 };
 
-export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, approvalType?: any): Promise<void> => {
+export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
     if (!approvers) {
         return null;
     }
-
+    
     let approvalsList = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
     let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
     let approvalRequestResults = [];
@@ -136,13 +138,12 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
             AR_x0020_InvoiceId: arInvoiceId,
             ARInvoiceID_Number: arInvoiceId, // Only using this field because PowerAutomate cannot get the value of AR_x0020_InvoiceId.
             Assigned_x0020_ToId: approver.Id,
-            //Request_x0020_Type: 'add choice value here.'
-            //Status: 'add choice value here.'
+            Request_x0020_Type: requestType
         });
         approvalRequestResults.push((await itemAddResult).data);
     }
 
-    if (approvalRequestResults.length > 0) {
+    if (approvalRequestResults.length > 0) {        
         arInvoiceRequestList.items.getById(arInvoiceId).update({
             ApprovalsId: { results: approvalRequestResults.map(a => { return a.Id; }) }
         });
@@ -161,5 +162,5 @@ export const CreateARInvoice = async (data: any) => {
 
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
     await CreateARInvoiceAccounts(Accounts, newARInvoice.ID);
-    await CreateApprovalRequest(Approvers, newARInvoice.ID);
+    await CreateApprovalRequest(Approvers, newARInvoice.ID);    
 };
