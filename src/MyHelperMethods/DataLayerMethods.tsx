@@ -21,7 +21,18 @@ export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> =>
 
     for (let index = 0; index < ids.length; index++) {
         list.items.getById(ids[index])
-            .select('*, Assigned_x0020_To/EMail, Assigned_x0020_To/ID, Assigned_x0020_To/Name, Assigned_x0020_To/Title').expand('Assigned_x0020_To')
+            .select(`
+            *, 
+            Assigned_x0020_To/EMail, 
+            Assigned_x0020_To/ID, 
+            Assigned_x0020_To/Name, 
+            Assigned_x0020_To/Title,
+            Author/EMail,
+            Author/ID,
+            Author/Name, 
+            Author/Title
+            `)
+            .expand('Assigned_x0020_To, Author')
             .inBatch(batch).get()
             .then(f => {
                 approvals.push(f);
@@ -126,7 +137,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     if (!approvers) {
         return null;
     }
-    
+
     let approvalsList = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
     let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
     let approvalRequestResults = [];
@@ -143,7 +154,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
         approvalRequestResults.push((await itemAddResult).data);
     }
 
-    if (approvalRequestResults.length > 0) {        
+    if (approvalRequestResults.length > 0) {
         arInvoiceRequestList.items.getById(arInvoiceId).update({
             ApprovalsId: { results: approvalRequestResults.map(a => { return a.Id; }) }
         });
@@ -162,5 +173,5 @@ export const CreateARInvoice = async (data: any) => {
 
     await UploadARInvoiceAttachments(Attachments, newARInvoice.ID);
     await CreateARInvoiceAccounts(Accounts, newARInvoice.ID);
-    await CreateApprovalRequest(Approvers, newARInvoice.ID);    
+    await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };
