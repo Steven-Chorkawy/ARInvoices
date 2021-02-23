@@ -14,6 +14,7 @@ import { Button } from '@progress/kendo-react-buttons';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
+import { ApprovalCardComponent } from '../../../components/ApprovalCardComponent';
 
 
 /**
@@ -29,15 +30,14 @@ export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentPr
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
-                    {
-                        this.props.invoice.Approvals.map(approval => {
-                            return (
-                                <div>
-                                    {approval.Assigned_x0020_To.Title} | {approval.Status}
-                                </div>
-                            );
-                        })
-                    }
+                    {this.props.invoice.Approvals.map(approval => {
+                        return (
+                            <ApprovalCardComponent
+                                invoice={this.props.invoice}
+                                approval={approval}
+                            />
+                        );
+                    })}
                 </CardBody>
             </Card>
         );
