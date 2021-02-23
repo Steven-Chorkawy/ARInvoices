@@ -110,6 +110,10 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
         if (this.props.submitCallback) {
           this.props.submitCallback();
         }
+      }).catch(reason => {
+        console.log('Something went wrong!');
+        console.error(reason);
+        alert('Something went wrong!');
       });
     };
 
