@@ -153,7 +153,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                     >Save AR Invoice</Button>
                     <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
                   </div>
-                  <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })}>
+                  <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })} style={{ width: '100%' }}>
                     <TabStripTab title={'All'}>
                       <AllComponents invoice={this.state.currentInvoice} />
                     </TabStripTab>

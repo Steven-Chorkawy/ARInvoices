@@ -31,30 +31,16 @@ export class AllComponents extends React.Component<IArInvoiceSubComponentProps> 
 
     public render() {
         return (
-            <div>
+            <div style={{ width: '100%' }}>
                 <div className='row'>
-                    <div className='col-lg-4 col-md-12' >
+                    <div className='col-sm-12'>
                         <RequestComponent invoice={this.props.invoice} />
                     </div>
-                    <div className='col-lg-7 col-md-12' >
-                        <InvoiceComponent invoice={this.props.invoice} />
-                    </div>
                 </div>
-
-                <div className='row'>
-                    <div className='col-lg-4 col-md-12'>
-                        <ApprovalsComponent invoice={this.props.invoice} />
-                    </div>
-                    <div className='col-lg-7 col-md-12'>
-                        <AccountsComponent invoice={this.props.invoice} />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-md-12'>
-                        <AttachmentsComponent invoice={this.props.invoice} />
-                    </div>
-                </div>
-
+                <InvoiceComponent invoice={this.props.invoice} />
+                <ApprovalsComponent invoice={this.props.invoice} />
+                <AccountsComponent invoice={this.props.invoice} />
+                <AttachmentsComponent invoice={this.props.invoice} />
             </div>
         );
     }
