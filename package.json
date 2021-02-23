@@ -31,6 +31,7 @@
     "@progress/kendo-react-buttons": "^4.4.0",
     "@progress/kendo-react-dateinputs": "^4.4.0",
     "@progress/kendo-react-dropdowns": "^4.4.0",
+    "@progress/kendo-react-editor": "^4.4.0",
     "@progress/kendo-react-form": "^4.4.0",
     "@progress/kendo-react-inputs": "^4.4.0",
     "@progress/kendo-react-intl": "^4.4.0",
