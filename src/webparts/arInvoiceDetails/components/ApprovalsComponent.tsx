@@ -16,10 +16,6 @@ import { ApprovalCardComponent } from '../../../components/ApprovalCardComponent
  * This class displays the approval requests and status
  */
 export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentProps> {
-    constructor(props) {
-        super(props);
-    }
-
     public render() {
         return (
             <Card style={{ width: '100%' }}>

@@ -20,11 +20,7 @@ import { Editor, EditorTools } from '@progress/kendo-react-editor';
 /**
  * This class displays data about the request. 
  */
-export class RequestComponent extends React.Component<IArInvoiceSubComponentProps> {
-    constructor(props) {
-        super(props);
-    }
-
+export class RequestComponent extends React.Component<IArInvoiceSubComponentProps> {   
     public render() {
         return (
             <Card style={{ width: '100%' }}>
