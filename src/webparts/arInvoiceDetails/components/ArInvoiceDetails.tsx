@@ -56,21 +56,22 @@ enum ARInvoiceQueryParams {
   ARInvoiceId = 'ariid', // ariid = AR Invoice Id
 }
 
-export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IArInvoiceDetailsState> {
+export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IArInvoiceDetailsState> {
 
   constructor(props) {
     super(props);
 
-    let idFromQueryParam: string = undefined;
-    try {
-      idFromQueryParam = this.getInvoiceIDFromQueryParams();
-    }
-    catch (e) {
-      alert('Failed to get query param.');
-    }
+    //let idFromQueryParam: string = undefined;
+    // try {
+    //   idFromQueryParam = this.getInvoiceIDFromQueryParams();
+    // }
+    // catch (e) {
+    //   alert('Failed to get query param.');
+    // }
 
     this.state = {
-      invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
+      //invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
+      invoiceID: undefined,
       invoices: undefined,
       allInvoices: undefined,
       currentInvoice: undefined,
@@ -84,11 +85,11 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
       });
     });
 
-    if (idFromQueryParam) {
-      GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
-        this.setState({ currentInvoice: invoice });
-      });
-    }
+    // if (idFromQueryParam) {
+    //   GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
+    //     this.setState({ currentInvoice: invoice });
+    //   });
+    // }
   }
 
   private getInvoiceIDFromQueryParams = () => {
@@ -130,7 +131,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
 
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
-      <div>
+      <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -150,7 +151,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
               initialValues={{ ...this.state.currentInvoice }}
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
-                <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
+                <FormElement >
                   <div className="k-form-buttons">
                     <Button
                       primary={true}
@@ -162,16 +163,18 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
                   </div>
                   <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })} style={{ width: '100%' }}>
                     <TabStripTab title={'All'}>
-                      <AllComponents invoice={this.state.currentInvoice} />
+                      {/* <AllComponents invoice={this.state.currentInvoice} /> */}
                     </TabStripTab>
                     <TabStripTab title={'Request Details'}>
-                      <RequestComponent invoice={this.state.currentInvoice} />
+                      {/* This failed crashes in prod. */}
+                      {/* <RequestComponent invoice={this.state.currentInvoice} /> */}
                     </TabStripTab>
                     <TabStripTab title={'Invoice Details'}>
                       <InvoiceComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Approvals'}>
-                      <ApprovalsComponent invoice={this.state.currentInvoice} />
+                      {/* This failed crashes in prod. */}
+                      {/* <ApprovalsComponent invoice={this.state.currentInvoice} /> */}
                     </TabStripTab>
                     <TabStripTab title={'Accounts'}>
                       <AccountsComponent invoice={this.state.currentInvoice} />

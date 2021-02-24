@@ -10,8 +10,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { sp } from "@pnp/sp";
 
 import * as strings from 'ArInvoiceDetailsWebPartStrings';
-import ArInvoiceDetails from './components/ArInvoiceDetails';
-import { IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
+import { ArInvoiceDetails, IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
 
 import '../../MyO365.css';
 import '../../bootstrap.css';
@@ -22,7 +21,7 @@ export interface IArInvoiceDetailsWebPartProps {
 }
 
 export default class ArInvoiceDetailsWebPart extends BaseClientSideWebPart<IArInvoiceDetailsWebPartProps> {
-  
+
   protected async onInit(): Promise<void> {
     await super.onInit().then(() => {
       sp.setup({
