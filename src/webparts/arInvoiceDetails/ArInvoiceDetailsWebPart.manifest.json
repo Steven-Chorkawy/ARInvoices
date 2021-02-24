@@ -17,11 +17,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "ARInvoiceDetails" },
+    "title": { "default": "AR Invoice Details" },
     "description": { "default": "Provide a detailed view into an AR Invoice.  Show Metadata, Accounts, and Approvals in one location. " },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ARInvoiceDetails"
+      "description": "AR Invoice Details Description"
     }
   }]
 }
