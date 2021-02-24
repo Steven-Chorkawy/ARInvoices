@@ -60,7 +60,14 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
 
   constructor(props) {
     super(props);
-    let idFromQueryParam: string = this.getInvoiceIDFromQueryParams();
+
+    let idFromQueryParam: string = undefined;
+    try {
+      idFromQueryParam = this.getInvoiceIDFromQueryParams();
+    }
+    catch (e) {
+      alert('Failed to get query param.');
+    }
 
     this.state = {
       invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
