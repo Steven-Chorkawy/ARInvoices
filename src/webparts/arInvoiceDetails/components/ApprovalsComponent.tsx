@@ -21,14 +21,14 @@ export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentPr
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
-                    {this.props.invoice.Approvals.map(approval => {
+                    {/* {this.props.invoice.Approvals.map(approval => {
                         return (
                             <ApprovalCardComponent
                                 invoice={this.props.invoice}
                                 approval={approval}
                             />
                         );
-                    })}
+                    })} */}
                 </CardBody>
             </Card>
         );

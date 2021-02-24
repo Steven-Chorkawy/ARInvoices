@@ -11,7 +11,6 @@ import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 
 import Moment from 'react-moment';
 
-
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 
 import { PersonaComponent } from '../../../components/PersonaComponent';

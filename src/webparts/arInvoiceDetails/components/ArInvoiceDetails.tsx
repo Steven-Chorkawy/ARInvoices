@@ -160,7 +160,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                     </TabStripTab>
                     <TabStripTab title={'Request Details'}>
                       {/* This failed crashes in prod. */}
-                      {/* <RequestComponent invoice={this.state.currentInvoice} /> */}
+                      <RequestComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Invoice Details'}>
                       <InvoiceComponent invoice={this.state.currentInvoice} />
