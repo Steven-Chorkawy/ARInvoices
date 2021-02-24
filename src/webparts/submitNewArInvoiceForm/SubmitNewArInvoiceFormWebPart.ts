@@ -13,7 +13,7 @@ import { ISubmitNewArInvoiceFormProps } from './components/SubmitNewArInvoiceFor
 
 import { sp } from "@pnp/sp";
 
-import '../../MyO365.scss';
+import '../../MyO365.css';
 import '../../bootstrap.css';
 import '../../custom.css';
 

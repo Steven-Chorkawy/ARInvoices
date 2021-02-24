@@ -13,7 +13,7 @@ import * as strings from 'ArInvoiceDetailsWebPartStrings';
 import ArInvoiceDetails from './components/ArInvoiceDetails';
 import { IArInvoiceDetailsProps } from './components/ArInvoiceDetails';
 
-import '../../MyO365.scss';
+import '../../MyO365.css';
 import '../../bootstrap.css';
 import '../../custom.css';
 

@@ -17,7 +17,7 @@ import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/New
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
 
-import '../../MyO365.scss';
+import '../../MyO365.css';
 import '../../bootstrap.css';
 import '../../custom.css';
 
