@@ -3,7 +3,7 @@
   "solution": {
     "name": "ar-invoices-client-side-solution",
     "id": "bcbe9a49-f3a5-40af-bf04-cf0c1c92b5ef",
-    "version": "1.0.0.5",
+    "version": "1.0.0.6",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "features": [
