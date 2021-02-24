@@ -61,17 +61,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   constructor(props) {
     super(props);
 
-    //let idFromQueryParam: string = undefined;
-    // try {
-    //   idFromQueryParam = this.getInvoiceIDFromQueryParams();
-    // }
-    // catch (e) {
-    //   alert('Failed to get query param.');
-    // }
+    let idFromQueryParam: string = this.getInvoiceIDFromQueryParams();    
 
     this.state = {
-      //invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
-      invoiceID: undefined,
+      invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
       invoices: undefined,
       allInvoices: undefined,
       currentInvoice: undefined,
@@ -85,11 +78,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       });
     });
 
-    // if (idFromQueryParam) {
-    //   GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
-    //     this.setState({ currentInvoice: invoice });
-    //   });
-    // }
+    if (idFromQueryParam) {
+      GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
+        this.setState({ currentInvoice: invoice });
+      });
+    }
   }
 
   private getInvoiceIDFromQueryParams = () => {
