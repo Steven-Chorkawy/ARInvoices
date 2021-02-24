@@ -4,7 +4,8 @@ import { Card, CardActions, CardBody, CardSubtitle, CardTitle } from '@progress/
 
 import { IARInvoice, IApproval } from '../interfaces/IARInvoice';
 import * as ApprovalEnum from '../enums/Approvals';
-import Moment from 'react-moment';
+import MyDate from './MyDate';
+
 import { Button } from '@progress/kendo-react-buttons';
 
 export interface IApprovalCardComponentProps {
@@ -15,6 +16,7 @@ export interface IApprovalCardComponentProps {
 export interface IApprovalCardComponentState {
     showMore: boolean;
 }
+
 const parseActionType = (action: IApproval) => {
     let output = 'k-i-info';
     switch (action.Request_x0020_Type) {
@@ -77,7 +79,8 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                     <div>
                         {this.props.approval.Status === ApprovalEnum.ApprovalStatus.Waiting ? `Waiting for ` : `${this.props.approval.Status} by `}
                         <b>{this.props.approval.Assigned_x0020_To.Title} </b>
-                        <Moment
+                        <MyDate date={this.props.invoice.Modified} />
+                        {/* <Moment
                             className={'k-card-subtitle'}
                             date={this.props.approval.Modified}      // The date to be used.
                             format={'MM/DD/YYYY'}       // Date format. 
@@ -85,7 +88,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                             titleFormat={'D MMM YYYY'}  // Title format
                             fromNow={true}              // Display number of hours since date.
                             fromNowDuring={7200000}    // Only display fromNow if it is less than the milliseconds provided here. 7200000 = 2 hours.
-                        />
+                        /> */}
                     </div>
                 </CardBody>
                 {
@@ -93,7 +96,8 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                     <CardBody style={{ wordWrap: 'break-word' }}>
                         <div>
                             Requested by <b>{this.props.approval.Author.Title} </b>
-                            <Moment
+                            <MyDate date={this.props.approval.Created} />
+                            {/* <Moment
                                 className={'k-card-subtitle'}
                                 date={this.props.approval.Created}        // The date to be used.
                                 format={'MM/DD/YYYY'}       // Date format. 
@@ -101,7 +105,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                                 titleFormat={'D MMM YYYY'}  // Title format
                                 fromNow={true}              // Display number of hours since date.
                                 fromNowDuring={7200000}     // Only display fromNow if it is less than the milliseconds provided here. 7200000 = 2 hours.
-                            />
+                            /> */}
                         </div>
                         <div>
                             {this.props.approval.Notes}

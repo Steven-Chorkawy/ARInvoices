@@ -56,10 +56,11 @@ enum ARInvoiceQueryParams {
   ARInvoiceId = 'ariid', // ariid = AR Invoice Id
 }
 
-export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IArInvoiceDetailsState> {
+export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IArInvoiceDetailsState> {
 
   constructor(props) {
     super(props);
+
     let idFromQueryParam: string = this.getInvoiceIDFromQueryParams();
 
     this.state = {
@@ -123,7 +124,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
 
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
-      <div>
+      <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -143,7 +144,7 @@ export default class ArInvoiceDetails extends React.Component<IArInvoiceDetailsP
               initialValues={{ ...this.state.currentInvoice }}
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
-                <FormElement style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
+                <FormElement >
                   <div className="k-form-buttons">
                     <Button
                       primary={true}

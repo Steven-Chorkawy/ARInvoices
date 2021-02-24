@@ -49,8 +49,7 @@
     "@types/webpack-env": "1.13.1",
     "office-ui-fabric-react": "6.214.0",
     "react": "16.8.5",
-    "react-dom": "16.8.5",
-    "react-moment": "^1.1.1"
+    "react-dom": "16.8.5"
   },
   "resolutions": {
     "@types/react": "16.8.8"
