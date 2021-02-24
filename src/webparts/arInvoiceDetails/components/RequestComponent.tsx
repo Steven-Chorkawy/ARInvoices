@@ -9,17 +9,16 @@ import "@pnp/sp/items";
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 
-import Moment from 'react-moment';
-
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 
 import { PersonaComponent } from '../../../components/PersonaComponent';
 import { Editor, EditorTools } from '@progress/kendo-react-editor';
+import MyDate from '../../../components/MyDate';
 
 /**
  * This class displays data about the request. 
  */
-export class RequestComponent extends React.Component<IArInvoiceSubComponentProps> {   
+export class RequestComponent extends React.Component<IArInvoiceSubComponentProps> {
     public render() {
         return (
             <Card style={{ width: '100%' }}>
@@ -30,7 +29,8 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                     <Label>Department:</Label>
                     <p>{this.props.invoice.Department}</p>
                     <Label>Date:</Label>
-                    <p>{<Moment format="D MMM YYYY">{this.props.invoice.Date}</Moment>}</p>
+                    <MyDate date={this.props.invoice.Date} />
+                    {/* <p>{<Moment format="D MMM YYYY">{this.props.invoice.Date}</Moment>}</p> */}
                     <Label>Note:</Label>
                     <Editor
                         tools={[

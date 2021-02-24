@@ -61,7 +61,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   constructor(props) {
     super(props);
 
-    let idFromQueryParam: string = this.getInvoiceIDFromQueryParams();    
+    let idFromQueryParam: string = this.getInvoiceIDFromQueryParams();
 
     this.state = {
       invoiceID: idFromQueryParam ? Number(idFromQueryParam) : undefined,
@@ -156,18 +156,16 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                   </div>
                   <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })} style={{ width: '100%' }}>
                     <TabStripTab title={'All'}>
-                      {/* <AllComponents invoice={this.state.currentInvoice} /> */}
+                      <AllComponents invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Request Details'}>
-                      {/* This failed crashes in prod. */}
                       <RequestComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Invoice Details'}>
                       <InvoiceComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Approvals'}>
-                      {/* This failed crashes in prod. */}
-                      {/* <ApprovalsComponent invoice={this.state.currentInvoice} /> */}
+                      <ApprovalsComponent invoice={this.state.currentInvoice} />
                     </TabStripTab>
                     <TabStripTab title={'Accounts'}>
                       <AccountsComponent invoice={this.state.currentInvoice} />
