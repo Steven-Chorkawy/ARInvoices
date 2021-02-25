@@ -175,3 +175,7 @@ export const CreateARInvoice = async (data: any) => {
     await CreateARInvoiceAccounts(Accounts, newARInvoice.ID);
     await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };
+
+export const UpdateARInvoice = async (invoice: IARInvoice) => {
+    debugger;
+}
