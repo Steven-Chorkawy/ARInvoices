@@ -58,10 +58,29 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                             <MyDate date={this.props.invoice.Date} />
                     }
 
+                    <Label>Urgent:</Label>
+                    {
+                        this.props.inEditMode ?
+                            <Field
+                                id="Urgent"
+                                name="Urgent"
+                                label="Urgent"
+                                onLabel="Yes"
+                                offLabel="No"
+                                wrapperStyle={{ width: '50%' }}
+                                labelPlacement={'before'}
+                                component={MyFormComponents.FormCheckbox}
+                                hint={'Flag emails as high priority.'}
+                            /> :
+                            this.props.invoice.Urgent ? "Yes" : "No"
+                    }
+
                     <Label>Note:</Label>
                     {
                         this.props.inEditMode ?
-                            <Editor
+                            <Field
+                                id="Details"
+                                name="Details"
                                 tools={[
                                     [EditorTools.Bold, EditorTools.Italic, EditorTools.Underline],
                                     [EditorTools.Link, EditorTools.Unlink],
@@ -70,6 +89,7 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                                 ]}
                                 contentStyle={{ height: 320 }}
                                 defaultContent={this.props.invoice.Details}
+                                component={MyFormComponents.FormEditor}
                             /> :
                             <p>{this.props.invoice.Details}</p>
                     }
