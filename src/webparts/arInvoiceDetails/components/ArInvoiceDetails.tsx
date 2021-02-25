@@ -18,18 +18,15 @@ import { ApprovalsComponent } from './ApprovalsComponent';
 import { AccountsComponent } from './AccountsComponent';
 import { AttachmentsComponent } from './AttachmentsComponent';
 import { AllComponents } from './AllComponents';
-
 import { IARInvoice } from '../../../interfaces/IARInvoice';
 
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
-import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
-import { Button } from '@progress/kendo-react-buttons';
-import { TabStrip, TabStripTab } from '@progress/kendo-react-layout';
 
-
+// Fluent UI
+import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
 
 export interface IArInvoiceDetailsProps {
   description: string;
@@ -122,6 +119,16 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   }
   //#endregion
 
+  private _buttons = (formRenderProps) => {
+    return <div className="k-form-buttons">
+      <PrimaryButton
+        type={'submit'}
+        disabled={!formRenderProps.allowSubmit}
+      >Save</PrimaryButton>
+      <DefaultButton onClick={formRenderProps.onFormReset}>Reset</DefaultButton>
+    </div>
+  }
+
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
     return (
       <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
@@ -145,44 +152,28 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               onSubmit={e => console.log(e)}
               render={formRenderProps => (
                 <FormElement >
-                  <div className="k-form-buttons">
-                    <Button
-                      primary={true}
-                      type={'submit'}
-                      icon={'save'}
-                      disabled={!formRenderProps.allowSubmit}
-                    >Save AR Invoice</Button>
-                    <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
-                  </div>
-                  <TabStrip key={this.state.currentInvoice.ID} selected={this.state.selectedTab} onSelect={e => this.setState({ selectedTab: e.selected })} style={{ width: '100%' }}>
-                    <TabStripTab title={'All'}>
+                  {this._buttons(formRenderProps)}
+                  <Pivot key={this.state.currentInvoice.ID} style={{ width: '100%' }}>
+                    <PivotItem title={'All'} headerText={'All'}>
                       <AllComponents invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                    <TabStripTab title={'Request Details'}>
+                    </PivotItem>
+                    <PivotItem title={'Request Details'} headerText={'Request Details'}>
                       <RequestComponent invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                    <TabStripTab title={'Invoice Details'}>
+                    </PivotItem>
+                    <PivotItem title={'Invoice Details'} headerText={'Invoice Details'}>
                       <InvoiceComponent invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                    <TabStripTab title={'Approvals'}>
+                    </PivotItem>
+                    <PivotItem title={'Approvals'} headerText={'Approvals'}>
                       <ApprovalsComponent invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                    <TabStripTab title={'Accounts'}>
+                    </PivotItem>
+                    <PivotItem title={'Accounts'} headerText={'Accounts'}>
                       <AccountsComponent invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                    <TabStripTab title={'Attachments'}>
+                    </PivotItem>
+                    <PivotItem title={'Attachments'} headerText={'Attachments'}>
                       <AttachmentsComponent invoice={this.state.currentInvoice} />
-                    </TabStripTab>
-                  </TabStrip>
-                  <div className="k-form-buttons">
-                    <Button
-                      primary={true}
-                      type={'submit'}
-                      icon={'save'}
-                      disabled={!formRenderProps.allowSubmit}
-                    >Save AR Invoice</Button>
-                    <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
-                  </div>
+                    </PivotItem>
+                  </Pivot>
+                  {this._buttons(formRenderProps)}
                 </FormElement>
               )}
             /> :
