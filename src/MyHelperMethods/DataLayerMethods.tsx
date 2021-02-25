@@ -78,6 +78,8 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Customer/Telephone_x0020_Number
         `).expand("Requested_x0020_By, Customer").get();
 
+    output.Date = new Date(output.Date);
+
     output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
     output.Accounts = await GetAccounts_Batch(output.AccountsId);
     if (output.Attachments) {
@@ -88,10 +90,6 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             output.AttachmentFiles[attachmentIndex].URL = await BuildURLToDocument(attachment.FileName, id, webInfoUrl);
         }
     }
-
-
-    console.log('GetInvoiceByID: ' + id);
-    console.log(output);
 
     return output;
 };
@@ -176,6 +174,7 @@ export const CreateARInvoice = async (data: any) => {
     await CreateApprovalRequest(Approvers, newARInvoice.ID);
 };
 
-export const UpdateARInvoice = async (invoice: IARInvoice) => {
-    debugger;
-}
+export const UpdateARInvoice = async (data: any) => {
+    console.log('update ar invoice');
+    console.log(data);
+};

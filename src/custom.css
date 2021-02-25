@@ -2,9 +2,9 @@
 .k-animation-container {
   z-index: 10003 !important;
 }
-.k-animation-container.k-animation-container-relative {
+/* .k-animation-container.k-animation-container-relative {
   width:100%;
-}
+} */
 
 /*Makes labels stand out more as per Brajesh. */
 .k-form .k-label {

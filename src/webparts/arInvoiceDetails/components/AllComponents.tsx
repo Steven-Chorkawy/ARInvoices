@@ -32,11 +32,7 @@ export class AllComponents extends React.Component<IArInvoiceSubComponentProps> 
     public render() {
         return (
             <div style={{ width: '100%' }}>
-                <div className='row'>
-                    <div className='col-sm-12'>
-                        <RequestComponent {...this.props} />
-                    </div>
-                </div>
+                <RequestComponent {...this.props} />
                 <InvoiceComponent {...this.props} />
                 <ApprovalsComponent {...this.props} />
                 <AccountsComponent {...this.props} />

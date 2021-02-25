@@ -71,7 +71,7 @@ export interface IARInvoice extends ISPItem {
     Approvals: IApproval[];
     Invoice_x0020_Number: string;
     Details: string;
-    Date: string;
+    Date: string | Date;
     CustomerId: number;
     Customer: ICustomer;
     Customer_x0020_PO_x0020_Number: string;

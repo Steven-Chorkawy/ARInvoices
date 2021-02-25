@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 // PnP Imports
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -8,12 +9,16 @@ import "@pnp/sp/items";
 // Kendo Imports. 
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
-
-import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
-
-import { PersonaComponent } from '../../../components/PersonaComponent';
 import { Editor, EditorTools } from '@progress/kendo-react-editor';
+import { Field } from '@progress/kendo-react-form';
+
+// My Imports
+import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
+import { PersonaComponent } from '../../../components/PersonaComponent';
 import MyDate from '../../../components/MyDate';
+import * as MyFormComponents from '../../../components/MyFormComponents';
+import * as MyValidator from '../../../MyHelperMethods/Validators';
+
 
 /**
  * This class displays data about the request. 
@@ -24,24 +29,50 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Request Details</b></CardTitle>
+
                     <Label>Requested By:</Label>
                     <PersonaComponent userEmail={this.props.invoice.Requested_x0020_By.EMail} />
-                    <Label>Department:</Label>
-                    <p>{this.props.invoice.Department}</p>
+
+                    <Label>* Department:</Label>
+                    {
+                        this.props.inEditMode ?
+                            <Field
+                                id="Department"
+                                name="Department"
+                                data={this.props.editFormFieldData.departments}
+                                component={MyFormComponents.FormDropDownList}
+                            /> :
+                            <p>{this.props.invoice.Department}</p>
+                    }
+
                     <Label>Date:</Label>
-                    <MyDate date={this.props.invoice.Date} />
-                    {/* <p>{<Moment format="D MMM YYYY">{this.props.invoice.Date}</Moment>}</p> */}
+                    {
+                        this.props.inEditMode ?
+                            <Field
+                                id={'Date'}
+                                name={'Date'}
+                                component={MyFormComponents.FormDatePicker}
+                                validator={MyValidator.dateValidator}
+                                wrapperStyle={{ width: '50%' }}
+                            /> :
+                            <MyDate date={this.props.invoice.Date} />
+                    }
+
                     <Label>Note:</Label>
-                    <Editor
-                        tools={[
-                            [EditorTools.Bold, EditorTools.Italic, EditorTools.Underline],
-                            [EditorTools.Link, EditorTools.Unlink],
-                            [EditorTools.AlignLeft, EditorTools.AlignCenter, EditorTools.AlignRight],
-                            [EditorTools.OrderedList, EditorTools.UnorderedList]
-                        ]}
-                        contentStyle={{ height: 320 }}
-                        defaultContent={this.props.invoice.Details}
-                    />
+                    {
+                        this.props.inEditMode ?
+                            <Editor
+                                tools={[
+                                    [EditorTools.Bold, EditorTools.Italic, EditorTools.Underline],
+                                    [EditorTools.Link, EditorTools.Unlink],
+                                    [EditorTools.AlignLeft, EditorTools.AlignCenter, EditorTools.AlignRight],
+                                    [EditorTools.OrderedList, EditorTools.UnorderedList]
+                                ]}
+                                contentStyle={{ height: 320 }}
+                                defaultContent={this.props.invoice.Details}
+                            /> :
+                            <p>{this.props.invoice.Details}</p>
+                    }
                 </CardBody>
             </Card>
         );

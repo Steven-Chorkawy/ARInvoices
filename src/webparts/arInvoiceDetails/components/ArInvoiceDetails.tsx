@@ -27,10 +27,16 @@ import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-fo
 
 // Fluent UI
 import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
+import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
 
 export interface IArInvoiceDetailsProps {
   description: string;
   context: any;
+}
+
+// Hold the data that is used to populate dropdowns, etc, in the edit form. 
+interface IARInvoiceEditFormFieldData {
+  departments: any[];
 }
 
 export interface IArInvoiceDetailsState {
@@ -40,6 +46,7 @@ export interface IArInvoiceDetailsState {
   currentInvoice?: IARInvoice;
   selectedTab: number;
   inEditMode: boolean;
+  editFormFieldData?: IARInvoiceEditFormFieldData;
 }
 
 /**
@@ -49,6 +56,7 @@ export interface IArInvoiceSubComponentProps {
   invoice: IARInvoice;
   context?: any;
   inEditMode: boolean;
+  editFormFieldData: IARInvoiceEditFormFieldData;
 }
 
 enum ARInvoiceQueryParams {
@@ -78,8 +86,14 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       });
     });
 
+    GetChoiceFieldValues(MyLists["AR Invoice Requests"], 'Department').then(values => {
+      this.setState({ editFormFieldData: { departments: values } });
+    });
+
     if (idFromQueryParam) {
       GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
+        console.log('Current Invoice:');
+        console.log(invoice);
         this.setState({ currentInvoice: invoice });
       });
     }
@@ -123,18 +137,24 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   //#endregion
 
   private _buttons = (formRenderProps) => {
-    return <div className="k-form-buttons">
-      {
-        this.state.inEditMode ?
-          <PrimaryButton iconProps={{ iconName: 'edit' }} type={'submit'} disabled={!formRenderProps.allowSubmit}>Save</PrimaryButton> :
-          <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }}>Edit</PrimaryButton>
-      }
-      <DefaultButton onClick={() => { formRenderProps.onFormReset(); this.setState({ inEditMode: false }); }}>Reset</DefaultButton>
-    </div>
+    return (
+      <div className="k-form-buttons">
+        {
+          this.state.inEditMode ?
+            <PrimaryButton iconProps={{ iconName: 'edit' }} type={'submit'} disabled={!formRenderProps.allowSubmit}>Save</PrimaryButton> :
+            <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }}>Edit</PrimaryButton>
+        }
+        <DefaultButton onClick={() => { formRenderProps.onFormReset(); this.setState({ inEditMode: false }); }}>Reset</DefaultButton>
+      </div>
+    );
   }
 
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
-    const subComponentProps = { invoice: this.state.currentInvoice, inEditMode: this.state.inEditMode };
+    const subComponentProps = {
+      invoice: this.state.currentInvoice,
+      inEditMode: this.state.inEditMode,
+      editFormFieldData: { ...this.state.editFormFieldData }
+    };
 
     return (
       <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
@@ -154,8 +174,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
         {
           this.state.currentInvoice ?
             <Form
-              initialValues={{ ...this.state.currentInvoice }}
-              onSubmit={e => UpdateARInvoice}
+              initialValues={{
+                ...this.state.currentInvoice,
+                _Date: new Date(this.state.currentInvoice.Date)
+              }}
+              onSubmit={e => { UpdateARInvoice(e); }}
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
