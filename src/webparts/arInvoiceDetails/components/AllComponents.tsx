@@ -34,13 +34,13 @@ export class AllComponents extends React.Component<IArInvoiceSubComponentProps> 
             <div style={{ width: '100%' }}>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <RequestComponent invoice={this.props.invoice} />
+                        <RequestComponent {...this.props} />
                     </div>
                 </div>
-                <InvoiceComponent invoice={this.props.invoice} />
-                <ApprovalsComponent invoice={this.props.invoice} />
-                <AccountsComponent invoice={this.props.invoice} />
-                <AttachmentsComponent invoice={this.props.invoice} />
+                <InvoiceComponent {...this.props} />
+                <ApprovalsComponent {...this.props} />
+                <AccountsComponent {...this.props} />
+                <AttachmentsComponent {...this.props} />
             </div>
         );
     }

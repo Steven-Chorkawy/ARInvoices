@@ -11,7 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-import { GetInvoiceByID } from '../../../MyHelperMethods/DataLayerMethods';
+import { GetInvoiceByID, UpdateARInvoice } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { InvoiceComponent } from './InvoiceComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
@@ -39,6 +39,7 @@ export interface IArInvoiceDetailsState {
   invoiceID?: number;
   currentInvoice?: IARInvoice;
   selectedTab: number;
+  inEditMode: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ export interface IArInvoiceDetailsState {
 export interface IArInvoiceSubComponentProps {
   invoice: IARInvoice;
   context?: any;
+  inEditMode: boolean;
 }
 
 enum ARInvoiceQueryParams {
@@ -65,7 +67,8 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       invoices: undefined,
       allInvoices: undefined,
       currentInvoice: undefined,
-      selectedTab: 0
+      selectedTab: 0,
+      inEditMode: false
     };
 
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.select('ID, Title, Status').getAll().then(invoices => {
@@ -121,15 +124,18 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
 
   private _buttons = (formRenderProps) => {
     return <div className="k-form-buttons">
-      <PrimaryButton
-        type={'submit'}
-        disabled={!formRenderProps.allowSubmit}
-      >Save</PrimaryButton>
-      <DefaultButton onClick={formRenderProps.onFormReset}>Reset</DefaultButton>
+      {
+        this.state.inEditMode ?
+          <PrimaryButton iconProps={{ iconName: 'edit' }} type={'submit'} disabled={!formRenderProps.allowSubmit}>Save</PrimaryButton> :
+          <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }}>Edit</PrimaryButton>
+      }
+      <DefaultButton onClick={() => { formRenderProps.onFormReset(); this.setState({ inEditMode: false }); }}>Reset</DefaultButton>
     </div>
   }
 
   public render(): React.ReactElement<IArInvoiceDetailsProps> {
+    const subComponentProps = { invoice: this.state.currentInvoice, inEditMode: this.state.inEditMode };
+
     return (
       <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
         <ComboBox
@@ -149,28 +155,28 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
           this.state.currentInvoice ?
             <Form
               initialValues={{ ...this.state.currentInvoice }}
-              onSubmit={e => console.log(e)}
+              onSubmit={e => UpdateARInvoice}
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
                   <Pivot key={this.state.currentInvoice.ID} style={{ width: '100%' }}>
                     <PivotItem title={'All'} headerText={'All'}>
-                      <AllComponents invoice={this.state.currentInvoice} />
+                      <AllComponents {...subComponentProps} />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
-                      <RequestComponent invoice={this.state.currentInvoice} />
+                      <RequestComponent {...subComponentProps} />
                     </PivotItem>
                     <PivotItem title={'Invoice Details'} headerText={'Invoice Details'}>
-                      <InvoiceComponent invoice={this.state.currentInvoice} />
+                      <InvoiceComponent {...subComponentProps} />
                     </PivotItem>
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
-                      <ApprovalsComponent invoice={this.state.currentInvoice} />
+                      <ApprovalsComponent {...subComponentProps} />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
-                      <AccountsComponent invoice={this.state.currentInvoice} />
+                      <AccountsComponent {...subComponentProps} />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
-                      <AttachmentsComponent invoice={this.state.currentInvoice} />
+                      <AttachmentsComponent {...subComponentProps} />
                     </PivotItem>
                   </Pivot>
                   {this._buttons(formRenderProps)}
