@@ -177,4 +177,27 @@ export const CreateARInvoice = async (data: any) => {
 export const UpdateARInvoice = async (data: any) => {
     console.log('update ar invoice');
     console.log(data);
+    
+    const {
+        Accounts,
+        AccountsId,
+        Approvals,
+        ApprovalsId,
+        AttachmentFiles,
+        Customer,
+        Requested_x0020_By,
+        ...invoice
+    } = data;
+
+    console.log(Accounts);
+    console.log(Approvals);
+    console.log(AttachmentFiles);
+    console.log(Customer);
+    console.log(invoice);
+
+    // Update the invoice properties. 
+    const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(invoice.ID)
+        .update({ ...invoice });
+    console.log('After Update:');
+    console.log(iUpdateRes);
 };
