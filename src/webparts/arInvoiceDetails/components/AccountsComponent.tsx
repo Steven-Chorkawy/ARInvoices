@@ -19,7 +19,7 @@ import * as MyFormComponents from '../../../components/MyFormComponents';
 import IDataOperations from '../../../interfaces/IDataOperations';
 
 export interface IAccountsComponentProps extends IArInvoiceSubComponentProps, IDataOperations {
-
+    
 }
 
 /**
@@ -35,7 +35,12 @@ export class AccountsComponent extends React.Component<IAccountsComponentProps> 
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Accounts</b></CardTitle>
-                    <FieldArray name='Accounts' label='Account Codes' component={MyFormComponents.FormAccountListView} onDelete={this.props.onDelete} />
+                    <FieldArray
+                        name='Accounts'
+                        label='Account Codes'
+                        component={MyFormComponents.FormAccountListView}
+                        {...this.props}
+                    />
                 </CardBody>
             </Card>
         );

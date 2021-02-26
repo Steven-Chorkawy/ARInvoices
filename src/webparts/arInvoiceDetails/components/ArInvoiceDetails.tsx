@@ -27,7 +27,7 @@ import { Form, Field, FormElement, FieldWrapper, FormRenderProps } from '@progre
 
 // Fluent UI
 import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
-import { GetChoiceFieldValues } from '../../../MyHelperMethods/HelperMethods';
+import { GetChoiceFieldValues, BuildGUID } from '../../../MyHelperMethods/HelperMethods';
 
 export interface IArInvoiceDetailsProps {
   description: string;
@@ -149,11 +149,8 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   private _buttons = (formRenderProps) => {
     return (
       <div className="k-form-buttons">
-        {
-          this.state.inEditMode ?
-            <PrimaryButton iconProps={{ iconName: 'edit' }} type={'submit'} disabled={!formRenderProps.allowSubmit}>Save</PrimaryButton> :
-            <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }}>Edit</PrimaryButton>
-        }
+        <PrimaryButton iconProps={{ iconName: 'save' }} type={'submit'} disabled={!formRenderProps.touched}>Save</PrimaryButton>
+        <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }} disabled={this.state.inEditMode}>Edit</PrimaryButton>
         <DefaultButton onClick={() => { formRenderProps.onFormReset(); this.setState({ inEditMode: false }); }}>Reset</DefaultButton>
       </div>
     );
@@ -198,7 +195,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                         formRenderProps={formRenderProps}
                         AccountCRUD={{
                           onDelete: this.account_onDelete,
-                          onSave: this.account_onSave
+                          onSave: this.account_onSave,
                         }}
                       />
                     </PivotItem>
@@ -216,7 +213,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                         {...subComponentProps}
                         formRenderProps={formRenderProps}
                         onDelete={this.account_onDelete}
-                        onEdit={this.account_onEdit}
+                        onSave={this.account_onSave}
                       />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>

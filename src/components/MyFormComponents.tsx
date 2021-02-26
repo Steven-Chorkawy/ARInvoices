@@ -938,6 +938,7 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
       <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
       <AccountCodeListComponent
         data={fieldArrayRenderProps.value}
+        inEditMode={fieldArrayRenderProps.inEditMode}
         onAdd={onAdd}
         onRemove={onRemove}
         onDelete={fieldArrayRenderProps.onDelete}
