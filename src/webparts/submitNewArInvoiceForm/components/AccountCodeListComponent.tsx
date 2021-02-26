@@ -24,10 +24,12 @@ interface IAccountCodeItemProps extends IAccountCodeListComponent {
     dataItem: IAccount;
     index: number;
     field: string;
+    itemInEdit?: boolean;
 }
 
 interface IAccountCodeItemState {
     item: IAccount;
+    itemInEdit: boolean;
 }
 
 
@@ -59,7 +61,8 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
         super(props);
 
         this.state = {
-            item: this.props.dataItem
+            item: this.props.dataItem,
+            itemInEdit: this.props.itemInEdit ? this.props.itemInEdit : false
         };
     }
 
@@ -115,8 +118,29 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                         </div>
                         <div className={'col-md-1'} style={{ paddingRight: '0px' }}>
                             {this.props.onSave && <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onEdit && <Button icon={'edit'} look={'flat'} title={'Edit'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onCancel && <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />}
+                            {
+                                this.props.dataItem.ID &&
+                                <Button
+                                    icon={'edit'}
+                                    look={'flat'}
+                                    title={'Edit'}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.setState({ itemInEdit: !this.state.itemInEdit });
+                                    }}
+                                />
+                            }
+                            {
+                                this.props.dataItem.ID && this.state.itemInEdit &&
+                                <Button
+                                    icon={'cancel'}
+                                    look={'flat'}
+                                    title={'Cancel'}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.setState({ itemInEdit: false });
+                                    }} />
+                            }
                             {
                                 this.props.onDelete &&
                                 <Button icon={'delete'} look={'flat'} title={'Delete'}
