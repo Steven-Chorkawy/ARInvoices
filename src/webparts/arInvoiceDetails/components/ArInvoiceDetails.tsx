@@ -11,7 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-import { GetInvoiceByID, UpdateARInvoice } from '../../../MyHelperMethods/DataLayerMethods';
+import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
@@ -196,7 +196,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
-                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} />
+                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} onDelete={DeleteARInvoiceAccounts} />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
                       <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />
