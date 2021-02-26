@@ -131,6 +131,12 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     }
 };
 
+export const DeleteARInvoiceAccounts = async (account: any) => {
+    debugger;
+    console.log('DeleteARInvoiceAccounts');
+    console.log(account);
+}
+
 export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
     if (!approvers) {
         return null;
