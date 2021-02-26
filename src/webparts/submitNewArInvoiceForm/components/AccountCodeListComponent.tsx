@@ -7,6 +7,7 @@ import { Checkbox, MaskedTextBox, NumericTextBox } from '@progress/kendo-react-i
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
 import { IAccount } from '../../../interfaces/IARInvoice';
+import IDataOperations from '../../../interfaces/IDataOperations';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 
@@ -15,15 +16,8 @@ import { Field, FieldWrapper, FormElement } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
 //#region Interfaces
-interface IAccountCodeListComponent {
+interface IAccountCodeListComponent extends IDataOperations {
     data: any;
-
-    onAdd?: Function;
-    onRemove?: Function;
-    onSave?: Function;
-    onCancel?: Function;
-    onEdit?: Function;
-    onDelete?: Function;
 }
 
 interface IAccountCodeItemProps extends IAccountCodeListComponent {
@@ -123,11 +117,23 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                             {this.props.onSave && <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />}
                             {this.props.onEdit && <Button icon={'edit'} look={'flat'} title={'Edit'} onClick={e => { e.preventDefault(); }} />}
                             {this.props.onCancel && <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onDelete && <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />}
                             {
-                                this.props.onRemove &&
+                                this.props.onDelete &&
+                                <Button icon={'delete'} look={'flat'} title={'Delete'}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.onDelete(this.props.dataItem);
+                                    }}
+                                />
+                            }
+                            {
+                                (this.props.onRemove && this.props.dataItem.ID === undefined) &&
                                 <Button icon={'close'} look={'flat'} title={'remove'}
-                                    onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.onRemove({ dataIndex: this.props.index });
+                                    }}
+                                />
                             }
                         </div>
                     </div>

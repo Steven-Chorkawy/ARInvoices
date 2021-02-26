@@ -93,8 +93,6 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
 
     if (idFromQueryParam) {
       GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
-        console.log('Current Invoice:');
-        console.log(invoice);
         this.setState({ currentInvoice: invoice });
       });
     }
@@ -137,6 +135,12 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   }
   //#endregion
 
+  //#region Account CRUD Methods
+  private account_onDelete = e => {
+    DeleteARInvoiceAccounts(e);
+  }
+  //#endregion
+
   private _buttons = (formRenderProps) => {
     return (
       <div className="k-form-buttons">
@@ -154,7 +158,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
     const subComponentProps = {
       invoice: this.state.currentInvoice,
       inEditMode: this.state.inEditMode,
-      editFormFieldData: { ...this.state.editFormFieldData }
+      editFormFieldData: { ...this.state.editFormFieldData },
     };
 
     return (
@@ -184,7 +188,13 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                   {this._buttons(formRenderProps)}
                   <Pivot key={this.state.currentInvoice.ID} style={{ width: '100%' }}>
                     <PivotItem title={'All'} headerText={'All'}>
-                      <AllComponents {...subComponentProps} formRenderProps={formRenderProps} />
+                      <AllComponents
+                        {...subComponentProps}
+                        formRenderProps={formRenderProps}
+                        AccountCRUD={{
+                          onDelete: this.account_onDelete
+                        }}
+                      />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
                       <RequestComponent {...subComponentProps} formRenderProps={formRenderProps} />
@@ -196,7 +206,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
-                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} onDelete={DeleteARInvoiceAccounts} />
+                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} onDelete={this.account_onDelete} />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
                       <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />

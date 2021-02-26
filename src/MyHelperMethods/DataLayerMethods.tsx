@@ -166,7 +166,6 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
 };
 
 export const CreateARInvoice = async (data: any) => {
-    console.log(data);
     const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
