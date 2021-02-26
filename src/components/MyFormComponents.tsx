@@ -941,6 +941,7 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
         onAdd={onAdd}
         onRemove={onRemove}
         onDelete={fieldArrayRenderProps.onDelete}
+        onSave={fieldArrayRenderProps.onSave}
       />
     </div>
   );
