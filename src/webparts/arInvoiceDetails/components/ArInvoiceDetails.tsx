@@ -176,7 +176,6 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
             <Form
               initialValues={{
                 ...this.state.currentInvoice,
-                _Date: new Date(this.state.currentInvoice.Date)
               }}
               onSubmit={e => { UpdateARInvoice(e); }}
               render={formRenderProps => (
