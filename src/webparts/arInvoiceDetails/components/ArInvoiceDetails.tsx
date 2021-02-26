@@ -23,7 +23,7 @@ import { IARInvoice } from '../../../interfaces/IARInvoice';
 // Kendo Imports. 
 import { ComboBox } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
-import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
+import { Form, Field, FormElement, FieldWrapper, FormRenderProps } from '@progress/kendo-react-form';
 
 // Fluent UI
 import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
@@ -57,6 +57,7 @@ export interface IArInvoiceSubComponentProps {
   context?: any;
   inEditMode: boolean;
   editFormFieldData: IARInvoiceEditFormFieldData;
+  formRenderProps: FormRenderProps;
 }
 
 enum ARInvoiceQueryParams {
@@ -183,22 +184,22 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                   {this._buttons(formRenderProps)}
                   <Pivot key={this.state.currentInvoice.ID} style={{ width: '100%' }}>
                     <PivotItem title={'All'} headerText={'All'}>
-                      <AllComponents {...subComponentProps} />
+                      <AllComponents {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
-                      <RequestComponent {...subComponentProps} />
+                      <RequestComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Invoice Details'} headerText={'Invoice Details'}>
-                      <InvoiceComponent {...subComponentProps} />
+                      <InvoiceComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
-                      <ApprovalsComponent {...subComponentProps} />
+                      <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
-                      <AccountsComponent {...subComponentProps} />
+                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
-                      <AttachmentsComponent {...subComponentProps} />
+                      <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                   </Pivot>
                   {this._buttons(formRenderProps)}
