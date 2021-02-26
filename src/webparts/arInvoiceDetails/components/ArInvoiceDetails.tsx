@@ -13,7 +13,7 @@ import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 import { GetInvoiceByID, UpdateARInvoice } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
-import { InvoiceComponent } from './InvoiceComponent';
+import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
 import { AccountsComponent } from './AccountsComponent';
 import { AttachmentsComponent } from './AttachmentsComponent';
@@ -189,8 +189,8 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
                       <RequestComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
-                    <PivotItem title={'Invoice Details'} headerText={'Invoice Details'}>
-                      <InvoiceComponent {...subComponentProps} formRenderProps={formRenderProps} />
+                    <PivotItem title={'Customer Details'} headerText={'Customer Details'}>
+                      <CustomerComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
                       <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />

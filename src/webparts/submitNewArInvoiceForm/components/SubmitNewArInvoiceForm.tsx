@@ -91,7 +91,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
      * @param itemProps List Item Props
      */
   private customerItemRender = (li, itemProps) => {
-    return React.cloneElement(li, li.props, <span>{itemProps.dataItem.Title} | {itemProps.dataItem.WorkAddress}</span>);
+    return React.cloneElement(li, li.props, <span>{itemProps.dataItem.Title} | {itemProps.dataItem.Mailing_x0020_Address}</span>);
   }
 
   private customerFilterChange = e => {

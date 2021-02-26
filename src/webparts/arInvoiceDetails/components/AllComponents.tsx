@@ -16,7 +16,7 @@ import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 import { AccountCodeListComponent } from '../../submitNewArInvoiceForm/components/AccountCodeListComponent';
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 import { RequestComponent } from './RequestComponent';
-import { InvoiceComponent } from './InvoiceComponent';
+import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
 import { AccountsComponent } from './AccountsComponent';
 import { AttachmentsComponent } from './AttachmentsComponent';
@@ -33,7 +33,7 @@ export class AllComponents extends React.Component<IArInvoiceSubComponentProps> 
         return (
             <div style={{ width: '100%' }}>
                 <RequestComponent {...this.props} />
-                <InvoiceComponent {...this.props} />
+                <CustomerComponent {...this.props} />
                 <ApprovalsComponent {...this.props} />
                 <AccountsComponent {...this.props} />
                 <AttachmentsComponent {...this.props} />

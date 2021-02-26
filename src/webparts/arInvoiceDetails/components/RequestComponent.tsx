@@ -57,7 +57,7 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                             <MyDate date={this.props.invoice.Date} />
                     }
 
-                    <Label>Urgent:</Label>
+
                     {
                         this.props.inEditMode ?
                             <Field
@@ -71,7 +71,7 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                                 component={MyFormComponents.FormCheckbox}
                                 hint={'Flag emails as high priority.'}
                             /> :
-                            this.props.invoice.Urgent ? "Yes" : "No"
+                            <div><Label>Urgent:</Label>{this.props.invoice.Urgent ? "Yes" : "No"}</div>
                     }
 
                     <Label>Note:</Label>
