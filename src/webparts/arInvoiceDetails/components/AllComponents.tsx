@@ -43,7 +43,7 @@ export class AllComponents extends React.Component<IAllComponentsProps> {
                 <ApprovalsComponent {...this.props} />
                 <AccountsComponent
                     {...this.props}
-                    onDelete={this.props.AccountCRUD && this.props.AccountCRUD.onDelete}
+                    {...this.props.AccountCRUD ? this.props.AccountCRUD : undefined}
                 />
                 <AttachmentsComponent {...this.props} />
             </div>
