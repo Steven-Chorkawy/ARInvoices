@@ -259,7 +259,7 @@ export const FormEditor = (fieldRenderProps) => {
       </div>
     </FieldWrapper>
   );
-}
+};
 
 export const FormTextArea = (fieldRenderProps) => {
   const { validationMessage, touched, label, id, valid, hint, optional, ...others } = fieldRenderProps;
