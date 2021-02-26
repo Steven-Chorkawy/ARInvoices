@@ -107,6 +107,7 @@ export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId
     }
 };
 
+//#region AR Invoice Accounts
 export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: number): Promise<void> => {
     if (!accounts) {
         return null;
@@ -136,6 +137,13 @@ export const DeleteARInvoiceAccounts = async (account: any) => {
     console.log('DeleteARInvoiceAccounts');
     console.log(account);
 };
+
+export const UpdateARInvoiceAccounts = async (data: any) => {
+    console.log('UpdateARInvoiceAccounts');
+    console.log(data);
+};
+//#endregion
+
 
 export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
     if (!approvers) {
@@ -182,7 +190,7 @@ export const CreateARInvoice = async (data: any) => {
 export const UpdateARInvoice = async (data: any) => {
     console.log('update ar invoice');
     console.log(data);
-    
+
     const {
         Accounts,
         AccountsId,
@@ -206,3 +214,4 @@ export const UpdateARInvoice = async (data: any) => {
     console.log('After Update:');
     console.log(iUpdateRes);
 };
+

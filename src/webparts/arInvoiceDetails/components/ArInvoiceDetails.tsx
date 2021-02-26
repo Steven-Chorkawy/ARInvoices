@@ -11,7 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts } from '../../../MyHelperMethods/DataLayerMethods';
+import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts, UpdateARInvoiceAccounts } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
@@ -139,6 +139,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   private account_onDelete = e => {
     DeleteARInvoiceAccounts(e);
   }
+
+  private account_onSave = e => {
+    UpdateARInvoiceAccounts(e);
+  }
+
   //#endregion
 
   private _buttons = (formRenderProps) => {
@@ -192,7 +197,8 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                         {...subComponentProps}
                         formRenderProps={formRenderProps}
                         AccountCRUD={{
-                          onDelete: this.account_onDelete
+                          onDelete: this.account_onDelete,
+                          onSave: this.account_onSave
                         }}
                       />
                     </PivotItem>
@@ -206,7 +212,12 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
-                      <AccountsComponent {...subComponentProps} formRenderProps={formRenderProps} onDelete={this.account_onDelete} />
+                      <AccountsComponent
+                        {...subComponentProps}
+                        formRenderProps={formRenderProps}
+                        onDelete={this.account_onDelete}
+                        onEdit={this.account_onEdit}
+                      />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
                       <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />
