@@ -9,7 +9,6 @@ import "@pnp/sp/items";
 // Kendo Imports. 
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
-import { Editor, EditorTools, ProseMirror } from '@progress/kendo-react-editor';
 import { Field } from '@progress/kendo-react-form';
 
 // My Imports
@@ -25,8 +24,6 @@ import * as MyValidator from '../../../MyHelperMethods/Validators';
  */
 export class RequestComponent extends React.Component<IArInvoiceSubComponentProps> {
     public render() {
-        const { EditorState, EditorView, Plugin, PluginKey } = ProseMirror;
-
         return (
             <Card style={{ width: '100%' }}>
                 <CardBody>
@@ -78,37 +75,15 @@ export class RequestComponent extends React.Component<IArInvoiceSubComponentProp
                     }
 
                     <Label>Note:</Label>
-                    <Field
-                        id="Details"
-                        name="Details"
-                        tools={[
-                            [EditorTools.Bold, EditorTools.Italic, EditorTools.Underline],
-                            [EditorTools.Link, EditorTools.Unlink],
-                            [EditorTools.AlignLeft, EditorTools.AlignCenter, EditorTools.AlignRight],
-                            [EditorTools.OrderedList, EditorTools.UnorderedList]
-                        ]}
-                        onMount={e => {
-                            // https://feedback.telerik.com/kendo-react-ui/1404259-add-readonly-to-editor
-                            const state = e.viewProps.state;
-                            const plugins = [
-                                new Plugin({
-                                    key: new PluginKey('readonly'),
-                                    // props: { editable: this.editable },
-                                    filterTransaction: ((tr, _st) => this.props.inEditMode || !tr.docChanged)
-                                })
-                            ];
-                            return new EditorView(
-                                { mount: e.dom },
-                                {
-                                    ...e.viewProps,
-                                    state: EditorState.create({ doc: state.doc, plugins })
-                                }
-                            );
-                        }}
-                        contentStyle={{ height: 320 }}
-                        defaultContent={this.props.invoice.Details}
-                        component={MyFormComponents.FormEditor}
-                    />
+                    {
+                        this.props.inEditMode ?
+                            <Field
+                                id="Details"
+                                name="Details"
+                                component={MyFormComponents.FormTextArea}
+                            /> :
+                            <p>{this.props.invoice.Details}</p>
+                    }
                 </CardBody>
             </Card>
         );
