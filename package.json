@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@fluentui/react": "^7.161.0",
-    "@microsoft/decorators": "1.10.0",
-    "@microsoft/sp-core-library": "^1.11.0",
+    "@microsoft/decorators": "1.11.0",
+    "@microsoft/sp-core-library": "1.11.0",
     "@microsoft/sp-dialog": "1.10.0",
-    "@microsoft/sp-listview-extensibility": "1.10.0",
+    "@microsoft/sp-listview-extensibility": "1.11.0",
     "@microsoft/sp-lodash-subset": "1.11.0",
     "@microsoft/sp-office-ui-fabric-core": "1.11.0",
     "@microsoft/sp-property-pane": "1.11.0",

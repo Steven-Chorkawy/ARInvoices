@@ -25,6 +25,14 @@
           "manifest": "./src/webparts/arInvoiceDetails/ArInvoiceDetailsWebPart.manifest.json"
         }
       ]
+    },
+    "approvals-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/approvals/ApprovalsFieldCustomizer.js",
+          "manifest": "./src/extensions/approvals/ApprovalsFieldCustomizer.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -32,6 +40,7 @@
     "SubmitNewArInvoiceFormWebPartStrings": "lib/webparts/submitNewArInvoiceForm/loc/{locale}.js",
     "ArInvoiceListCommandSetCommandSetStrings": "lib/extensions/arInvoiceListCommandSet/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
-    "ArInvoiceDetailsWebPartStrings": "lib/webparts/arInvoiceDetails/loc/{locale}.js"
+    "ArInvoiceDetailsWebPartStrings": "lib/webparts/arInvoiceDetails/loc/{locale}.js",
+    "ApprovalsFieldCustomizerStrings": "lib/extensions/approvals/loc/{locale}.js"
   }
 }
