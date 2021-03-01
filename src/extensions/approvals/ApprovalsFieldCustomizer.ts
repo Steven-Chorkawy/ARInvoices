@@ -66,7 +66,7 @@ export default class ApprovalsFieldCustomizer
         const element = event.fieldValue[index];
         index === 0 ?
           filterString = `Id eq ${element.lookupId}` :
-          filterString = `${filterString} or Id eq ${element.lookupId}`
+          filterString = `${filterString} or Id eq ${element.lookupId}`;
       }
 
       // Query the item
