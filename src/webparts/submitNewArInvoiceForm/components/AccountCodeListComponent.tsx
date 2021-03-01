@@ -7,6 +7,7 @@ import { Checkbox, MaskedTextBox, NumericTextBox } from '@progress/kendo-react-i
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
 import { IAccount } from '../../../interfaces/IARInvoice';
+import IDataOperations from '../../../interfaces/IDataOperations';
 import * as MyValidator from '../../../MyHelperMethods/Validators';
 import * as MyFormComponents from '../../../components/MyFormComponents';
 
@@ -15,21 +16,16 @@ import { Field, FieldWrapper, FormElement } from '@progress/kendo-react-form';
 import { Fields } from '@pnp/sp/fields';
 
 //#region Interfaces
-interface IAccountCodeListComponent {
+interface IAccountCodeListComponent extends IDataOperations {
     data: any;
-
-    onAdd?: Function;
-    onRemove?: Function;
-    onSave?: Function;
-    onCancel?: Function;
-    onEdit?: Function;
-    onDelete?: Function;
+    inEditMode?: boolean;
 }
 
 interface IAccountCodeItemProps extends IAccountCodeListComponent {
     dataItem: IAccount;
     index: number;
     field: string;
+
 }
 
 interface IAccountCodeItemState {
@@ -77,57 +73,94 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
         return (e.item.HST_x0020_Taxable === true) ? e.item.Amount * 0.13 : 0;
     }
 
-
     public render() {
         return (
             <Card>
                 <CardBody>
                     <div className={'row'}>
                         <div className={'col-md-10'} style={{ paddingRight: '0px' }}>
-                            <Field
-                                name={`Accounts[${this.props.index}].Account_x0020_Code`}
-                                component={MyFormComponents.FormMaskedTextBox}
-                                mask="000-00-000-00000-0000"
-                                validator={MyValidator.required}
-                                required={true}
-                                label={'Account Code'}
-                            />
-                            <Field
-                                name={`Accounts[${this.props.index}].Amount`}
-                                component={MyFormComponents.FormNumericTextBox}
-                                required={true}
-                                format="c2"
-                                min={0}
-                                validator={MyValidator.required}
-                                label={'Amount'}
-                            />
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FieldWrapper>
-                                    <Label>Apply HST</Label>
-                                    <Field
-                                        name={`Accounts[${this.props.index}].HST_x0020_Taxable`}
-                                        component={MyFormComponents.FormCheckbox}
-                                    />
-                                </FieldWrapper>
-                                <FieldWrapper>
-                                    <Label style={{ alignItems: 'baseline' }}>HST</Label>
-                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</p>
-                                </FieldWrapper>
-                                <FieldWrapper>
-                                    <Label style={{ alignItems: 'baseline' }}>Total</Label>
-                                    <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
-                                </FieldWrapper>
-                            </div>
+                            {
+                                (this.props.inEditMode || this.props.dataItem.ID === undefined) ?
+                                    <div>
+                                        <Field
+                                            name={`Accounts[${this.props.index}].Account_x0020_Code`}
+                                            component={MyFormComponents.FormMaskedTextBox}
+                                            mask="000-00-000-00000-0000"
+                                            validator={MyValidator.required}
+                                            required={true}
+                                            label={'Account Code'}
+                                        />
+                                        <Field
+                                            name={`Accounts[${this.props.index}].Amount`}
+                                            component={MyFormComponents.FormNumericTextBox}
+                                            required={true}
+                                            format="c2"
+                                            min={0}
+                                            validator={MyValidator.required}
+                                            label={'Amount'}
+                                        />
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <FieldWrapper>
+                                                <Label>Apply HST</Label>
+                                                <Field
+                                                    name={`Accounts[${this.props.index}].HST_x0020_Taxable`}
+                                                    component={MyFormComponents.FormCheckbox}
+                                                />
+                                            </FieldWrapper>
+                                            <FieldWrapper>
+                                                <Label style={{ alignItems: 'baseline' }}>HST</Label>
+                                                <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</p>
+                                            </FieldWrapper>
+                                            <FieldWrapper>
+                                                <Label style={{ alignItems: 'baseline' }}>Total</Label>
+                                                <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
+                                            </FieldWrapper>
+                                        </div>
+                                    </div> :
+                                    <div>
+                                        <FieldWrapper>
+                                            <Label>Account Codes</Label>
+                                            <p>{this.state.item.Account_x0020_Code}</p>
+                                        </FieldWrapper>
+                                        <FieldWrapper>
+                                            <Label>Amount</Label>
+                                            <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount)}</p>
+                                        </FieldWrapper>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <FieldWrapper>
+                                                <Label>Apply HST</Label>
+                                                <p>{this.state.item.HST_x0020_Taxable ? "Yes" : "No"}</p>
+                                            </FieldWrapper>
+                                            <FieldWrapper>
+                                                <Label style={{ alignItems: 'baseline' }}>HST</Label>
+                                                <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) : 0)}</p>
+                                            </FieldWrapper>
+                                            <FieldWrapper>
+                                                <Label style={{ alignItems: 'baseline' }}>Total</Label>
+                                                <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.item.Amount ? this._calculateHSTAmount(this.state) + this.state.item.Amount : 0)}</p>
+                                            </FieldWrapper>
+                                        </div>
+                                    </div>
+                            }
                         </div>
                         <div className={'col-md-1'} style={{ paddingRight: '0px' }}>
-                            {this.props.onSave && <Button primary={true} look={'flat'} title={'Save'} icon={'save'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onEdit && <Button icon={'edit'} look={'flat'} title={'Edit'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onCancel && <Button icon={'cancel'} look={'flat'} title={'Cancel'} onClick={e => { e.preventDefault(); }} />}
-                            {this.props.onDelete && <Button icon={'delete'} look={'flat'} title={'Delete'} onClick={e => { e.preventDefault(); }} />}
                             {
-                                this.props.onRemove &&
+                                this.props.onDelete && this.props.dataItem.ID &&
+                                <Button icon={'delete'} look={'flat'} title={'Delete'}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.onDelete(this.props.dataItem);
+                                    }}
+                                />
+                            }
+                            {
+                                (this.props.onRemove && this.props.dataItem.ID === undefined) &&
                                 <Button icon={'close'} look={'flat'} title={'remove'}
-                                    onClick={e => { e.preventDefault(); this.props.onRemove({ dataIndex: this.props.index }); }} />
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.props.onRemove({ dataIndex: this.props.index });
+                                    }}
+                                />
                             }
                         </div>
                     </div>
@@ -136,7 +169,6 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
         );
     }
 }
-
 
 export class AccountCodeListComponent extends React.Component<IAccountCodeListComponent, any> {
     //AccountCodeItem = props => <AccountCodeItem {...props} saveItem={this.saveData} deleteItem={this.deleteItem} />

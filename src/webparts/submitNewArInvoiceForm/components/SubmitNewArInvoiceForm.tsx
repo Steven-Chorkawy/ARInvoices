@@ -91,7 +91,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
      * @param itemProps List Item Props
      */
   private customerItemRender = (li, itemProps) => {
-    return React.cloneElement(li, li.props, <span>{itemProps.dataItem.Title} | {itemProps.dataItem.WorkAddress}</span>);
+    return React.cloneElement(li, li.props, <span>{itemProps.dataItem.Title} | {itemProps.dataItem.Mailing_x0020_Address}</span>);
   }
 
   private customerFilterChange = e => {
@@ -317,7 +317,7 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                     />
                   </FieldWrapper>
                   <FieldWrapper>
-                    <FieldArray name='Accounts' label='Account Codes' component={MyFormComponents.FormAccountListView} />
+                    <FieldArray name='Accounts' label='Account Codes' component={MyFormComponents.FormAccountListView} inEditMode={true} />
                   </FieldWrapper>
                   <FieldWrapper>
                     <Field id='Attachments' name='Attachments' label='Attachments' component={MyFormComponents.FormUpload} />

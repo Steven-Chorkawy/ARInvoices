@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface IMyDateProps {
-    date: string;
+    date: string | Date;
     format?: any;
     locale?: any;
 }

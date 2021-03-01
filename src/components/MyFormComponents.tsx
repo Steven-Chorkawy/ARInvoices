@@ -27,6 +27,7 @@ import { Shimmer, ShimmerElementsGroup, ShimmerElementType } from 'office-ui-fab
 
 import { PersonaComponent } from './PersonaComponent';
 import { AccountCodeListComponent } from '../webparts/submitNewArInvoiceForm/components/AccountCodeListComponent';
+import { Editor } from '@progress/kendo-react-editor';
 
 //#region Standard Components. 
 export const FormInput = (fieldRenderProps) => {
@@ -212,6 +213,36 @@ export const FormMaskedTextBox = (fieldRenderProps) => {
       <Label editorId={id} editorValid={valid} optional={optional}>{label}</Label>
       <div className={'k-form-field-wrap'}>
         <MaskedTextBox
+          ariaDescribedBy={`${hindId} ${errorId}`}
+          valid={valid}
+          id={id}
+          {...others}
+        />
+        {
+          showHint &&
+          <Hint id={hindId}>{hint}</Hint>
+        }
+        {
+          showValidationMessage &&
+          <Error id={errorId}>{validationMessage}</Error>
+        }
+      </div>
+    </FieldWrapper>
+  );
+};
+
+export const FormEditor = (fieldRenderProps) => {
+  const { validationMessage, touched, label, id, valid, hint, optional, ...others } = fieldRenderProps;
+  const showValidationMessage = touched && validationMessage;
+  const showHint = !showValidationMessage && hint;
+  const hindId = showHint ? `${id}_hint` : '';
+  const errorId = showValidationMessage ? `${id}_error` : '';
+
+  return (
+    <FieldWrapper>
+      <Label editorId={id} editorValid={valid} optional={optional}>{label}</Label>
+      <div className={'k-form-field-wrap'}>
+        <Editor
           ariaDescribedBy={`${hindId} ${errorId}`}
           valid={valid}
           id={id}
@@ -905,7 +936,14 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
   return (
     <div key={fieldArrayRenderProps.value}>
       <Label id={labelId} editorRef={editorRef} editorId={id} editorValid={valid}>{label}</Label>
-      <AccountCodeListComponent data={fieldArrayRenderProps.value} onAdd={onAdd} onRemove={onRemove} />
+      <AccountCodeListComponent
+        data={fieldArrayRenderProps.value}
+        inEditMode={fieldArrayRenderProps.inEditMode}
+        onAdd={onAdd}
+        onRemove={onRemove}
+        onDelete={fieldArrayRenderProps.onDelete}
+        onSave={fieldArrayRenderProps.onSave}
+      />
     </div>
   );
 };

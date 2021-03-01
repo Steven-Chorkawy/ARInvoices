@@ -16,6 +16,8 @@ import { Upload, UploadFileStatus } from '@progress/kendo-react-upload';
 
 
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
+import { MyLists } from '../../../enums/MyLists';
+import { UploadARInvoiceAttachments } from '../../../MyHelperMethods/DataLayerMethods';
 
 
 class CustomAttachmentItem extends React.Component<any, any> {
@@ -50,8 +52,17 @@ export class AttachmentsComponent extends React.Component<IArInvoiceSubComponent
     constructor(props) {
         super(props);
     }
+
     public AttachmentItem = e => <CustomAttachmentItem {...e} />;
 
+    private onAdd = e => {
+        debugger;
+        UploadARInvoiceAttachments(e.affectedFiles, this.props.invoice.ID);
+    }
+
+    private onRemove = e => {
+        debugger;
+    }
 
     public render() {
         return (
@@ -62,6 +73,8 @@ export class AttachmentsComponent extends React.Component<IArInvoiceSubComponent
                         batch={false}
                         multiple={true}
                         listItemUI={this.AttachmentItem}
+                        onAdd={this.onAdd}
+                        onRemove={this.onRemove}
                         defaultFiles={this.props.invoice.AttachmentFiles ?
                             this.props.invoice.AttachmentFiles.map((attachment, index) => {
                                 return ({
