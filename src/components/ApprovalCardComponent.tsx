@@ -19,6 +19,7 @@ import { GetUserByLoginName, GetUserProfileProperties } from '../MyHelperMethods
 export interface IApprovalCardComponentProps {
     invoice: IARInvoice;
     approval: IApproval;
+    handleApprovalResponse: Function;
 }
 
 export interface IApprovalCardComponentState {
@@ -103,8 +104,8 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
      * @param response Approve or Reject
      */
     private handleResponse = (response: string | ApprovalEnum.ApprovalStatus): void => {
-        // TODO: Call a method passed through props that will handle the save logic. 
-        console.log(response);
+        // TODO: Apply validation rules here before we process the approval request.
+        this.props.handleApprovalResponse(this.props.approval.ID, response, this.state.responseText);
     }
 
     public render() {

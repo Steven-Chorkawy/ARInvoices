@@ -25,6 +25,7 @@ import { AttachmentsComponent } from './AttachmentsComponent';
 
 interface IAllComponentsProps extends IArInvoiceSubComponentProps {
     AccountCRUD?: IDataOperations;
+    handleApprovalResponse: Function;
 }
 
 /**
@@ -40,7 +41,7 @@ export class AllComponents extends React.Component<IAllComponentsProps> {
             <div style={{ width: '100%' }}>
                 <RequestComponent {...this.props} />
                 <CustomerComponent {...this.props} />
-                <ApprovalsComponent {...this.props} />
+                <ApprovalsComponent {...this.props} handleApprovalResponse={this.props.handleApprovalResponse} />
                 <AccountsComponent
                     {...this.props}
                     {...this.props.AccountCRUD ? this.props.AccountCRUD : undefined}

@@ -11,11 +11,14 @@ import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 import { ApprovalCardComponent } from '../../../components/ApprovalCardComponent';
 
+interface IApprovalComponentProps extends IArInvoiceSubComponentProps {
+    handleApprovalResponse: Function;
+}
 
 /**
  * This class displays the approval requests and status
  */
-export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentProps> {
+export class ApprovalsComponent extends React.Component<IApprovalComponentProps> {
     public render() {
         return (
             <Card style={{ width: '100%' }}>
@@ -26,6 +29,7 @@ export class ApprovalsComponent extends React.Component<IArInvoiceSubComponentPr
                             <ApprovalCardComponent
                                 invoice={this.props.invoice}
                                 approval={approval}
+                                handleApprovalResponse={this.props.handleApprovalResponse}
                             />
                         );
                     })}

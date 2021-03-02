@@ -173,15 +173,21 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     }
 };
 
-export const UpdateApprovalRequest = async (approval: any, responseStatus: ApprovalEnum.ApprovalStatus, responseMessage: string) => {
-    const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]).items.getById(approval.ID)
-        .update({
-            Status: responseStatus,
-            Response_x0020_Message: responseMessage
-        });
-
-    debugger;
-}
+export const UpdateApprovalRequest = async (approvalId: number, responseStatus: string | ApprovalEnum.ApprovalStatus, responseMessage: string): Promise<any> => {
+    try {
+        let iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]).items.getById(approvalId)
+            .update({
+                Status: responseStatus,
+                Response_x0020_Message: responseMessage
+            });
+        return await iUpdateRes.item.get();
+    } catch (error) {
+        console.log('Could not complete your approval.');
+        console.log(error);
+        alert('Could not complete your approval.  Please contact helpdesk@clarington.net');
+        return undefined;
+    }
+};
 
 export const CreateARInvoice = async (data: any) => {
     const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
@@ -212,16 +218,8 @@ export const UpdateARInvoice = async (data: any) => {
         ...invoice
     } = data;
 
-    console.log(Accounts);
-    console.log(Approvals);
-    console.log(AttachmentFiles);
-    console.log(Customer);
-    console.log(invoice);
-
     // Update the invoice properties. 
     const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(invoice.ID)
         .update({ ...invoice });
-    console.log('After Update:');
-    console.log(iUpdateRes);
 };
 
