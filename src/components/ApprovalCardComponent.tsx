@@ -13,7 +13,7 @@ import * as ApprovalEnum from '../enums/Approvals';
 import MyDate from './MyDate';
 
 import { Button } from '@progress/kendo-react-buttons';
-import { DefaultButton, PrimaryButton } from '@fluentui/react';
+import { DefaultButton, MessageBar, MessageBarType, PrimaryButton } from '@fluentui/react';
 import { GetUserByLoginName, GetUserProfileProperties } from '../MyHelperMethods/UserProfileMethods';
 
 export interface IApprovalCardComponentProps {
@@ -26,6 +26,7 @@ export interface IApprovalCardComponentState {
     showMore: boolean;
     currentUser?: any;
     responseText?: string;
+    responseErrorMessage?: string;
 }
 
 const parseActionType = (action: IApproval) => {
@@ -105,6 +106,25 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
      */
     private handleResponse = (response: string | ApprovalEnum.ApprovalStatus): void => {
         // TODO: Apply validation rules here before we process the approval request.
+        if (response === ApprovalEnum.ApprovalStatus.Approve) {
+            // Check that there is at least one account.
+            if (this.props.invoice.Accounts.length === 0) {
+                this.setState({ responseErrorMessage: 'Please add one or more accounts before approving this invoice.' });
+                return;
+            }
+        }
+        else if (response === ApprovalEnum.ApprovalStatus.Reject) {
+            // Check that the user has provided a reason why they are rejecting this approval. 
+            if (this.state.responseText === undefined) {
+                this.setState({ responseErrorMessage: 'Please provide a response when rejecting an invoice.' });
+                return;
+            }
+        }
+        else {
+            alert(`'${response}' is an invalid approval status.  Please Approve or Reject.`);
+            return;
+        }
+        this.setState({ responseErrorMessage: undefined });
         this.props.handleApprovalResponse(this.props.approval.ID, response, this.state.responseText);
     }
 
@@ -149,6 +169,12 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                             value={this.state.responseText}
                             onChange={e => { this.setState({ responseText: e.target.value }); }}
                         />
+                        {
+                            this.state.responseErrorMessage &&
+                            <MessageBar messageBarType={MessageBarType.error} isMultiline={false}>
+                                {this.state.responseErrorMessage}
+                            </MessageBar>
+                        }
                     </CardBody>
                 }
                 {
@@ -168,7 +194,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                         </div>
                     </CardActions>
                 }
-            </Card>
+            </Card >
         );
     }
 }
