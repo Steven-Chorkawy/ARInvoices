@@ -173,6 +173,16 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     }
 };
 
+export const UpdateApprovalRequest = async (approval: any, responseStatus: ApprovalEnum.ApprovalStatus, responseMessage: string) => {
+    const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]).items.getById(approval.ID)
+        .update({
+            Status: responseStatus,
+            Response_x0020_Message: responseMessage
+        });
+
+    debugger;
+}
+
 export const CreateARInvoice = async (data: any) => {
     const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
