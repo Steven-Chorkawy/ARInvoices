@@ -1,20 +1,32 @@
 import * as React from 'react';
 
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
 import { Card, CardActions, CardBody, CardSubtitle, CardTitle } from '@progress/kendo-react-layout';
+import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 
 import { IARInvoice, IApproval } from '../interfaces/IARInvoice';
 import * as ApprovalEnum from '../enums/Approvals';
 import MyDate from './MyDate';
 
 import { Button } from '@progress/kendo-react-buttons';
+import { DefaultButton, MessageBar, MessageBarType, PrimaryButton } from '@fluentui/react';
+import { GetUserByLoginName, GetUserProfileProperties } from '../MyHelperMethods/UserProfileMethods';
 
 export interface IApprovalCardComponentProps {
     invoice: IARInvoice;
     approval: IApproval;
+    handleApprovalResponse: Function;
 }
 
 export interface IApprovalCardComponentState {
     showMore: boolean;
+    currentUser?: any;
+    responseText?: string;
+    responseErrorMessage?: string;
 }
 
 const parseActionType = (action: IApproval) => {
@@ -65,6 +77,55 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
         this.state = {
             showMore: false
         };
+
+        sp.web.currentUser.get().then(user => {
+            // Making this call just to get the users ID. 
+            GetUserByLoginName(user.LoginName).then(userByLoginName => {
+                GetUserProfileProperties(
+                    user.LoginName,
+                    values => { this.setState({ currentUser: { ...values, Id: userByLoginName.Id } }); }
+                );
+            });
+        });
+    }
+
+    private _PromptForApproval = (): boolean => {
+        if (this.state.currentUser) {
+            return this.state.currentUser.Email === this.props.approval.Assigned_x0020_To.EMail && this.props.approval.Status === ApprovalEnum.ApprovalStatus.Waiting;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Validate if the user is allowed to submit this response then call the parents save method. 
+     * If Reject - A response must be present.
+     * If Approve - An account code must be present. 
+     * @param response Approve or Reject
+     */
+    private handleResponse = (response: string | ApprovalEnum.ApprovalStatus): void => {
+        // TODO: Apply validation rules here before we process the approval request.
+        if (response === ApprovalEnum.ApprovalStatus.Approve) {
+            // Check that there is at least one account.
+            if (this.props.invoice.Accounts.length === 0) {
+                this.setState({ responseErrorMessage: 'Please add one or more accounts before approving this invoice.' });
+                return;
+            }
+        }
+        else if (response === ApprovalEnum.ApprovalStatus.Reject) {
+            // Check that the user has provided a reason why they are rejecting this approval. 
+            if (this.state.responseText === undefined) {
+                this.setState({ responseErrorMessage: 'Please provide a response when rejecting an invoice.' });
+                return;
+            }
+        }
+        else {
+            alert(`'${response}' is an invalid approval status.  Please Approve or Reject.`);
+            return;
+        }
+        this.setState({ responseErrorMessage: undefined });
+        this.props.handleApprovalResponse(this.props.approval.ID, response, this.state.responseText);
     }
 
     public render() {
@@ -73,6 +134,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                 <CardBody className={parseActionStatus(this.props.approval)}>
                     <CardSubtitle>
                         <b title={this.props.approval.Status}><span className={`k-icon ${parseActionType(this.props.approval)}`}></span> | {this.props.approval.Request_x0020_Type}</b>
+                        <Button look='flat' onClick={() => this.setState({ showMore: !this.state.showMore })}>{this.state.showMore ? 'Hide' : 'Show More'}</Button>
                     </CardSubtitle>
                 </CardBody>
                 <CardBody>
@@ -80,15 +142,6 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                         {this.props.approval.Status === ApprovalEnum.ApprovalStatus.Waiting ? `Waiting for ` : `${this.props.approval.Status} by `}
                         <b>{this.props.approval.Assigned_x0020_To.Title} </b>
                         <MyDate date={this.props.invoice.Modified} />
-                        {/* <Moment
-                            className={'k-card-subtitle'}
-                            date={this.props.approval.Modified}      // The date to be used.
-                            format={'MM/DD/YYYY'}       // Date format. 
-                            withTitle={true}            // Show Title on hover.
-                            titleFormat={'D MMM YYYY'}  // Title format
-                            fromNow={true}              // Display number of hours since date.
-                            fromNowDuring={7200000}    // Only display fromNow if it is less than the milliseconds provided here. 7200000 = 2 hours.
-                        /> */}
                     </div>
                 </CardBody>
                 {
@@ -97,15 +150,6 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                         <div>
                             Requested by <b>{this.props.approval.Author.Title} </b>
                             <MyDate date={this.props.approval.Created} />
-                            {/* <Moment
-                                className={'k-card-subtitle'}
-                                date={this.props.approval.Created}        // The date to be used.
-                                format={'MM/DD/YYYY'}       // Date format. 
-                                withTitle={true}            // Show Title on hover.
-                                titleFormat={'D MMM YYYY'}  // Title format
-                                fromNow={true}              // Display number of hours since date.
-                                fromNowDuring={7200000}     // Only display fromNow if it is less than the milliseconds provided here. 7200000 = 2 hours.
-                            /> */}
                         </div>
                         <div>
                             {this.props.approval.Notes}
@@ -116,10 +160,41 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
                         </div>
                     </CardBody>
                 }
-                <CardActions orientation='vertical'>
-                    <Button look='flat' onClick={() => this.setState({ showMore: !this.state.showMore })}>{this.state.showMore ? 'Hide' : 'Show More'}</Button>
-                </CardActions>
-            </Card>
+                {
+                    this._PromptForApproval() &&
+                    <CardBody>
+                        <Label>Response:</Label>
+                        <textarea
+                            style={{ width: '100%' }}
+                            value={this.state.responseText}
+                            onChange={e => { this.setState({ responseText: e.target.value }); }}
+                        />
+                        {
+                            this.state.responseErrorMessage &&
+                            <MessageBar messageBarType={MessageBarType.error} isMultiline={false}>
+                                {this.state.responseErrorMessage}
+                            </MessageBar>
+                        }
+                    </CardBody>
+                }
+                {
+                    this._PromptForApproval() &&
+                    <CardActions orientation='horizontal'>
+                        <div className='k-form-buttons'>
+                            <PrimaryButton
+                                iconProps={{ iconName: 'accept' }}
+                                onClick={e => this.handleResponse('Approve')}
+                                text={'Approve'}
+                            />
+                            <DefaultButton
+                                iconProps={{ iconName: 'chromeclose' }}
+                                onClick={e => this.handleResponse('Reject')}
+                                text={'Reject'}
+                            />
+                        </div>
+                    </CardActions>
+                }
+            </Card >
         );
     }
 }

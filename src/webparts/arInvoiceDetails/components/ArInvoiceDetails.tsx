@@ -11,7 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts, UpdateARInvoiceAccounts } from '../../../MyHelperMethods/DataLayerMethods';
+import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts, UpdateARInvoiceAccounts, UpdateApprovalRequest } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
@@ -28,6 +28,7 @@ import { Form, Field, FormElement, FieldWrapper, FormRenderProps } from '@progre
 // Fluent UI
 import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
 import { GetChoiceFieldValues, BuildGUID } from '../../../MyHelperMethods/HelperMethods';
+import { ApprovalRequestTypes, ApprovalStatus } from '../../../enums/Approvals';
 
 export interface IArInvoiceDetailsProps {
   description: string;
@@ -143,7 +144,17 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   private account_onSave = e => {
     UpdateARInvoiceAccounts(e);
   }
+  //#endregion
 
+  //#region Approval CRUD Methods
+  private _handleApprovalResponse = async (approvalId: number, responseStatus: string | ApprovalStatus, responseMessage: string) => {
+    let response = await UpdateApprovalRequest(approvalId, responseStatus, responseMessage);
+    if (response !== undefined) {
+      GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+        this.setState({ currentInvoice: invoice });
+      });
+    }
+  }
   //#endregion
 
   private _buttons = (formRenderProps) => {
@@ -197,6 +208,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                           onDelete: this.account_onDelete,
                           onSave: this.account_onSave,
                         }}
+                        handleApprovalResponse={this._handleApprovalResponse}
                       />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
@@ -206,7 +218,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       <CustomerComponent {...subComponentProps} formRenderProps={formRenderProps} />
                     </PivotItem>
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
-                      <ApprovalsComponent {...subComponentProps} formRenderProps={formRenderProps} />
+                      <ApprovalsComponent
+                        {...subComponentProps}
+                        formRenderProps={formRenderProps}
+                        handleApprovalResponse={this._handleApprovalResponse}
+                      />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
                       <AccountsComponent
