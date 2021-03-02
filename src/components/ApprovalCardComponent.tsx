@@ -102,7 +102,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
      * If Approve - An account code must be present. 
      * @param response Approve or Reject
      */
-    private handleResponse = (response: string): void => {
+    private handleResponse = (response: string | ApprovalEnum.ApprovalStatus): void => {
         // TODO: Call a method passed through props that will handle the save logic. 
         console.log(response);
     }
