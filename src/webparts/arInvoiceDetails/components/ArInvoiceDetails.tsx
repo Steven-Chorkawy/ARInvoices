@@ -175,7 +175,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
     };
 
     return (
-      <div style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
+      <div key={this.state.currentInvoice ? `${this.state.currentInvoice.ID}-${this.state.currentInvoice.Modified}` : 0} style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -195,11 +195,18 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               initialValues={{
                 ...this.state.currentInvoice,
               }}
-              onSubmit={e => { UpdateARInvoice(e); }}
+              onSubmit={e => {
+                UpdateARInvoice(e).then(() => {
+                  GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+                    debugger;
+                    this.setState({ currentInvoice: invoice, inEditMode: false });
+                  });
+                });
+              }}
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
-                  <Pivot key={this.state.currentInvoice.ID} style={{ width: '100%' }}>
+                  <Pivot style={{ width: '100%' }}>
                     <PivotItem title={'All'} headerText={'All'}>
                       <AllComponents
                         {...subComponentProps}
@@ -229,7 +236,6 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                         {...subComponentProps}
                         formRenderProps={formRenderProps}
                         onDelete={this.account_onDelete}
-                        onSave={this.account_onSave}
                       />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
