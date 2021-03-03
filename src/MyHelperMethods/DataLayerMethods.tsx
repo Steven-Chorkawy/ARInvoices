@@ -83,7 +83,7 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
         `).expand("Requested_x0020_By, Customer, Accounts").get();
 
     output.Date = new Date(output.Date);
-   
+
     if (output.ApprovalsId.length > 0) {
         output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
     }
@@ -143,15 +143,10 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
 };
 
 export const DeleteARInvoiceAccounts = async (account: any) => {
-    debugger;
-    console.log('DeleteARInvoiceAccounts');
-    console.log(account);
     sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete();
 };
 
 export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
-    console.log('UpdateARInvoiceAccounts');
-    console.log(data);
     let output = [];
     for (let accountIndex = 0; accountIndex < data.length; accountIndex++) {
         const account = data[accountIndex];
