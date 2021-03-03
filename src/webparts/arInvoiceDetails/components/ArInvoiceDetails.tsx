@@ -198,7 +198,6 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               onSubmit={e => {
                 UpdateARInvoice(e).then(() => {
                   GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
-                    debugger;
                     this.setState({ currentInvoice: invoice, inEditMode: false });
                   });
                 });
