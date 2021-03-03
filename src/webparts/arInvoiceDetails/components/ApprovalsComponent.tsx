@@ -24,7 +24,7 @@ export class ApprovalsComponent extends React.Component<IApprovalComponentProps>
             <Card style={{ width: '100%' }}>
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
-                    {this.props.invoice.Approvals.map(approval => {
+                    {this.props.invoice.Approvals && this.props.invoice.Approvals.map(approval => {
                         return (
                             <ApprovalCardComponent
                                 invoice={this.props.invoice}

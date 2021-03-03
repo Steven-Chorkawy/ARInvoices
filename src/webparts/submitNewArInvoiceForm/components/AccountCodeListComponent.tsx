@@ -149,7 +149,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                 <Button icon={'delete'} look={'flat'} title={'Delete'}
                                     onClick={e => {
                                         e.preventDefault();
-                                        this.props.onDelete(this.props.dataItem);
+                                        this.props.onDelete({ invoice: this.props.dataItem, dataIndex: this.props.index });
                                     }}
                                 />
                             }

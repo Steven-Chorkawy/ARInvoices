@@ -52,6 +52,9 @@ export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
             .inBatch(batch).get()
             .then(f => {
                 accounts.push(f);
+            }).catch(reason => {
+                console.log('something went wrong!');
+                console.log(reason);
             });
     }
 
@@ -75,13 +78,20 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Customer/GP_x0020_ID,
             Customer/Contact_x0020_Name,
             Customer/Mailing_x0020_Address,
-            Customer/Telephone_x0020_Number
-        `).expand("Requested_x0020_By, Customer").get();
+            Customer/Telephone_x0020_Number,
+            Accounts/ID
+        `).expand("Requested_x0020_By, Customer, Accounts").get();
 
     output.Date = new Date(output.Date);
+   
+    if (output.ApprovalsId.length > 0) {
+        output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
+    }
 
-    output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
-    output.Accounts = await GetAccounts_Batch(output.AccountsId);
+    if (output.AccountsId.length > 0) {
+        output.Accounts = await GetAccounts_Batch(output.AccountsId);
+    }
+
     if (output.Attachments) {
         output.AttachmentFiles = await item.attachmentFiles();
         let webInfoUrl = await (await sp.web.get()).Url;
@@ -115,19 +125,19 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
 
     let accountList = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
     let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
-    let accountResults = [];  // This is what will be returned. 
+    let currentAccounts = await accountList.items.filter(`AR_x0020_InvoiceId eq ${arInvoiceId}`).get();
 
     for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
         const account = { ...accounts[accountIndex], AR_x0020_InvoiceId: arInvoiceId };
         // Create the AR Invoice Account. 
         let itemAddResult = accountList.items.add(account);
-        accountResults.push((await itemAddResult).data);
+        currentAccounts.push((await itemAddResult).data);
     }
 
     // Add the accounts to the AR Invoice Request.
-    if (accountResults.length > 0) {
+    if (currentAccounts.length > 0) {
         arInvoiceRequestList.items.getById(arInvoiceId).update({
-            AccountsId: { 'results': accountResults.map(a => { return a.Id; }) }
+            AccountsId: { 'results': currentAccounts.map(a => { return a.Id; }) }
         });
     }
 };
@@ -136,11 +146,20 @@ export const DeleteARInvoiceAccounts = async (account: any) => {
     debugger;
     console.log('DeleteARInvoiceAccounts');
     console.log(account);
+    sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete();
 };
 
-export const UpdateARInvoiceAccounts = async (data: any) => {
+export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
     console.log('UpdateARInvoiceAccounts');
     console.log(data);
+    let output = [];
+    for (let accountIndex = 0; accountIndex < data.length; accountIndex++) {
+        const account = data[accountIndex];
+        let iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID)
+            .update({ ...account });
+        output.push(await iUpdateRes.item.get());
+    }
+    return output;
 };
 //#endregion
 
@@ -189,7 +208,7 @@ export const UpdateApprovalRequest = async (approvalId: number, responseStatus: 
     }
 };
 
-export const CreateARInvoice = async (data: any) => {
+export const CreateARInvoice = async (data: any): Promise<void> => {
     const { Accounts, Attachments, Customer, ApproverEmails, Approvers, Invoice } = data;
 
     let itemAddResult = await sp.web.lists.getByTitle(MyLists['AR Invoice Requests']).items.add(Invoice);
@@ -221,5 +240,16 @@ export const UpdateARInvoice = async (data: any) => {
     // Update the invoice properties. 
     const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(invoice.ID)
         .update({ ...invoice });
+
+    // Create and update the accounts. 
+    for (let accountIndex = 0; accountIndex < Accounts.length; accountIndex++) {
+        const account = Accounts[accountIndex];
+        account.ID ?
+            await UpdateARInvoiceAccounts([account]) :
+            await CreateARInvoiceAccounts([account], invoice.ID);
+    }
+
+    debugger;
+    return;
 };
 
