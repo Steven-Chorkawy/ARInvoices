@@ -146,6 +146,15 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   }
   //#endregion
 
+  //#region Attachment CRUD MEthods
+  private attachment_onAdd = e => {
+    debugger;
+  }
+  private attachment_onDelete = e => {
+    debugger;
+  }
+  //#endregion
+
   //#region Approval CRUD Methods
   private _handleApprovalResponse = async (approvalId: number, responseStatus: string | ApprovalStatus, responseMessage: string) => {
     let response = await UpdateApprovalRequest(approvalId, responseStatus, responseMessage);
@@ -214,6 +223,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                           onDelete: this.account_onDelete,
                           onSave: this.account_onSave,
                         }}
+                        AttachmentCRUD={{
+                          onSave: this.attachment_onAdd,
+                          onDelete: this.attachment_onDelete
+                        }}
                         handleApprovalResponse={this._handleApprovalResponse}
                       />
                     </PivotItem>
@@ -238,7 +251,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
-                      <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />
+                      <AttachmentsComponent
+                        {...subComponentProps}
+                        formRenderProps={formRenderProps}
+                      />
                     </PivotItem>
                   </Pivot>
                   {this._buttons(formRenderProps)}

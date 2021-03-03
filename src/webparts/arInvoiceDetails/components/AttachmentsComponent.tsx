@@ -18,7 +18,11 @@ import { Upload, UploadFileStatus } from '@progress/kendo-react-upload';
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 import { MyLists } from '../../../enums/MyLists';
 import { UploadARInvoiceAttachments } from '../../../MyHelperMethods/DataLayerMethods';
+import IDataOperations from '../../../interfaces/IDataOperations';
 
+export interface IAttachmentsComponentProps extends IArInvoiceSubComponentProps, IDataOperations {
+    
+}
 
 class CustomAttachmentItem extends React.Component<any, any> {
     public render() {
@@ -48,15 +52,17 @@ class CustomAttachmentItem extends React.Component<any, any> {
 /**
  * This class displays the generic invoice metadata. 
  */
-export class AttachmentsComponent extends React.Component<IArInvoiceSubComponentProps> {
+export class AttachmentsComponent extends React.Component<IAttachmentsComponentProps> {
     constructor(props) {
         super(props);
+        debugger;
     }
 
     public AttachmentItem = e => <CustomAttachmentItem {...e} />;
 
     private onAdd = e => {
         debugger;
+        this.props.onSave(e);
         UploadARInvoiceAttachments(e.affectedFiles, this.props.invoice.ID);
     }
 
