@@ -941,7 +941,10 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
         inEditMode={fieldArrayRenderProps.inEditMode}
         onAdd={onAdd}
         onRemove={onRemove}
-        onDelete={fieldArrayRenderProps.onDelete}
+        onDelete={e => {
+          onRemove(e);
+          fieldArrayRenderProps.onDelete(e.invoice);
+        }}
         onSave={fieldArrayRenderProps.onSave}
       />
     </div>

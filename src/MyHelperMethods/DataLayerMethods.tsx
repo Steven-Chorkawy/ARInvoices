@@ -55,7 +55,6 @@ export const GetAccounts_Batch = async (ids: number[]): Promise<IAccount[]> => {
             }).catch(reason => {
                 console.log('something went wrong!');
                 console.log(reason);
-                debugger;
             });
     }
 
@@ -84,7 +83,7 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
         `).expand("Requested_x0020_By, Customer, Accounts").get();
 
     output.Date = new Date(output.Date);
-    debugger;
+   
     if (output.ApprovalsId.length > 0) {
         output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
     }
@@ -127,7 +126,6 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     let accountList = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
     let arInvoiceRequestList = sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]);
     let currentAccounts = await accountList.items.filter(`AR_x0020_InvoiceId eq ${arInvoiceId}`).get();
-    debugger;
 
     for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
         const account = { ...accounts[accountIndex], AR_x0020_InvoiceId: arInvoiceId };
@@ -148,6 +146,7 @@ export const DeleteARInvoiceAccounts = async (account: any) => {
     debugger;
     console.log('DeleteARInvoiceAccounts');
     console.log(account);
+    sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete();
 };
 
 export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
@@ -237,8 +236,6 @@ export const UpdateARInvoice = async (data: any) => {
         Requested_x0020_By,
         ...invoice
     } = data;
-
-    debugger;
 
     // Update the invoice properties. 
     const iUpdateRes = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(invoice.ID)
