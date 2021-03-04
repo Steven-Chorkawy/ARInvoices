@@ -104,17 +104,25 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
     return output;
 };
 
-export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
+export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<any[]> => {
     if (!attachments) {
         return null;
     }
 
     let item = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(arInvoiceId);
+    let output = [];
 
     for (let attachmentIndex = 0; attachmentIndex < attachments.length; attachmentIndex++) {
         const attachment = attachments[attachmentIndex];
-        await item.attachmentFiles.add(attachment.name, attachment.getRawFile());
+        try {
+            output.push(await item.attachmentFiles.add(attachment.name, attachment.getRawFile()));
+        }
+        catch (e) {
+            output.push({ ...attachment, error: { ...e } });
+        }
     }
+
+    return output;
 };
 
 //#region AR Invoice Accounts
@@ -244,7 +252,6 @@ export const UpdateARInvoice = async (data: any) => {
             await CreateARInvoiceAccounts([account], invoice.ID);
     }
 
-    debugger;
     return;
 };
 
