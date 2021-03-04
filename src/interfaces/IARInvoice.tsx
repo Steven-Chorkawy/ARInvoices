@@ -79,6 +79,7 @@ export interface IARInvoice extends ISPItem {
     Customer_x0020_Details: string;
     Batch_x0020_Number: string;
     GUID: string;
+    Dirty_x0020_Field: string;
 }
 
 /**
