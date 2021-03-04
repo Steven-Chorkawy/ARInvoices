@@ -11,7 +11,7 @@
         "title": "Application Extension - Deployment of custom action.",
         "description": "Deploys a custom action with ClientSideComponentId association",
         "id": "152b8dd5-1ebe-4616-95d9-d3b70ab9ec9f",
-        "version": "2.0.1.0",
+        "version": "2.0.2.0",
         "assets": {
           "elementManifests": [
             "elements.xml",
