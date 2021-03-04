@@ -12,16 +12,19 @@ import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-fo
 import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
 import { Button } from '@progress/kendo-react-buttons';
 import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
-import { Upload, UploadFileStatus } from '@progress/kendo-react-upload';
+import { Upload, UploadFileInfo, UploadFileStatus } from '@progress/kendo-react-upload';
 
 
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 import { MyLists } from '../../../enums/MyLists';
 import { UploadARInvoiceAttachments } from '../../../MyHelperMethods/DataLayerMethods';
 import IDataOperations from '../../../interfaces/IDataOperations';
+import { ISPListAttachment } from '../../../interfaces/IARInvoice';
 
-export interface IAttachmentsComponentProps extends IArInvoiceSubComponentProps, IDataOperations {
-    
+export interface IAttachmentsComponentProps extends IArInvoiceSubComponentProps, IDataOperations { }
+
+export interface IAttachmentsComponentState {
+    AttachmentFiles: any[];
 }
 
 class CustomAttachmentItem extends React.Component<any, any> {
@@ -52,18 +55,63 @@ class CustomAttachmentItem extends React.Component<any, any> {
 /**
  * This class displays the generic invoice metadata. 
  */
-export class AttachmentsComponent extends React.Component<IAttachmentsComponentProps> {
+export class AttachmentsComponent extends React.Component<IAttachmentsComponentProps, IAttachmentsComponentState> {
     constructor(props) {
         super(props);
-        debugger;
+        this.state = {
+            AttachmentFiles: this.props.invoice.AttachmentFiles.map((a, index) => {
+                return {
+                    ...a,
+                    progress: 100,
+                    status: UploadFileStatus.Uploaded,
+                    uid: index.toString(),
+                    name: a.FileName
+                };
+            })
+        };
     }
 
     public AttachmentItem = e => <CustomAttachmentItem {...e} />;
 
     private onAdd = e => {
-        debugger;
-        this.props.onSave(e);
-        UploadARInvoiceAttachments(e.affectedFiles, this.props.invoice.ID);
+        let newFiles = e.affectedFiles.map(file => ({
+            status: UploadFileStatus.Uploading,
+            name: file.name,
+            progress: 0,
+            uid: file.uid
+        }));
+
+        this.setState({
+            AttachmentFiles: [
+                ...this.state.AttachmentFiles,
+                ...newFiles
+            ]
+        });
+
+        UploadARInvoiceAttachments(e.affectedFiles, this.props.invoice.ID).then(results => {
+            let uploadSuccess = true;
+            for (let resultsIndex = 0; resultsIndex < results.length; resultsIndex++) {
+                const result = results[resultsIndex];
+                if (result.error) {
+                    let failedFile = {
+                        status: UploadFileStatus.UploadFailed,
+                        progress: 100,
+                        name: result.name,
+                        uid: result.uid
+                    };
+                    let failedFileIndex = this.state.AttachmentFiles.findIndex(f => f.uid === result.uid);
+                    let stateFiles = this.state.AttachmentFiles;
+                    stateFiles[failedFileIndex] = { ...failedFile };
+                    this.setState({ AttachmentFiles: stateFiles });
+                    // This will force the form to re-render. 
+                    uploadSuccess = false;
+                }
+            }
+
+            if (uploadSuccess) {
+                this.props.onSave(e);
+            }
+        });
     }
 
     private onRemove = e => {
@@ -72,7 +120,7 @@ export class AttachmentsComponent extends React.Component<IAttachmentsComponentP
 
     public render() {
         return (
-            <Card style={{ width: '100%' }}>
+            <Card style={{ width: '100%' }} key={JSON.stringify(this.state.AttachmentFiles)}>
                 <CardBody>
                     <CardTitle><b>Attachments</b></CardTitle>
                     <Upload
@@ -81,18 +129,7 @@ export class AttachmentsComponent extends React.Component<IAttachmentsComponentP
                         listItemUI={this.AttachmentItem}
                         onAdd={this.onAdd}
                         onRemove={this.onRemove}
-                        defaultFiles={this.props.invoice.AttachmentFiles ?
-                            this.props.invoice.AttachmentFiles.map((attachment, index) => {
-                                return ({
-                                    name: attachment.FileName,
-                                    progress: 100,
-                                    status: UploadFileStatus.Uploaded,
-                                    uid: index.toString(),
-                                    URL: attachment.URL
-                                });
-                            }) :
-                            undefined
-                        }
+                        defaultFiles={this.state.AttachmentFiles ? this.state.AttachmentFiles : undefined}
                     />
                 </CardBody>
             </Card>
