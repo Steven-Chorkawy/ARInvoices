@@ -27,6 +27,7 @@ interface IAllComponentsProps extends IArInvoiceSubComponentProps {
     AccountCRUD?: IDataOperations;
     AttachmentCRUD?: IDataOperations;
     handleApprovalResponse: Function;
+    handleApprovalCreate: Function;
 }
 
 /**
@@ -44,7 +45,9 @@ export class AllComponents extends React.Component<IAllComponentsProps> {
                 <CustomerComponent {...this.props} />
                 <ApprovalsComponent
                     {...this.props}
+                    context={this.props.context}
                     handleApprovalResponse={this.props.handleApprovalResponse}
+                    handleApprovalCreate={this.props.handleApprovalCreate}
                 />
                 <AccountsComponent
                     {...this.props}

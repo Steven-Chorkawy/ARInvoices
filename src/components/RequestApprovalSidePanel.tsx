@@ -44,7 +44,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
         await CreateApprovalRequest(data.Approvers, this.props.invoiceId, data.Request_x0020_Type, data.Notes);
 
         if (this.props.onSubmitCallBack) {
-            this.props.onSubmitCallBack(null);
+            this.props.onSubmitCallBack();
         }
     }
 

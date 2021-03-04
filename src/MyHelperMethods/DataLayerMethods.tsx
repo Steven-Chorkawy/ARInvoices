@@ -206,13 +206,13 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     }
 
     if (approvalRequestResults.length > 0) {
-        let p = await arInvoiceRequestList.items.getById(arInvoiceId).select('ApprovalsId').get()
+        let p = await arInvoiceRequestList.items.getById(arInvoiceId).select('ApprovalsId').get();
   
         let allApprovalRequests = [
             ...p.ApprovalsId,
             ...approvalRequestResults.map(a => { return a.Id; })
         ];
-        
+
         arInvoiceRequestList.items.getById(arInvoiceId).update({
             ApprovalsId: { results: allApprovalRequests }
         });

@@ -99,6 +99,13 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
     }
   }
 
+
+  private reloadInvoice = () => {
+    GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+      this.setState({ currentInvoice: invoice });
+    });
+  }
+
   private getInvoiceIDFromQueryParams = () => {
     return new UrlQueryParameterCollection(window.location.href).getValue(ARInvoiceQueryParams.ARInvoiceId);
   }
@@ -166,6 +173,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       });
     }
   }
+
   //#endregion
 
   private _buttons = (formRenderProps) => {
@@ -220,6 +228,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                     <PivotItem title={'All'} headerText={'All'}>
                       <AllComponents
                         {...subComponentProps}
+                        context={this.props.context}
                         formRenderProps={formRenderProps}
                         AccountCRUD={{
                           onDelete: this.account_onDelete,
@@ -230,6 +239,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                           onDelete: this.attachment_onDelete
                         }}
                         handleApprovalResponse={this._handleApprovalResponse}
+                        handleApprovalCreate={this.reloadInvoice}
                       />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
@@ -241,8 +251,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
                       <ApprovalsComponent
                         {...subComponentProps}
+                        context={this.props.context}
                         formRenderProps={formRenderProps}
                         handleApprovalResponse={this._handleApprovalResponse}
+                        handleApprovalCreate={this.reloadInvoice}
                       />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
