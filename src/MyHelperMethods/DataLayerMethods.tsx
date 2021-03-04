@@ -6,6 +6,7 @@ import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
+
 import { IItem } from "@pnp/sp/items/types";
 
 import { MyLists } from '../enums/MyLists';
@@ -13,6 +14,11 @@ import * as ApprovalEnum from '../enums/Approvals';
 
 import { IARInvoice, IApproval, IAccount } from '../interfaces/IARInvoice';
 import { BuildURLToDocument } from './HelperMethods';
+
+const UpdateARInvoiceDirtyField = async (id: number) => {
+    sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).update({ Dirty_x0020_Field: new Date().toString() });
+
+}
 
 export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> => {
     let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
@@ -78,9 +84,16 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Customer/GP_x0020_ID,
             Customer/Contact_x0020_Name,
             Customer/Mailing_x0020_Address,
-            Customer/Telephone_x0020_Number,
-            Accounts/ID
-        `).expand("Requested_x0020_By, Customer, Accounts").get();
+            Customer/Telephone_x0020_Number
+        `).expand("Requested_x0020_By, Customer").get();
+
+
+    // Making a second query because PnP is returning cached data and I can't disabled it!!!!
+    if (output.AccountsId.length === 0) {
+        debugger;
+        let output2 = await item.get();
+        output.AccountsId = output2.AccountsId;
+    }
 
     output.Date = new Date(output.Date);
 
@@ -126,7 +139,7 @@ export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId
 };
 
 //#region AR Invoice Accounts
-export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: number): Promise<void> => {
+export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: number) => {
     if (!accounts) {
         return null;
     }
@@ -146,12 +159,16 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
     if (currentAccounts.length > 0) {
         arInvoiceRequestList.items.getById(arInvoiceId).update({
             AccountsId: { 'results': currentAccounts.map(a => { return a.Id; }) }
+        }).then(() => {
+            UpdateARInvoiceDirtyField(arInvoiceId);
         });
     }
 };
 
 export const DeleteARInvoiceAccounts = async (account: any) => {
-    sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete();
+    sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete().then(() => {
+        UpdateARInvoiceDirtyField(account.AR_x0020_InvoiceId);
+    });
 };
 
 export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
@@ -228,7 +245,6 @@ export const CreateARInvoice = async (data: any): Promise<void> => {
 export const UpdateARInvoice = async (data: any) => {
     console.log('update ar invoice');
     console.log(data);
-
     const {
         Accounts,
         AccountsId,

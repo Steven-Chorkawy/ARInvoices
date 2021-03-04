@@ -26,6 +26,7 @@ export default class ArInvoiceDetailsWebPart extends BaseClientSideWebPart<IArIn
     await super.onInit().then(() => {
       sp.setup({
         spfxContext: this.context,
+        globalCacheDisable: true,
         sp: {
           headers: {
             "Accept": "application/json; odata=nometadata"

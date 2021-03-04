@@ -59,15 +59,17 @@ export class AttachmentsComponent extends React.Component<IAttachmentsComponentP
     constructor(props) {
         super(props);
         this.state = {
-            AttachmentFiles: this.props.invoice.AttachmentFiles.map((a, index) => {
-                return {
-                    ...a,
-                    progress: 100,
-                    status: UploadFileStatus.Uploaded,
-                    uid: index.toString(),
-                    name: a.FileName
-                };
-            })
+            AttachmentFiles: this.props.invoice.AttachmentFiles ?
+                this.props.invoice.AttachmentFiles.map((a, index) => {
+                    return {
+                        ...a,
+                        progress: 100,
+                        status: UploadFileStatus.Uploaded,
+                        uid: index.toString(),
+                        name: a.FileName
+                    };
+                }) :
+                undefined
         };
     }
 
