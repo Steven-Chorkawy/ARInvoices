@@ -63,7 +63,12 @@ export default class Approvals extends React.Component<IApprovalsProps, {}> {
                     <div
                       style={{ paddingLeft: '5px', whiteSpace: 'nowrap', fontSize: '12px' }}
                       title={approval.Assigned_x0020_To.Title} className="nameplate-title">
-                      {approval.Assigned_x0020_To.Title} | {approval.Status}
+                      <div>
+                        {approval.Assigned_x0020_To.Title} | {approval.Status}
+                      </div>
+                      <div>
+                        {approval.Request_x0020_Type}
+                      </div>
                     </div>
                   </div>
                 </div>

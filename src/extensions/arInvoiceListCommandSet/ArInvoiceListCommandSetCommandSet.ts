@@ -8,12 +8,13 @@ import {
   BaseListViewCommandSet,
   Command,
   IListViewCommandSetListViewUpdatedParameters,
-  IListViewCommandSetExecuteEventParameters
+  IListViewCommandSetExecuteEventParameters, RowAccessor
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 
 import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/NewInvoiceSidePanel';
+import RequestApprovalSidePanel, { IRequestApprovalSidePanelProps } from '../../components/RequestApprovalSidePanel';
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
 
@@ -61,7 +62,8 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
 
-    debugger;
+    const selectedRow: RowAccessor = event.selectedRows[0];
+
     switch (event.itemId) {
       case 'COMMAND_1':
         Dialog.alert(`${this.properties.sampleTextOne}`);
@@ -79,7 +81,18 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         ReactDOM.render(element, div);
         break;
       case "COMMAND_3":
-        alert('COMMAND_3 Clicked!');
+        const command3Div = document.createElement('div');
+        const command3Props: IRequestApprovalSidePanelProps = {
+          invoiceId: selectedRow.getValueByName('ID'),
+          isOpen: true,
+          panelType: PanelType.medium,
+          context: this.context
+        };
+        const command3Element: React.ReactElement<IRequestApprovalSidePanelProps> = React.createElement(
+          RequestApprovalSidePanel,
+          { ...command3Props }
+        );
+        ReactDOM.render(command3Element, command3Div);
         break;
       default:
         throw new Error('Unknown command');

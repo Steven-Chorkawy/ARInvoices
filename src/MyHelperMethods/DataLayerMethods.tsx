@@ -183,7 +183,7 @@ export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
 //#endregion
 
 
-export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"], notes?: string): Promise<void> => {
+export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"], notes?: string) => {
     if (!approvers) {
         return null;
     }
@@ -206,8 +206,15 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
     }
 
     if (approvalRequestResults.length > 0) {
+        let p = await arInvoiceRequestList.items.getById(arInvoiceId).select('ApprovalsId').get()
+  
+        let allApprovalRequests = [
+            ...p.ApprovalsId,
+            ...approvalRequestResults.map(a => { return a.Id; })
+        ];
+        
         arInvoiceRequestList.items.getById(arInvoiceId).update({
-            ApprovalsId: { results: approvalRequestResults.map(a => { return a.Id; }) }
+            ApprovalsId: { results: allApprovalRequests }
         });
     }
 };
