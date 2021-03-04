@@ -17,8 +17,7 @@ import { BuildURLToDocument } from './HelperMethods';
 
 const UpdateARInvoiceDirtyField = async (id: number) => {
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(id).update({ Dirty_x0020_Field: new Date().toString() });
-
-}
+};
 
 export const GetApprovals_Batch = async (ids: number[]): Promise<IApproval[]> => {
     let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
