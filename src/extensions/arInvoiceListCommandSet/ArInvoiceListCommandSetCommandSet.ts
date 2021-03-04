@@ -46,14 +46,22 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
   @override
   public onListViewUpdated(event: IListViewCommandSetListViewUpdatedParameters): void {
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
+    const compareCommand3: Command = this.tryGetCommand('COMMAND_3');
+
     if (compareOneCommand) {
       // This command should be hidden unless exactly one row is selected.
       compareOneCommand.visible = event.selectedRows.length === 1;
+    }
+
+    if (compareCommand3) {
+      compareCommand3.visible = event.selectedRows.length === 1;
     }
   }
 
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
+
+    debugger;
     switch (event.itemId) {
       case 'COMMAND_1':
         Dialog.alert(`${this.properties.sampleTextOne}`);
@@ -69,6 +77,9 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
           }
         );
         ReactDOM.render(element, div);
+        break;
+      case "COMMAND_3":
+        alert('COMMAND_3 Clicked!');
         break;
       default:
         throw new Error('Unknown command');
