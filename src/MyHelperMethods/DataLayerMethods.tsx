@@ -183,7 +183,7 @@ export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
 //#endregion
 
 
-export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
+export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"], notes?: string): Promise<void> => {
     if (!approvers) {
         return null;
     }
@@ -199,7 +199,8 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
             AR_x0020_InvoiceId: arInvoiceId,
             ARInvoiceID_Number: arInvoiceId, // Only using this field because PowerAutomate cannot get the value of AR_x0020_InvoiceId.
             Assigned_x0020_ToId: approver.Id,
-            Request_x0020_Type: requestType
+            Request_x0020_Type: requestType,
+            Notes: notes
         });
         approvalRequestResults.push((await itemAddResult).data);
     }
