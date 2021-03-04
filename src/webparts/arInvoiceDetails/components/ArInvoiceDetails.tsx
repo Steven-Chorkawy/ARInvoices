@@ -11,7 +11,7 @@ import { UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 // My Custom Imports. 
 import { MyLists } from '../../../enums/MyLists';
 import * as MyFormComponents from '../../../components/MyFormComponents';
-import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts, UpdateARInvoiceAccounts, UpdateApprovalRequest } from '../../../MyHelperMethods/DataLayerMethods';
+import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts, UpdateARInvoiceAccounts, UpdateApprovalRequest, UploadARInvoiceAttachments } from '../../../MyHelperMethods/DataLayerMethods';
 import { RequestComponent } from './RequestComponent';
 import { CustomerComponent } from './CustomerComponent';
 import { ApprovalsComponent } from './ApprovalsComponent';
@@ -146,6 +146,17 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
   }
   //#endregion
 
+  //#region Attachment CRUD MEthods
+  private attachment_onAdd = e => {
+    GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+      this.setState({ currentInvoice: invoice });
+    });
+  }
+  private attachment_onDelete = e => {
+    debugger;
+  }
+  //#endregion
+
   //#region Approval CRUD Methods
   private _handleApprovalResponse = async (approvalId: number, responseStatus: string | ApprovalStatus, responseMessage: string) => {
     let response = await UpdateApprovalRequest(approvalId, responseStatus, responseMessage);
@@ -214,6 +225,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                           onDelete: this.account_onDelete,
                           onSave: this.account_onSave,
                         }}
+                        AttachmentCRUD={{
+                          onSave: this.attachment_onAdd,
+                          onDelete: this.attachment_onDelete
+                        }}
                         handleApprovalResponse={this._handleApprovalResponse}
                       />
                     </PivotItem>
@@ -238,7 +253,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                       />
                     </PivotItem>
                     <PivotItem title={'Attachments'} headerText={'Attachments'}>
-                      <AttachmentsComponent {...subComponentProps} formRenderProps={formRenderProps} />
+                      <AttachmentsComponent
+                        {...subComponentProps}
+                        formRenderProps={formRenderProps}
+                        onSave={this.attachment_onAdd}
+                      />
                     </PivotItem>
                   </Pivot>
                   {this._buttons(formRenderProps)}

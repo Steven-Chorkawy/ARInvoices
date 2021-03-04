@@ -83,7 +83,7 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
         `).expand("Requested_x0020_By, Customer, Accounts").get();
 
     output.Date = new Date(output.Date);
-   
+
     if (output.ApprovalsId.length > 0) {
         output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
     }
@@ -104,17 +104,25 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
     return output;
 };
 
-export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<void> => {
+export const UploadARInvoiceAttachments = async (attachments: any[], arInvoiceId: number): Promise<any[]> => {
     if (!attachments) {
         return null;
     }
 
     let item = await sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(arInvoiceId);
+    let output = [];
 
     for (let attachmentIndex = 0; attachmentIndex < attachments.length; attachmentIndex++) {
         const attachment = attachments[attachmentIndex];
-        await item.attachmentFiles.add(attachment.name, attachment.getRawFile());
+        try {
+            output.push(await item.attachmentFiles.add(attachment.name, attachment.getRawFile()));
+        }
+        catch (e) {
+            output.push({ ...attachment, error: { ...e } });
+        }
     }
+
+    return output;
 };
 
 //#region AR Invoice Accounts
@@ -143,15 +151,10 @@ export const CreateARInvoiceAccounts = async (accounts: any[], arInvoiceId: numb
 };
 
 export const DeleteARInvoiceAccounts = async (account: any) => {
-    debugger;
-    console.log('DeleteARInvoiceAccounts');
-    console.log(account);
     sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]).items.getById(account.ID).delete();
 };
 
 export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
-    console.log('UpdateARInvoiceAccounts');
-    console.log(data);
     let output = [];
     for (let accountIndex = 0; accountIndex < data.length; accountIndex++) {
         const account = data[accountIndex];
@@ -249,7 +252,6 @@ export const UpdateARInvoice = async (data: any) => {
             await CreateARInvoiceAccounts([account], invoice.ID);
     }
 
-    debugger;
     return;
 };
 
