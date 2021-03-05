@@ -108,7 +108,7 @@ export class ApprovalCardComponent extends React.Component<IApprovalCardComponen
         // TODO: Apply validation rules here before we process the approval request.
         if (response === ApprovalEnum.ApprovalStatus.Approve) {
             // Check that there is at least one account.
-            if (this.props.invoice.Accounts.length === 0) {
+            if (this.props.invoice.Accounts === undefined|| this.props.invoice.Accounts.length === 0) {
                 this.setState({ responseErrorMessage: 'Please add one or more accounts before approving this invoice.' });
                 return;
             }
