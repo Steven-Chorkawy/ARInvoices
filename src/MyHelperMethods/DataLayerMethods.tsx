@@ -86,15 +86,17 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Customer/Telephone_x0020_Number
         `).expand("Requested_x0020_By, Customer").get();
 
+    output.Date = new Date(output.Date);
 
+    let output2 = await item.get();
     // Making a second query because PnP is returning cached data and I can't disabled it!!!!
     if (output.AccountsId.length === 0) {
-        debugger;
-        let output2 = await item.get();
         output.AccountsId = output2.AccountsId;
     }
 
-    output.Date = new Date(output.Date);
+    if (output.ApprovalsId !== output2.ApprovalsId) {
+        output.ApprovalsId = output2.ApprovalsId;
+    }
 
     if (output.ApprovalsId.length > 0) {
         output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
@@ -183,7 +185,7 @@ export const UpdateARInvoiceAccounts = async (data: any[]): Promise<any> => {
 //#endregion
 
 
-export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"]): Promise<void> => {
+export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: number, requestType: ApprovalEnum.ApprovalRequestTypes = ApprovalEnum.ApprovalRequestTypes["Department Approval Required"], notes?: string) => {
     if (!approvers) {
         return null;
     }
@@ -199,14 +201,22 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
             AR_x0020_InvoiceId: arInvoiceId,
             ARInvoiceID_Number: arInvoiceId, // Only using this field because PowerAutomate cannot get the value of AR_x0020_InvoiceId.
             Assigned_x0020_ToId: approver.Id,
-            Request_x0020_Type: requestType
+            Request_x0020_Type: requestType,
+            Notes: notes
         });
         approvalRequestResults.push((await itemAddResult).data);
     }
 
     if (approvalRequestResults.length > 0) {
+        let p = await arInvoiceRequestList.items.getById(arInvoiceId).select('ApprovalsId').get();
+
+        let allApprovalRequests = [
+            ...p.ApprovalsId,
+            ...approvalRequestResults.map(a => { return a.Id; })
+        ];
+
         arInvoiceRequestList.items.getById(arInvoiceId).update({
-            ApprovalsId: { results: approvalRequestResults.map(a => { return a.Id; }) }
+            ApprovalsId: { results: allApprovalRequests }
         });
     }
 };

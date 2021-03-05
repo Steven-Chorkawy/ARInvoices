@@ -45,7 +45,7 @@ export interface IArInvoiceDetailsState {
   allInvoices?: any;    // All of the invoices regardless of filter applied. 
   invoiceID?: number;
   currentInvoice?: IARInvoice;
-  selectedTab: number;
+  selectedPivotKey: string;
   inEditMode: boolean;
   editFormFieldData?: IARInvoiceEditFormFieldData;
 }
@@ -77,7 +77,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       invoices: undefined,
       allInvoices: undefined,
       currentInvoice: undefined,
-      selectedTab: 0,
+      selectedPivotKey: '0',
       inEditMode: false
     };
 
@@ -97,6 +97,12 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
         this.setState({ currentInvoice: invoice });
       });
     }
+  }
+
+  private reloadInvoice = () => {
+    GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+      this.setState({ currentInvoice: invoice });
+    });
   }
 
   private getInvoiceIDFromQueryParams = () => {
@@ -152,9 +158,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       this.setState({ currentInvoice: invoice });
     });
   }
-  private attachment_onDelete = e => {
-    debugger;
-  }
+  private attachment_onDelete = e => { };
   //#endregion
 
   //#region Approval CRUD Methods
@@ -166,6 +170,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       });
     }
   }
+
   //#endregion
 
   private _buttons = (formRenderProps) => {
@@ -216,10 +221,15 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
-                  <Pivot style={{ width: '100%' }}>
+                  <Pivot
+                    style={{ width: '100%' }}
+                    onLinkClick={(e: any) => this.setState({ selectedPivotKey: e.key.substring(1) })}
+                    selectedKey={this.state.selectedPivotKey ? this.state.selectedPivotKey : '0'}
+                  >
                     <PivotItem title={'All'} headerText={'All'}>
                       <AllComponents
                         {...subComponentProps}
+                        context={this.props.context}
                         formRenderProps={formRenderProps}
                         AccountCRUD={{
                           onDelete: this.account_onDelete,
@@ -230,6 +240,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                           onDelete: this.attachment_onDelete
                         }}
                         handleApprovalResponse={this._handleApprovalResponse}
+                        handleApprovalCreate={this.reloadInvoice}
                       />
                     </PivotItem>
                     <PivotItem title={'Request Details'} headerText={'Request Details'}>
@@ -241,8 +252,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                     <PivotItem title={'Approvals'} headerText={'Approvals'}>
                       <ApprovalsComponent
                         {...subComponentProps}
+                        context={this.props.context}
                         formRenderProps={formRenderProps}
                         handleApprovalResponse={this._handleApprovalResponse}
+                        handleApprovalCreate={this.reloadInvoice}
                       />
                     </PivotItem>
                     <PivotItem title={'Accounts'} headerText={'Accounts'}>
@@ -264,11 +277,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                 </FormElement>
               )}
             /> :
-            <div>
+            < div >
               <h3>No Invoice Selected.</h3>
-            </div>
+            </div >
         }
-      </div>
+      </div >
     );
   }
 }

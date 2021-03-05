@@ -8,12 +8,13 @@ import {
   BaseListViewCommandSet,
   Command,
   IListViewCommandSetListViewUpdatedParameters,
-  IListViewCommandSetExecuteEventParameters
+  IListViewCommandSetExecuteEventParameters, RowAccessor
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 
 import NewInvoiceSidePanel, { INewInvoiceSidePanelProps } from './components/NewInvoiceSidePanel';
+import RequestApprovalSidePanel, { IRequestApprovalSidePanelProps } from '../../components/RequestApprovalSidePanel';
 
 import * as strings from 'ArInvoiceListCommandSetCommandSetStrings';
 
@@ -46,14 +47,23 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
   @override
   public onListViewUpdated(event: IListViewCommandSetListViewUpdatedParameters): void {
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
+    const compareCommand3: Command = this.tryGetCommand('COMMAND_3');
+
     if (compareOneCommand) {
       // This command should be hidden unless exactly one row is selected.
       compareOneCommand.visible = event.selectedRows.length === 1;
+    }
+
+    if (compareCommand3) {
+      compareCommand3.visible = event.selectedRows.length === 1;
     }
   }
 
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
+
+    const selectedRow: RowAccessor = event.selectedRows[0];
+
     switch (event.itemId) {
       case 'COMMAND_1':
         Dialog.alert(`${this.properties.sampleTextOne}`);
@@ -69,6 +79,20 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
           }
         );
         ReactDOM.render(element, div);
+        break;
+      case "COMMAND_3":
+        const command3Div = document.createElement('div');
+        const command3Props: IRequestApprovalSidePanelProps = {
+          invoiceId: selectedRow.getValueByName('ID'),
+          isOpen: true,
+          panelType: PanelType.medium,
+          context: this.context
+        };
+        const command3Element: React.ReactElement<IRequestApprovalSidePanelProps> = React.createElement(
+          RequestApprovalSidePanel,
+          { ...command3Props }
+        );
+        ReactDOM.render(command3Element, command3Div);
         break;
       default:
         throw new Error('Unknown command');

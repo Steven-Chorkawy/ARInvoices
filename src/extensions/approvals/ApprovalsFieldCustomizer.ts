@@ -79,9 +79,6 @@ export default class ApprovalsFieldCustomizer
           'Assigned_x0020_To/EMail')
         .expand('Assigned_x0020_To')
         .filter(filterString).get().then((value: IApproval[]) => {
-          console.log('Value: ');
-          console.log(value);
-
           const approvals: React.ReactElement<{}> =
             React.createElement(Approvals, { approvals: [...value] });
 

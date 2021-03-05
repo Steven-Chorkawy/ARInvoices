@@ -10,14 +10,23 @@
   "serveConfigurations": {
     "default": {
       "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
-      "fieldCustomizers": {
-        "Approvals": {
-          "id": "59676096-aca0-4c42-af1f-8ee55bf208b5",
+      "customActions": {
+        "bf232d1d-279c-465e-a6e4-359cb4957377": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
           "properties": {
-            "sampleText": "Value"
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
           }
         }
       }
+      // "fieldCustomizers": {
+      //   "Approvals": {
+      //     "id": "59676096-aca0-4c42-af1f-8ee55bf208b5",
+      //     "properties": {
+      //       "sampleText": "Value"
+      //     }
+      //   }
+      // }
     },
     "arInvoiceListCommandSet": {
       "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
