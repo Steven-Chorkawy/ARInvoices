@@ -37,15 +37,13 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
     }
 
     private handleSubmit = async (data) => {
-        console.log('Requesting New Approval');
-        console.log(data);
-
         // Create the new Approval request. 
-        await CreateApprovalRequest(data.Approvers, this.props.invoiceId, data.Request_x0020_Type, data.Notes);
-
-        if (this.props.onSubmitCallBack) {
-            this.props.onSubmitCallBack();
-        }
+        CreateApprovalRequest(data.Approvers, this.props.invoiceId, data.Request_x0020_Type, data.Notes).then(() => {
+            this.setState({ isOpen: false });
+            if (this.props.onSubmitCallBack) {
+                this.props.onSubmitCallBack();
+            }
+        });
     }
 
     public render(): React.ReactElement<any> {

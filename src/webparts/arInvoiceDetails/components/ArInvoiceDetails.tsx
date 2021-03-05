@@ -45,7 +45,7 @@ export interface IArInvoiceDetailsState {
   allInvoices?: any;    // All of the invoices regardless of filter applied. 
   invoiceID?: number;
   currentInvoice?: IARInvoice;
-  selectedTab: number;
+  selectedPivotKey: string;
   inEditMode: boolean;
   editFormFieldData?: IARInvoiceEditFormFieldData;
 }
@@ -77,7 +77,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       invoices: undefined,
       allInvoices: undefined,
       currentInvoice: undefined,
-      selectedTab: 0,
+      selectedPivotKey: '0',
       inEditMode: false
     };
 
@@ -99,9 +99,9 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
     }
   }
 
-
   private reloadInvoice = () => {
     GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
+      debugger;
       this.setState({ currentInvoice: invoice });
     });
   }
@@ -224,7 +224,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
-                  <Pivot style={{ width: '100%' }}>
+                  <Pivot
+                    style={{ width: '100%' }}
+                    onLinkClick={(e: any) => this.setState({ selectedPivotKey: e.key.substring(1) })}
+                    selectedKey={this.state.selectedPivotKey ? this.state.selectedPivotKey : '0'}
+                  >
                     <PivotItem title={'All'} headerText={'All'}>
                       <AllComponents
                         {...subComponentProps}
@@ -276,11 +280,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
                 </FormElement>
               )}
             /> :
-            <div>
+            < div >
               <h3>No Invoice Selected.</h3>
-            </div>
+            </div >
         }
-      </div>
+      </div >
     );
   }
 }

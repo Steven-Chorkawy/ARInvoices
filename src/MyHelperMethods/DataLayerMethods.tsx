@@ -86,15 +86,18 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
             Customer/Telephone_x0020_Number
         `).expand("Requested_x0020_By, Customer").get();
 
+    output.Date = new Date(output.Date);
 
+    debugger;
+    let output2 = await item.get();
     // Making a second query because PnP is returning cached data and I can't disabled it!!!!
     if (output.AccountsId.length === 0) {
-        debugger;
-        let output2 = await item.get();
         output.AccountsId = output2.AccountsId;
     }
 
-    output.Date = new Date(output.Date);
+    if (output.ApprovalsId !== output2.ApprovalsId) {
+        output.ApprovalsId = output2.ApprovalsId;
+    }
 
     if (output.ApprovalsId.length > 0) {
         output.Approvals = await GetApprovals_Batch(output.ApprovalsId);
@@ -207,7 +210,7 @@ export const CreateApprovalRequest = async (approvers: any[], arInvoiceId: numbe
 
     if (approvalRequestResults.length > 0) {
         let p = await arInvoiceRequestList.items.getById(arInvoiceId).select('ApprovalsId').get();
-  
+
         let allApprovalRequests = [
             ...p.ApprovalsId,
             ...approvalRequestResults.map(a => { return a.Id; })
