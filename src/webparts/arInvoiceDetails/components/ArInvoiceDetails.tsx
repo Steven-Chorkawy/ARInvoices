@@ -158,7 +158,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       this.setState({ currentInvoice: invoice });
     });
   }
-  private attachment_onDelete = e => { }
+  private attachment_onDelete = e => { };
   //#endregion
 
   //#region Approval CRUD Methods
