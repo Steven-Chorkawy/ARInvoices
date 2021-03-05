@@ -88,7 +88,6 @@ export const GetInvoiceByID = async (id: number): Promise<IARInvoice> => {
 
     output.Date = new Date(output.Date);
 
-    debugger;
     let output2 = await item.get();
     // Making a second query because PnP is returning cached data and I can't disabled it!!!!
     if (output.AccountsId.length === 0) {

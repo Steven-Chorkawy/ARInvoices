@@ -116,9 +116,7 @@ export class AttachmentsComponent extends React.Component<IAttachmentsComponentP
         });
     }
 
-    private onRemove = e => {
-        debugger;
-    }
+    private onRemove = e => { }
 
     public render() {
         return (

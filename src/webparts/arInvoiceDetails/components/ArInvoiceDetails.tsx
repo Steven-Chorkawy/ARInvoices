@@ -101,7 +101,6 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
 
   private reloadInvoice = () => {
     GetInvoiceByID(this.state.currentInvoice.ID).then(invoice => {
-      debugger;
       this.setState({ currentInvoice: invoice });
     });
   }
@@ -159,9 +158,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       this.setState({ currentInvoice: invoice });
     });
   }
-  private attachment_onDelete = e => {
-    debugger;
-  }
+  private attachment_onDelete = e => { }
   //#endregion
 
   //#region Approval CRUD Methods
