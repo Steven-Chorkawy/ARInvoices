@@ -33,6 +33,14 @@
           "manifest": "./src/extensions/approvals/ApprovalsFieldCustomizer.manifest.json"
         }
       ]
+    },
+    "accounts-field-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/accounts/AccountsFieldCustomizer.js",
+          "manifest": "./src/extensions/accounts/AccountsFieldCustomizer.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -41,6 +49,7 @@
     "ArInvoiceListCommandSetCommandSetStrings": "lib/extensions/arInvoiceListCommandSet/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
     "ArInvoiceDetailsWebPartStrings": "lib/webparts/arInvoiceDetails/loc/{locale}.js",
-    "ApprovalsFieldCustomizerStrings": "lib/extensions/approvals/loc/{locale}.js"
+    "ApprovalsFieldCustomizerStrings": "lib/extensions/approvals/loc/{locale}.js",
+    "AccountsFieldCustomizerStrings": "lib/extensions/accounts/loc/{locale}.js"
   }
 }

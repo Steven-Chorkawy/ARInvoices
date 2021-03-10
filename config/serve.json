@@ -2,49 +2,23 @@
   "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://localhost:5432/workbench",
-  "api": {
-    "port": 5432,
-    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
-  },
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
-      "customActions": {
-        "bf232d1d-279c-465e-a6e4-359cb4957377": {
-          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
-          "properties": {
-            "sampleTextOne": "One item is selected in the list",
-            "sampleTextTwo": "This command is always visible."
-          }
-        }
-      }
-      // "fieldCustomizers": {
-      //   "Approvals": {
-      //     "id": "59676096-aca0-4c42-af1f-8ee55bf208b5",
-      //     "properties": {
-      //       "sampleText": "Value"
-      //     }
-      //   }
-      // }
-    },
-    "arInvoiceListCommandSet": {
-      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
-      "customActions": {
-        "cc3ef562-ab12-45b7-a8bb-617cd3f1ca7f": {
-          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
-          "properties": {
-            "sampleTextOne": "One item is selected in the list",
-            "sampleTextTwo": "This command is always visible."
-          }
-        }
-      }
-    },
-    "approvals": {
-      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
+      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
       "fieldCustomizers": {
-        "Approvals": {
-          "id": "59676096-aca0-4c42-af1f-8ee55bf208b5",
+        "InternalFieldName": {
+          "id": "9dc68a28-f858-442a-94c0-bc95854cd071",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "accounts": {
+      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "9dc68a28-f858-442a-94c0-bc95854cd071",
           "properties": {
             "sampleText": "Value"
           }
