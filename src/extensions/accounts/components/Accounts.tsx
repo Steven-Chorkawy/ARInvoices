@@ -3,14 +3,15 @@ import { override } from '@microsoft/decorators';
 import * as React from 'react';
 
 import styles from './Accounts.module.scss';
-
-export interface IAccountsProps {
-  text: string;
-}
+import { IAccount } from '../../../interfaces/IARInvoice';
 
 const LOG_SOURCE: string = 'Accounts';
 
-export default class Accounts extends React.Component<IAccountsProps, {}> {
+interface IAccountsFieldProps {
+  accounts: IAccount[];
+}
+
+export default class Accounts extends React.Component<IAccountsFieldProps, any> {
   @override
   public componentDidMount(): void {
     Log.info(LOG_SOURCE, 'React Element: Accounts mounted');
@@ -25,7 +26,19 @@ export default class Accounts extends React.Component<IAccountsProps, {}> {
   public render(): React.ReactElement<{}> {
     return (
       <div className={styles.cell}>
-        { this.props.text }
+        {
+          this.props.accounts ?
+            <div>
+              {this.props.accounts.map(account => {
+                return (
+                  <div>
+                    <p>{account.Account_x0020_Code} | {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(account.Total_x0020_Invoice)}</p>
+                  </div>
+                );
+              })}
+            </div> :
+            undefined
+        }
       </div>
     );
   }

@@ -4,9 +4,9 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
       "fieldCustomizers": {
-        "InternalFieldName": {
+        "Accounts": {
           "id": "9dc68a28-f858-442a-94c0-bc95854cd071",
           "properties": {
             "sampleText": "Value"
@@ -15,9 +15,9 @@
       }
     },
     "accounts": {
-      "pageUrl": "https://contoso.sharepoint.com/sites/mySite/SitePages/myPage.aspx",
+      "pageUrl": "https://claringtonnet.sharepoint.com/sites/ARTest2/Lists/AR%20Invoice%20Requests/AllItems.aspx",
       "fieldCustomizers": {
-        "InternalFieldName": {
+        "Accounts": {
           "id": "9dc68a28-f858-442a-94c0-bc95854cd071",
           "properties": {
             "sampleText": "Value"

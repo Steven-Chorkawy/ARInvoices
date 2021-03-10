@@ -38,6 +38,7 @@ export interface IAccount extends ISPItem {
     Account_x0020_Code: string;
     Amount: number;
     HST_x0020_Taxable: boolean;
+    Total_x0020_Invoice: number;
     AR_x0020_InvoiceId?: number;
 }
 
