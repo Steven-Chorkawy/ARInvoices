@@ -239,6 +239,8 @@ export default class SubmitNewArInvoiceForm extends React.Component<ISubmitNewAr
                           onChange={e => {
                             formRenderProps.onChange('Invoice.CustomerId', { value: e.value ? e.value.Id : undefined });
                             formRenderProps.onChange('Invoice.Title', { value: e.value ? `AR Invoice: ${e.value.Title}` : undefined });
+                            formRenderProps.onChange('Invoice.Customer_x0020_Name', { value: e.value ? e.value.Title : undefined });
+                            formRenderProps.onChange('Invoice.Customer_x0020_Details', { value: e.value ? e.value.Mailing_x0020_Address : undefined });
                           }}
                         />
                       </FieldWrapper> :
