@@ -86,7 +86,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                                             name={`Accounts[${this.props.index}].Account_x0020_Code`}
                                             component={MyFormComponents.FormMaskedTextBox}
                                             mask="000-00-000-00000-0000"
-                                            validator={MyValidator.required}
+                                            validator={MyValidator.glCodeValidator}
                                             required={true}
                                             label={'Account Code'}
                                         />
