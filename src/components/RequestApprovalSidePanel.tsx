@@ -6,7 +6,10 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { BaseDialog } from '@microsoft/sp-dialog';
-import { IFocusTrapZoneProps } from '@fluentui/react';
+import { IFocusTrapZoneProps, MessageBar, MessageBarType } from '@fluentui/react';
+
+import { sp } from '@pnp/sp';
+
 
 // Kendo UI
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
@@ -19,11 +22,14 @@ import { ApprovalRequestTypes } from '../enums/Approvals';
 import * as MyValidator from '../MyHelperMethods/Validators';
 import { GetUsersByLoginName } from '../MyHelperMethods/UserProfileMethods';
 import { CreateApprovalRequest } from '../MyHelperMethods/DataLayerMethods';
+import { MyLists } from '../enums/MyLists';
+import { PermissionKind } from '@pnp/sp/security';
 
 export interface IRequestApprovalSidePanelProps {
     isOpen?: boolean;
     panelType?: PanelType;
     invoiceId: number;
+    invoiceTitle?: string;
     context?: any;
     onSubmitCallBack?: Function;
 }
@@ -32,8 +38,13 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: this.props.isOpen
+            isOpen: this.props.isOpen,
+            userCanEditInvoice: true
         };
+
+        sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(this.props.invoiceId).currentUserHasPermissions(PermissionKind.EditListItems).then(value => {
+            this.setState({ userCanEditInvoice: value });
+        });
     }
 
     private handleSubmit = async (data) => {
@@ -62,7 +73,13 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                             render={(formRenderProps) => (
                                 <FormElement style={{ maxWidth: '1200px' }}>
                                     <fieldset className={'k-form-fieldset'}>
-                                        <b><legend className={'k-form-legend'}>Request Approval</legend></b>
+                                        <b><legend className={'k-form-legend'}>Request Approval {this.props.invoiceTitle && this.props.invoiceTitle}</legend></b>
+                                        {
+                                            !this.state.userCanEditInvoice &&
+                                            <MessageBar messageBarType={MessageBarType.error} isMultiline={false}>
+                                                You do not have the required permissions to make a request for this invoice. 
+                                            </MessageBar>
+                                        }
                                         <Card>
                                             <CardBody>
                                                 <div style={{ marginBottom: '15px' }}>
@@ -136,7 +153,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                 primary={true}
                                                 type={'submit'}
                                                 icon={'save'}
-                                                disabled={!formRenderProps.allowSubmit}
+                                                disabled={!formRenderProps.allowSubmit || !this.state.userCanEditInvoice}
                                             >Submit Approval</Button>
                                             <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
                                         </div>
