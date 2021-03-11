@@ -24,6 +24,7 @@ import { GetUsersByLoginName } from '../MyHelperMethods/UserProfileMethods';
 import { CreateApprovalRequest } from '../MyHelperMethods/DataLayerMethods';
 import { MyLists } from '../enums/MyLists';
 import { PermissionKind } from '@pnp/sp/security';
+import { ISiteGroupInfo } from '@pnp/sp/site-groups/types';
 
 export interface IRequestApprovalSidePanelProps {
     isOpen?: boolean;
@@ -37,6 +38,7 @@ export interface IRequestApprovalSidePanelProps {
 interface IRequestApprovalSidePanelState {
     isOpen: boolean;
     userCanEditInvoice: boolean;
+    requestTypes: ApprovalRequestTypes[];
 }
 
 export default class RequestApprovalSidePanel extends React.Component<IRequestApprovalSidePanelProps, IRequestApprovalSidePanelState> {
@@ -44,11 +46,25 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
         super(props);
         this.state = {
             isOpen: this.props.isOpen,
-            userCanEditInvoice: true
+            userCanEditInvoice: true,
+            requestTypes: [
+                ApprovalRequestTypes["Cancel Request"],
+                ApprovalRequestTypes["Department Approval Required"],
+                ApprovalRequestTypes["Edit Required"]
+            ]
         };
 
         sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(this.props.invoiceId).currentUserHasPermissions(PermissionKind.EditListItems).then(value => {
             this.setState({ userCanEditInvoice: value });
+        });
+
+        sp.web.currentUser.groups().then((value: ISiteGroupInfo[]) => {
+            debugger;
+            // TODO: Check if any of the ISiteGroupInfo object Title contains the word "Department".  If none contain "Department" then we can add more request types. 
+
+            // Add these request types if it's valid. 
+            // * ApprovalRequestTypes["Accountant Approval Required"],
+            // * ApprovalRequestTypes["Accounting Clerk2 Approval Required"],
         });
     }
 
@@ -82,7 +98,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                         {
                                             !this.state.userCanEditInvoice &&
                                             <MessageBar messageBarType={MessageBarType.error} isMultiline={false}>
-                                                You do not have the required permissions to make a request for this invoice. 
+                                                You do not have the required permissions to make a request for this invoice.
                                             </MessageBar>
                                         }
                                         <Card>
@@ -94,13 +110,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             name="Request_x0020_Type"
                                                             label="Request Type"
                                                             wrapperStyle={{ width: '100%' }}
-                                                            data={[
-                                                                ApprovalRequestTypes["Accountant Approval Required"],
-                                                                ApprovalRequestTypes["Accounting Clerk2 Approval Required"],
-                                                                ApprovalRequestTypes["Cancel Request"],
-                                                                ApprovalRequestTypes["Department Approval Required"],
-                                                                ApprovalRequestTypes["Edit Required"]
-                                                            ]}
+                                                            data={this.state.requestTypes}
                                                             required={true}
                                                             disabled={!this.state.userCanEditInvoice}
                                                             component={MyFormComponents.FormDropDownList}
