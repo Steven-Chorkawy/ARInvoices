@@ -84,6 +84,7 @@ export default class ArInvoiceListCommandSetCommandSet extends BaseListViewComma
         const command3Div = document.createElement('div');
         const command3Props: IRequestApprovalSidePanelProps = {
           invoiceId: selectedRow.getValueByName('ID'),
+          invoiceTitle: selectedRow.getValueByName('Title'),
           isOpen: true,
           panelType: PanelType.medium,
           context: this.context
