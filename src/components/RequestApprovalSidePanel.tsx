@@ -34,7 +34,12 @@ export interface IRequestApprovalSidePanelProps {
     onSubmitCallBack?: Function;
 }
 
-export default class RequestApprovalSidePanel extends React.Component<IRequestApprovalSidePanelProps, any> {
+interface IRequestApprovalSidePanelState {
+    isOpen: boolean;
+    userCanEditInvoice: boolean;
+}
+
+export default class RequestApprovalSidePanel extends React.Component<IRequestApprovalSidePanelProps, IRequestApprovalSidePanelState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,6 +102,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                                 ApprovalRequestTypes["Edit Required"]
                                                             ]}
                                                             required={true}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             component={MyFormComponents.FormDropDownList}
                                                             validator={MyValidator.required}
                                                         />
@@ -115,6 +121,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             validator={MyValidator.peoplePickerValidator}
                                                             personSelectionLimit={10}
                                                             context={this.props.context}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             selectedItems={e => {
                                                                 if (e && e.length > 0) {
                                                                     GetUsersByLoginName(e).then(res => {
@@ -142,6 +149,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             name="Notes"
                                                             label="Notes"
                                                             wrapperStyle={{ width: '100%' }}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             component={MyFormComponents.FormTextArea}
                                                         />
                                                     </FieldWrapper>
