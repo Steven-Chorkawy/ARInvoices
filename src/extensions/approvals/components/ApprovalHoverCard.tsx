@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { ExpandingCardMode, HoverCard, HoverCardType, IExpandingCardProps } from 'office-ui-fabric-react/lib/HoverCard';
-import { DetailsList, buildColumns, IColumn, SelectionMode } from 'office-ui-fabric-react/lib/DetailsList';
-import { IAccount, IApproval } from '../../../interfaces/IARInvoice';
-import { IHoverCard, IPlainCardProps } from '@fluentui/react';
+import { HoverCard, HoverCardType } from 'office-ui-fabric-react/lib/HoverCard';
+import { IApproval } from '../../../interfaces/IARInvoice';
+import { ActivityItem, DefaultButton, mergeStyleSets, PrimaryButton, Stack } from 'office-ui-fabric-react';
+import { ApprovalStatus } from '../../../enums/Approvals';
+import IMyUser from '../../../interfaces/IMyUser';
 
 export interface IApprovalHoverCardProps {
     approval: IApproval;
+    currentUser: IMyUser;
 }
 
 export default class ApprovalHoverCard extends React.Component<IApprovalHoverCardProps, any> {
@@ -30,35 +32,70 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
         return output;
     }
 
-    private onRenderItemColumn = (item: any, index: number, column: IColumn) => {
-        const fieldContent = item[column.fieldName as keyof IAccount] as string;
-        
-        switch (column.key) {
-            case 'Amount':
-            case 'Total_x0020_Invoice':
-                return <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(fieldContent))}</span>;
-            case 'HST_x0020_Taxable':
-                return <span>{fieldContent ? 'Yes' : 'No'}</span>;
-            default:
-                return <span>{fieldContent}</span>;
+    private _getActivityItemProps = (approval: IApproval) => {
+        const classNames = mergeStyleSets({
+            exampleRoot: {
+                marginTop: '20px',
+            },
+            nameText: {
+                fontWeight: 'bold',
+            },
+        });
+
+        let output = [{
+            key: 1,
+            activityDescription: [
+                <span
+                    key={1}
+                    className={classNames.nameText}
+                >{approval.Author.Title}</span>,
+                <span key={2}> requested </span>,
+                <span key={3} className={classNames.nameText}>{approval.Request_x0020_Type}</span>,
+            ],
+            activityPersonas: [{ imageUrl: `/_layouts/15/userphoto.aspx?size=S&accountname=${approval.Author.EMail}` }],
+            comments: approval.Notes,
+            timeStamp: approval.Created,
+        }];
+
+        if (approval.Status !== ApprovalStatus.Waiting) {
+            output.push({
+                key: 2,
+                activityDescription: [
+                    <span
+                        key={1}
+                        className={classNames.nameText}
+                    >{approval.Assigned_x0020_To.Title}</span>,
+                    <span key={2}> responded with </span>,
+                    <span key={3} className={classNames.nameText}>{approval.Status}</span>,
+                ],
+                activityPersonas: [{ imageUrl: `/_layouts/15/userphoto.aspx?size=S&accountname=${approval.Assigned_x0020_To.EMail}` }],
+                comments: approval.Response_x0020_Message,
+                timeStamp: approval.Modified,
+            });
         }
+
+        return output;
     }
 
-    private onRenderCompactCard = (approval: IApproval) => {
-        return (<div style={{ padding: '10px' }}>
-            <p>hello</p>
-            {/* <DetailsList
-                items={items}
-                selectionMode={SelectionMode.none}
-                onRenderItemColumn={this.onRenderItemColumn}
-                columns={[
-                    { key: 'Account_x0020_Code', name: 'Account Code', fieldName: 'Account_x0020_Code', minWidth: 200 },
-                    { key: 'Amount', name: 'Amount', fieldName: 'Amount', minWidth: 150 },
-                    { key: 'HST_x0020_Taxable', name: 'HST Taxable', fieldName: 'HST_x0020_Taxable', minWidth: 100 },
-                    { key: 'Total_x0020_Invoice', name: 'Total', fieldName: 'Total_x0020_Invoice', minWidth: 150 }
-                ]}
-            /> */}
-        </div>);
+    private onRenderCompactCard = (data) => {
+        const approval: IApproval = data.approval;
+        const currentUser: IMyUser = data.currentUser;
+        return (
+            <div style={{ padding: '10px' }}>
+                {
+                    this._getActivityItemProps(approval).map((item: { key: string | number }) => {
+                        return <ActivityItem {...item} key={item.key} />;
+                    })
+                }
+                {
+                    approval.Assigned_x0020_To.EMail === currentUser.email && approval.Status === ApprovalStatus.Waiting &&
+                    <Stack horizontal horizontalAlign="space-around" style={{ marginTop: '10px' }}>
+                        <PrimaryButton iconProps={{ iconName: 'Accept' }} text="Approve" />
+                        <DefaultButton iconProps={{ iconName: 'ChromeClose' }} text="Deny" />
+                    </Stack>
+                }
+            </div>
+        );
     }
 
     public render() {
@@ -68,7 +105,7 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
                 type={HoverCardType.plain}
                 plainCardProps={{
                     onRenderPlainCard: this.onRenderCompactCard,
-                    renderData: this.props.approval
+                    renderData: { ...this.props }
                 }}>
                 <div
                     style={{ display: 'inline-flex', alignItems: 'center', height: '28px', overflow: 'hidden', paddingRight: '8px', borderRadius: '12px', margin: '2px' }}

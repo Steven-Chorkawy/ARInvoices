@@ -5,15 +5,16 @@ import * as React from 'react';
 import styles from './Approvals.module.scss';
 import { IApproval } from '../../../interfaces/IARInvoice';
 import ApprovalHoverCard from './ApprovalHoverCard';
+import IMyUser from '../../../interfaces/IMyUser';
 
 export interface IApprovalsProps {
   approvals: IApproval[];
+  currentUser: IMyUser;
 }
 
 const LOG_SOURCE: string = 'Approvals';
 
 export default class Approvals extends React.Component<IApprovalsProps, {}> {
-
 
   @override
   public componentDidMount(): void {
@@ -31,7 +32,7 @@ export default class Approvals extends React.Component<IApprovalsProps, {}> {
       <div className={styles.cell}>
         {
           this.props.approvals ?
-            this.props.approvals.map(approval => <ApprovalHoverCard approval={approval} />) :
+            this.props.approvals.map(approval => <ApprovalHoverCard approval={approval} currentUser={this.props.currentUser} />) :
             <div>No Approvals</div>
         }
       </div>

@@ -18,6 +18,7 @@ import Approvals, { IApprovalsProps } from './components/Approvals';
 import { MyLists } from '../../enums/MyLists';
 import { IApproval } from '../../interfaces/IARInvoice';
 import { PersonaShimmer } from '../../components/ShimmerComponents';
+
 /**
  * If your field customizer uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -59,7 +60,7 @@ export default class ApprovalsFieldCustomizer
     ReactDOM.render(personaShimmer, event.domElement);
 
     let list = sp.web.lists.getByTitle(MyLists["AR Invoice Approvals"]);
-
+   
     if (event.fieldValue.length > 0) {
       // Build the query string.
       let filterString: string = '';
@@ -78,10 +79,14 @@ export default class ApprovalsFieldCustomizer
           'Assigned_x0020_To/Title',
           'Assigned_x0020_To/Name',
           'Assigned_x0020_To/ID',
-          'Assigned_x0020_To/EMail')
-        .expand('Assigned_x0020_To')
+          'Assigned_x0020_To/EMail',
+          'Author/Title',
+          'Author/Name',
+          'Author/ID',
+          'Author/EMail')
+        .expand('Assigned_x0020_To, Author')
         .filter(filterString).get().then((value: IApproval[]) => {
-          const approvals: React.ReactElement<{}> = React.createElement(Approvals, { approvals: [...value] });
+          const approvals: React.ReactElement<{}> = React.createElement(Approvals, { approvals: [...value], currentUser: this.context.pageContext.user });
           ReactDOM.render(approvals, event.domElement);
         });
     }
