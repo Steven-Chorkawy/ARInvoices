@@ -48,9 +48,9 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
             isOpen: this.props.isOpen,
             userCanEditInvoice: true,
             requestTypes: [
-                ApprovalRequestTypes["Cancel Request"],
                 ApprovalRequestTypes["Department Approval Required"],
-                ApprovalRequestTypes["Edit Required"]
+                ApprovalRequestTypes["Edit Required"],
+                ApprovalRequestTypes["Cancel Request"]
             ]
         };
 
@@ -58,13 +58,20 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
             this.setState({ userCanEditInvoice: value });
         });
 
-        sp.web.currentUser.groups().then((value: ISiteGroupInfo[]) => {
-            debugger;
-            // TODO: Check if any of the ISiteGroupInfo object Title contains the word "Department".  If none contain "Department" then we can add more request types. 
 
-            // Add these request types if it's valid. 
-            // * ApprovalRequestTypes["Accountant Approval Required"],
-            // * ApprovalRequestTypes["Accounting Clerk2 Approval Required"],
+        /**
+         * Add extra request types ONLY if the user is not in the departments group. 
+         */
+        sp.web.currentUser.groups().then((value: ISiteGroupInfo[]) => {
+            if (!value.some(e => e.Title.toLowerCase().includes('department'))) {
+                this.setState({
+                    requestTypes: [
+                        ...this.state.requestTypes,
+                        ApprovalRequestTypes["Accountant Approval Required"],
+                        ApprovalRequestTypes["Accounting Clerk2 Approval Required"]
+                    ]
+                });
+            }
         });
     }
 
@@ -97,7 +104,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                         <b><legend className={'k-form-legend'}>Request Approval {this.props.invoiceTitle && this.props.invoiceTitle}</legend></b>
                                         {
                                             !this.state.userCanEditInvoice &&
-                                            <MessageBar messageBarType={MessageBarType.error} isMultiline={false}>
+                                            <MessageBar messageBarType={MessageBarType.blocked} isMultiline={false}>
                                                 You do not have the required permissions to make a request for this invoice.
                                             </MessageBar>
                                         }
