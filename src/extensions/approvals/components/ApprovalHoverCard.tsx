@@ -44,10 +44,10 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
         }
     }
 
-    private onRenderCompactCard = (items: IAccount[]) => {
-
+    private onRenderCompactCard = (approval: IApproval) => {
         return (<div style={{ padding: '10px' }}>
-            <DetailsList
+            <p>hello</p>
+            {/* <DetailsList
                 items={items}
                 selectionMode={SelectionMode.none}
                 onRenderItemColumn={this.onRenderItemColumn}
@@ -57,7 +57,7 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
                     { key: 'HST_x0020_Taxable', name: 'HST Taxable', fieldName: 'HST_x0020_Taxable', minWidth: 100 },
                     { key: 'Total_x0020_Invoice', name: 'Total', fieldName: 'Total_x0020_Invoice', minWidth: 150 }
                 ]}
-            />
+            /> */}
         </div>);
     }
 
