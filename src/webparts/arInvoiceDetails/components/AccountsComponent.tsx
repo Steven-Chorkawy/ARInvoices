@@ -32,7 +32,6 @@ export class AccountsComponent extends React.Component<IAccountsComponentProps> 
                     <CardTitle><b>Accounts</b></CardTitle>
                     <FieldArray
                         name='Accounts'
-                        label='Account Codes'
                         component={MyFormComponents.FormAccountListView}
                         {...this.props}
                     />

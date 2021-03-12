@@ -43,7 +43,7 @@ export default class NewInvoiceSidePanel extends React.Component<INewInvoiceSide
                     <PopupPropsContext.Provider value={props => ({ ...props, appendTo: wrapper })}>
                         <SubmitNewArInvoiceForm
                             context={this.props.context}
-                            submitCallback={() => { alert('call back worked too!'); this.setState({ isOpen: false }); }}
+                            submitCallback={() => { this.setState({ isOpen: false }); }}
                         />
                     </PopupPropsContext.Provider>
                 </div>

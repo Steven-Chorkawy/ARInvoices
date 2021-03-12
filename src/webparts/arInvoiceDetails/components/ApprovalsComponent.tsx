@@ -32,7 +32,7 @@ export class ApprovalsComponent extends React.Component<IApprovalComponentProps,
                 <CardBody>
                     <CardTitle><b>Approval Requests</b></CardTitle>
                     {
-                        this.props.context &&
+                        this.props.context && this.props.userCanEditInvoice === true && 
                         <div>
                             <Button icon={'plus'} primary={true} look={'flat'} onClick={this.onRequestApprovalButtonClick}>Request Approval</Button>
                         </div>

@@ -2,11 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 // MS & Fluent UI
-import { escape } from '@microsoft/sp-lodash-subset';
-import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { BaseDialog } from '@microsoft/sp-dialog';
-import { IFocusTrapZoneProps } from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
+
+import { sp } from '@pnp/sp';
 
 // Kendo UI
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
@@ -19,21 +18,57 @@ import { ApprovalRequestTypes } from '../enums/Approvals';
 import * as MyValidator from '../MyHelperMethods/Validators';
 import { GetUsersByLoginName } from '../MyHelperMethods/UserProfileMethods';
 import { CreateApprovalRequest } from '../MyHelperMethods/DataLayerMethods';
+import { MyLists } from '../enums/MyLists';
+import { PermissionKind } from '@pnp/sp/security';
+import { ISiteGroupInfo } from '@pnp/sp/site-groups/types';
+import { CanUserEditInvoice } from '../MyHelperMethods/HelperMethods';
 
 export interface IRequestApprovalSidePanelProps {
     isOpen?: boolean;
     panelType?: PanelType;
     invoiceId: number;
+    invoiceTitle?: string;
     context?: any;
     onSubmitCallBack?: Function;
 }
 
-export default class RequestApprovalSidePanel extends React.Component<IRequestApprovalSidePanelProps, any> {
+interface IRequestApprovalSidePanelState {
+    isOpen: boolean;
+    userCanEditInvoice: boolean;
+    requestTypes: ApprovalRequestTypes[];
+}
+
+export default class RequestApprovalSidePanel extends React.Component<IRequestApprovalSidePanelProps, IRequestApprovalSidePanelState> {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: this.props.isOpen
+            isOpen: this.props.isOpen,
+            userCanEditInvoice: true,
+            requestTypes: [
+                ApprovalRequestTypes["Department Approval Required"],
+                ApprovalRequestTypes["Edit Required"],
+                ApprovalRequestTypes["Cancel Request"]
+            ]
         };
+
+        CanUserEditInvoice(this.props.invoiceId).then(value => {
+            this.setState({ userCanEditInvoice: value });
+        });
+
+        /**
+         * Add extra request types ONLY if the user is not in the departments group. 
+         */
+        sp.web.currentUser.groups().then((value: ISiteGroupInfo[]) => {
+            if (!value.some(e => e.Title.toLowerCase().includes('department'))) {
+                this.setState({
+                    requestTypes: [
+                        ...this.state.requestTypes,
+                        ApprovalRequestTypes["Accountant Approval Required"],
+                        ApprovalRequestTypes["Accounting Clerk2 Approval Required"]
+                    ]
+                });
+            }
+        });
     }
 
     private handleSubmit = async (data) => {
@@ -62,7 +97,13 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                             render={(formRenderProps) => (
                                 <FormElement style={{ maxWidth: '1200px' }}>
                                     <fieldset className={'k-form-fieldset'}>
-                                        <b><legend className={'k-form-legend'}>Request Approval</legend></b>
+                                        <b><legend className={'k-form-legend'}>Request Approval {this.props.invoiceTitle && this.props.invoiceTitle}</legend></b>
+                                        {
+                                            !this.state.userCanEditInvoice &&
+                                            <MessageBar messageBarType={MessageBarType.blocked} isMultiline={false}>
+                                                You do not have the required permissions to make a request for this invoice.
+                                            </MessageBar>
+                                        }
                                         <Card>
                                             <CardBody>
                                                 <div style={{ marginBottom: '15px' }}>
@@ -72,14 +113,9 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             name="Request_x0020_Type"
                                                             label="Request Type"
                                                             wrapperStyle={{ width: '100%' }}
-                                                            data={[
-                                                                ApprovalRequestTypes["Accountant Approval Required"],
-                                                                ApprovalRequestTypes["Accounting Clerk2 Approval Required"],
-                                                                ApprovalRequestTypes["Cancel Request"],
-                                                                ApprovalRequestTypes["Department Approval Required"],
-                                                                ApprovalRequestTypes["Edit Required"]
-                                                            ]}
+                                                            data={this.state.requestTypes}
                                                             required={true}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             component={MyFormComponents.FormDropDownList}
                                                             validator={MyValidator.required}
                                                         />
@@ -98,6 +134,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             validator={MyValidator.peoplePickerValidator}
                                                             personSelectionLimit={10}
                                                             context={this.props.context}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             selectedItems={e => {
                                                                 if (e && e.length > 0) {
                                                                     GetUsersByLoginName(e).then(res => {
@@ -125,6 +162,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                             name="Notes"
                                                             label="Notes"
                                                             wrapperStyle={{ width: '100%' }}
+                                                            disabled={!this.state.userCanEditInvoice}
                                                             component={MyFormComponents.FormTextArea}
                                                         />
                                                     </FieldWrapper>
@@ -136,7 +174,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
                                                 primary={true}
                                                 type={'submit'}
                                                 icon={'save'}
-                                                disabled={!formRenderProps.allowSubmit}
+                                                disabled={!formRenderProps.allowSubmit || !this.state.userCanEditInvoice}
                                             >Submit Approval</Button>
                                             <Button icon={'cancel'} onClick={formRenderProps.onFormReset}>Clear</Button>
                                         </div>

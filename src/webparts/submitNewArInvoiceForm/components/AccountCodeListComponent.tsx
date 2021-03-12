@@ -19,6 +19,7 @@ import { Fields } from '@pnp/sp/fields';
 interface IAccountCodeListComponent extends IDataOperations {
     data: any;
     inEditMode?: boolean;
+    userCanEditInvoice: boolean;
 }
 
 interface IAccountCodeItemProps extends IAccountCodeListComponent {
@@ -36,11 +37,11 @@ interface IAccountCodeItemState {
 //#endregion
 
 //#region Component Methods
-const MyHeader = (props) => {
+const MyHeader = (props: IAccountCodeListComponent) => {
     return (
         <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
             {
-                props.onAdd &&
+                props.onAdd && props.userCanEditInvoice &&
                 <Button
                     look='flat'
                     icon='plus'
@@ -145,7 +146,7 @@ class AccountCodeItem extends React.Component<IAccountCodeItemProps, IAccountCod
                         </div>
                         <div className={'col-md-1'} style={{ paddingRight: '0px' }}>
                             {
-                                this.props.onDelete && this.props.dataItem.ID &&
+                                this.props.onDelete && this.props.dataItem.ID && this.props.userCanEditInvoice &&
                                 <Button icon={'delete'} look={'flat'} title={'Delete'}
                                     onClick={e => {
                                         e.preventDefault();

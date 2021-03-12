@@ -874,7 +874,7 @@ export const FormPersonaDisplay = (fieldRenderProps) => {
 };
 
 export const FormPeoplePicker = (fieldRenderProps) => {
-  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, ...others } = fieldRenderProps;
+  const { validationMessage, touched, label, value, id, hint, wrapperStyle, valid, disabled, ...others } = fieldRenderProps;
   const editorRef = React.useRef(null);
 
   const hindId = `${id}_hint`;
@@ -891,6 +891,7 @@ export const FormPeoplePicker = (fieldRenderProps) => {
         context={fieldRenderProps.context}
         showtooltip={false}
         required={true}
+        disabled={disabled}
         personSelectionLimit={fieldRenderProps.personSelectionLimit}
         onChange={fieldRenderProps.selectedItems}
         showHiddenInUI={false}
@@ -946,6 +947,7 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
           fieldArrayRenderProps.onDelete(e.invoice);
         }}
         onSave={fieldArrayRenderProps.onSave}
+        {...others}
       />
     </div>
   );

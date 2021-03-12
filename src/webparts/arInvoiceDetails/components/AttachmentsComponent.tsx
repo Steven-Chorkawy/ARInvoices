@@ -85,7 +85,7 @@ export class AttachmentsComponent extends React.Component<IAttachmentsComponentP
 
         this.setState({
             AttachmentFiles: [
-                ...this.state.AttachmentFiles,
+                this.state.AttachmentFiles && this.state.AttachmentFiles,
                 ...newFiles
             ]
         });

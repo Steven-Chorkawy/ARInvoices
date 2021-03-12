@@ -26,8 +26,8 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper, FormRenderProps } from '@progress/kendo-react-form';
 
 // Fluent UI
-import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
-import { GetChoiceFieldValues, BuildGUID } from '../../../MyHelperMethods/HelperMethods';
+import { DefaultButton, PrimaryButton, Pivot, PivotItem, MessageBar, MessageBarType } from 'office-ui-fabric-react';
+import { GetChoiceFieldValues, BuildGUID, CanUserEditInvoice } from '../../../MyHelperMethods/HelperMethods';
 import { ApprovalRequestTypes, ApprovalStatus } from '../../../enums/Approvals';
 
 export interface IArInvoiceDetailsProps {
@@ -48,6 +48,7 @@ export interface IArInvoiceDetailsState {
   selectedPivotKey: string;
   inEditMode: boolean;
   editFormFieldData?: IARInvoiceEditFormFieldData;
+  userCanEditInvoice?: boolean;
 }
 
 /**
@@ -59,6 +60,7 @@ export interface IArInvoiceSubComponentProps {
   inEditMode: boolean;
   editFormFieldData: IARInvoiceEditFormFieldData;
   formRenderProps: FormRenderProps;
+  userCanEditInvoice: boolean;
 }
 
 enum ARInvoiceQueryParams {
@@ -78,7 +80,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       allInvoices: undefined,
       currentInvoice: undefined,
       selectedPivotKey: '0',
-      inEditMode: false
+      inEditMode: false,
     };
 
     sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.select('ID, Title, Status').getAll().then(invoices => {
@@ -95,6 +97,9 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
     if (idFromQueryParam) {
       GetInvoiceByID(Number(idFromQueryParam)).then(invoice => {
         this.setState({ currentInvoice: invoice });
+        CanUserEditInvoice(Number(idFromQueryParam)).then(value => {
+          this.setState({ userCanEditInvoice: value });
+        });
       });
     }
   }
@@ -121,6 +126,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
         this.setState({
           currentInvoice: invoice,
           invoices: this.state.allInvoices
+        });
+
+        CanUserEditInvoice(e.value.ID).then(value => {
+          this.setState({ userCanEditInvoice: value });
         });
       });
     }
@@ -175,6 +184,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
 
   private _buttons = (formRenderProps) => {
     return (
+      this.state.userCanEditInvoice &&
       <div className="k-form-buttons">
         <PrimaryButton iconProps={{ iconName: 'save' }} type={'submit'} disabled={!formRenderProps.touched}>Save</PrimaryButton>
         <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }} disabled={this.state.inEditMode}>Edit</PrimaryButton>
@@ -188,10 +198,11 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
       invoice: this.state.currentInvoice,
       inEditMode: this.state.inEditMode,
       editFormFieldData: { ...this.state.editFormFieldData },
+      userCanEditInvoice: this.state.userCanEditInvoice
     };
 
     return (
-      <div key={this.state.currentInvoice ? `${this.state.currentInvoice.ID}-${this.state.currentInvoice.Modified}` : 0} style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }}>
+      <div key={this.state.currentInvoice ? `${this.state.currentInvoice.ID}-${this.state.currentInvoice.Modified}` : 0} style={{ maxWidth: '1200px', marginRight: 'auto', marginLeft: 'auto' }} >
         <ComboBox
           data={this.state.invoices}
           textField={'Title'}
@@ -221,6 +232,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
+                  {
+                    !this.state.userCanEditInvoice &&
+                    <MessageBar messageBarType={MessageBarType.blocked} isMultiline={false}>You do not have the required permissions to edit this invoice.</MessageBar>
+                  }
                   <Pivot
                     style={{ width: '100%' }}
                     onLinkClick={(e: any) => this.setState({ selectedPivotKey: e.key.substring(1) })}
