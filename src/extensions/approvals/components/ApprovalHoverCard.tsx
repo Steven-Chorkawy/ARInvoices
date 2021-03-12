@@ -32,7 +32,7 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
 
     private onRenderItemColumn = (item: any, index: number, column: IColumn) => {
         const fieldContent = item[column.fieldName as keyof IAccount] as string;
-        debugger;
+        
         switch (column.key) {
             case 'Amount':
             case 'Total_x0020_Invoice':

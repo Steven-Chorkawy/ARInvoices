@@ -20,7 +20,6 @@ export default class AccountsHoverCard extends React.Component<IAccountsHoverCar
 
     private onRenderItemColumn = (item: any, index: number, column: IColumn) => {
         const fieldContent = item[column.fieldName as keyof IAccount] as string;
-        debugger;
         switch (column.key) {
             case 'Amount':
             case 'Total_x0020_Invoice':
