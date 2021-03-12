@@ -21,6 +21,7 @@ import { CreateApprovalRequest } from '../MyHelperMethods/DataLayerMethods';
 import { MyLists } from '../enums/MyLists';
 import { PermissionKind } from '@pnp/sp/security';
 import { ISiteGroupInfo } from '@pnp/sp/site-groups/types';
+import { CanUserEditInvoice } from '../MyHelperMethods/HelperMethods';
 
 export interface IRequestApprovalSidePanelProps {
     isOpen?: boolean;
@@ -50,7 +51,7 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
             ]
         };
 
-        sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(this.props.invoiceId).currentUserHasPermissions(PermissionKind.EditListItems).then(value => {
+        CanUserEditInvoice(this.props.invoiceId).then(value => {
             this.setState({ userCanEditInvoice: value });
         });
 
