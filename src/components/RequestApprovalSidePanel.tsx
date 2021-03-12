@@ -2,14 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 // MS & Fluent UI
-import { escape } from '@microsoft/sp-lodash-subset';
-import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { BaseDialog } from '@microsoft/sp-dialog';
-import { IFocusTrapZoneProps, MessageBar, MessageBarType } from '@fluentui/react';
+import { MessageBar, MessageBarType } from '@fluentui/react';
 
 import { sp } from '@pnp/sp';
-
 
 // Kendo UI
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
@@ -57,7 +53,6 @@ export default class RequestApprovalSidePanel extends React.Component<IRequestAp
         sp.web.lists.getByTitle(MyLists["AR Invoice Requests"]).items.getById(this.props.invoiceId).currentUserHasPermissions(PermissionKind.EditListItems).then(value => {
             this.setState({ userCanEditInvoice: value });
         });
-
 
         /**
          * Add extra request types ONLY if the user is not in the departments group. 
