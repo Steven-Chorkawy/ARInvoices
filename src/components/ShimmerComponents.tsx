@@ -29,11 +29,13 @@ export class PersonaShimmer extends React.Component {
 }
 
 export class RowShimmer extends React.Component {
-    public return() {
+    public render() {
+        const shimmerStyle = { paddingBottom: '5px' };
+
         return <div>
-            <Shimmer />
-            <Shimmer width="75%" />
-            <Shimmer width="50%" />
+            <Shimmer style={shimmerStyle} />
+            <Shimmer style={shimmerStyle} width="75%" />
+            <Shimmer style={shimmerStyle} width="50%" />
         </div>;
     }
 }

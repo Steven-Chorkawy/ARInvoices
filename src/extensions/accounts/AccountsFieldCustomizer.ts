@@ -17,6 +17,7 @@ import * as strings from 'AccountsFieldCustomizerStrings';
 import Accounts from './components/Accounts';
 import { MyLists } from '../../enums/MyLists';
 import { IAccount } from '../../interfaces/IARInvoice';
+import { RowShimmer } from '../../components/ShimmerComponents';
 
 /**
  * If your field customizer uses the ClientSideComponentProperties JSON input,
@@ -54,6 +55,8 @@ export default class AccountsFieldCustomizer
 
   @override
   public onRenderCell(event: IFieldCustomizerCellEventParameters): void {
+    const shimmer: React.ReactElement<{}> = React.createElement(RowShimmer);
+    ReactDOM.render(shimmer, event.domElement);
 
     let list = sp.web.lists.getByTitle(MyLists["AR Invoice Accounts"]);
 
@@ -69,16 +72,12 @@ export default class AccountsFieldCustomizer
 
       // Query the item
       list.items.filter(filterString).get().then((value: IAccount[]) => {
-        const accounts: React.ReactElement<{}> =
-          React.createElement(Accounts, { accounts: [...value] });
-
+        const accounts: React.ReactElement<{}> = React.createElement(Accounts, { accounts: [...value] });
         ReactDOM.render(accounts, event.domElement);
       });
     }
     else {
-      const accounts: React.ReactElement<{}> =
-        React.createElement(Accounts, ...[]);
-
+      const accounts: React.ReactElement<{}> = React.createElement(Accounts, ...[]);
       ReactDOM.render(accounts, event.domElement);
     }
   }
