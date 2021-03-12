@@ -1,6 +1,6 @@
 {
   "name": "ar-invoices",
-  "version": "0.0.1",
+  "version": "2.1.4",
   "private": true,
   "main": "lib/index.js",
   "engines": {
