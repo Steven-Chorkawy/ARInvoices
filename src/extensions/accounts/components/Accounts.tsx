@@ -29,7 +29,7 @@ export default class Accounts extends React.Component<IAccountsFieldProps, any> 
   public render(): React.ReactElement<{}> {
     return (
       // <div className={styles.cell}>
-      this.props.accounts ? <AccountsHoverCard accounts={this.props.accounts} /> : undefined
+      this.props.accounts ? <AccountsHoverCard accounts={this.props.accounts} /> : null
       // </div>
     );
   }
