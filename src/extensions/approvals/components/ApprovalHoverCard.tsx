@@ -76,9 +76,9 @@ export default class ApprovalHoverCard extends React.Component<IApprovalHoverCar
                 >
                     <img
                         style={{ width: '28px', height: '28px', display: 'block', borderRadius: '50%' }}
-                        src={`/_layouts/15/userphoto.aspx?size=S&accountname=${this.props.approval.Assigned_x0020_To.EMail}`} title={this.props.approval.Assigned_x0020_To.Title}
+                        src={`/_layouts/15/userphoto.aspx?size=S&accountname=${this.props.approval.Assigned_x0020_To.EMail}`}
                     />
-                    <div style={{ paddingLeft: '5px', whiteSpace: 'nowrap', fontSize: '12px' }} title={this.props.approval.Assigned_x0020_To.Title} className="nameplate-title">
+                    <div style={{ paddingLeft: '5px', whiteSpace: 'nowrap', fontSize: '12px' }} className="nameplate-title">
                         <div>
                             {this.props.approval.Assigned_x0020_To.Title} | {this.props.approval.Status}
                         </div>
