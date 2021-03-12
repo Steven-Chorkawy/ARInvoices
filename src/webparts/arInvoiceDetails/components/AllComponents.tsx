@@ -5,16 +5,6 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-// Kendo Imports. 
-import { ComboBox } from '@progress/kendo-react-dropdowns';
-import { filterBy } from '@progress/kendo-data-query';
-import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
-import { Label, Error, Hint, FloatingLabel } from '@progress/kendo-react-labels';
-import { Button } from '@progress/kendo-react-buttons';
-import { Card, CardBody, CardTitle } from '@progress/kendo-react-layout';
-
-import { AccountCodeListComponent } from '../../submitNewArInvoiceForm/components/AccountCodeListComponent';
-import { GetInvoiceByID, UpdateARInvoice, DeleteARInvoiceAccounts } from '../../../MyHelperMethods/DataLayerMethods';
 import { IArInvoiceSubComponentProps } from './ArInvoiceDetails';
 import IDataOperations from '../../../interfaces/IDataOperations';
 import { RequestComponent } from './RequestComponent';
