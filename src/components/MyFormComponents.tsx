@@ -947,6 +947,7 @@ export const FormAccountListView = (fieldArrayRenderProps) => {
           fieldArrayRenderProps.onDelete(e.invoice);
         }}
         onSave={fieldArrayRenderProps.onSave}
+        {...others}
       />
     </div>
   );
