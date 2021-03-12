@@ -26,7 +26,7 @@ import { filterBy } from '@progress/kendo-data-query';
 import { Form, Field, FormElement, FieldWrapper, FormRenderProps } from '@progress/kendo-react-form';
 
 // Fluent UI
-import { DefaultButton, PrimaryButton, Pivot, PivotItem } from 'office-ui-fabric-react';
+import { DefaultButton, PrimaryButton, Pivot, PivotItem, MessageBar, MessageBarType } from 'office-ui-fabric-react';
 import { GetChoiceFieldValues, BuildGUID, CanUserEditInvoice } from '../../../MyHelperMethods/HelperMethods';
 import { ApprovalRequestTypes, ApprovalStatus } from '../../../enums/Approvals';
 
@@ -184,6 +184,7 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
 
   private _buttons = (formRenderProps) => {
     return (
+      this.state.userCanEditInvoice &&
       <div className="k-form-buttons">
         <PrimaryButton iconProps={{ iconName: 'save' }} type={'submit'} disabled={!formRenderProps.touched}>Save</PrimaryButton>
         <PrimaryButton iconProps={{ iconName: 'edit' }} onClick={() => { this.setState({ inEditMode: true }); }} disabled={this.state.inEditMode}>Edit</PrimaryButton>
@@ -231,6 +232,10 @@ export class ArInvoiceDetails extends React.Component<IArInvoiceDetailsProps, IA
               render={formRenderProps => (
                 <FormElement >
                   {this._buttons(formRenderProps)}
+                  {
+                    !this.state.userCanEditInvoice &&
+                    <MessageBar messageBarType={MessageBarType.blocked} isMultiline={false}>You do not have the required permissions to edit this invoice.</MessageBar>
+                  }
                   <Pivot
                     style={{ width: '100%' }}
                     onLinkClick={(e: any) => this.setState({ selectedPivotKey: e.key.substring(1) })}
